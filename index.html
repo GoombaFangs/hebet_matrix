@@ -1,0 +1,2798 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#0064E0">
+  <meta name="description" content="רשימת חיילים לפי מקצוע, מחזור קורס ויום עיון">
+  <title>תקן מצבה זרועי</title>
+  <link rel="icon" href="hebet-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --canvas: #f4f6f8;
+      --surface: #ffffff;
+      --ink: #050505;
+      --secondary: #65676b;
+      --line: #e4e6eb;
+      --blue: #0064e0;
+      --blue-hover: #0054c6;
+      --blue-soft: #e8f2ff;
+      --blue-deep: #04285c;
+      --chip: #f0f2f5;
+      --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
+      --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 10px 28px rgba(16, 24, 40, 0.06);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Heebo", "Segoe UI", "Arial Hebrew", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    [hidden] { display: none !important; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip {
+      position: absolute;
+      inset-inline-start: 12px;
+      top: -48px;
+      z-index: 30;
+      background: var(--blue);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .skip:focus { top: 12px; }
+
+    .appbar {
+      flex: none;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      z-index: 5;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      flex: none;
+      display: block;
+      object-fit: contain;
+    }
+
+    .brand-text { min-width: 0; }
+
+    .brand h1,
+    .brand p { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .brand h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .brand p {
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .app-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+    }
+
+    .unit-picker {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .unit-current {
+      width: 100%;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-inline: 12px 10px;
+      border: none;
+      border-radius: 12px;
+      background: var(--chip);
+      color: var(--ink);
+      font-weight: 800;
+      text-align: start;
+    }
+
+    .unit-current:hover { background: #e4e6eb; }
+
+    .unit-current[aria-expanded="true"] {
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+      box-shadow: inset 0 0 0 1.5px var(--blue);
+    }
+
+    .unit-current-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .unit-chevron {
+      display: grid;
+      color: var(--secondary);
+      transition: transform 0.15s ease;
+    }
+
+    .unit-current[aria-expanded="true"] .unit-chevron { color: var(--blue); }
+
+    .unit-chevron.is-open { transform: rotate(180deg); }
+
+    .unit-count {
+      min-width: 1.5rem;
+      height: 1.5rem;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      display: inline-grid;
+      place-items: center;
+    }
+
+    .unit-menu {
+      position: absolute;
+      z-index: 5;
+      inset-inline: 0;
+      top: 100%;
+      margin-top: 6px;
+      padding: 6px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow-card);
+      max-height: min(320px, 52vh);
+      overflow: auto;
+    }
+
+    .unit-option {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      border-radius: 10px;
+    }
+
+    .unit-option:hover { background: #f2f4f7; }
+
+    .unit-option.is-current { background: var(--blue-soft); }
+
+    .unit-option.is-current:hover { background: #d7e8ff; }
+
+    .unit-option-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      text-align: start;
+      font-weight: 700;
+    }
+
+    .unit-option-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .unit-check {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      margin-inline-end: 4px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--secondary);
+    }
+
+    .icon-btn:hover { background: rgba(0, 0, 0, 0.06); color: var(--ink); }
+
+    .unit-option.is-current .icon-btn:hover { background: rgba(0, 100, 224, 0.12); }
+
+    .icon-btn-primary { background: var(--blue); color: #fff; }
+
+    .icon-btn-primary:hover { background: var(--blue-hover); color: #fff; }
+
+    .unit-edit {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 4px;
+    }
+
+    .unit-edit-new {
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .unit-name-input {
+      flex: 1;
+      min-width: 0;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 0 0 2px var(--blue);
+      padding-inline: 10px;
+      font-weight: 700;
+    }
+
+    .unit-name-input:focus-visible { outline: none; }
+
+    .unit-error {
+      flex: 1 0 100%;
+      margin: 0;
+      color: #b42318;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .label-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .workspace {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border-inline-end: 1px solid var(--line);
+    }
+
+    .sidebar-head {
+      position: relative;
+      z-index: 3;
+      flex: none;
+      padding: 12px 12px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .label-row .field-label { margin-bottom: 0; }
+
+    kbd {
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--secondary);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 0 6px;
+      line-height: 1.6;
+    }
+
+    .search-wrap { position: relative; }
+
+    .search-wrap svg {
+      position: absolute;
+      top: 50%;
+      inset-inline-start: 12px;
+      transform: translateY(-50%);
+      color: var(--secondary);
+      pointer-events: none;
+    }
+
+    .search, select {
+      width: 100%;
+      height: 38px;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--chip);
+      color: var(--ink);
+      outline: none;
+    }
+
+    .search {
+      padding-inline-start: 40px;
+      padding-inline-end: 14px;
+    }
+
+    .search::placeholder { color: var(--secondary); }
+
+    select {
+      appearance: none;
+      padding-inline-start: 12px;
+      padding-inline-end: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2365676B' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 10px center;
+      background-size: 16px;
+      cursor: pointer;
+    }
+
+    select.is-active {
+      background-color: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 700;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230064E0' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    }
+
+    .search:focus-visible, select:focus-visible {
+      outline: none;
+      background-color: #fff;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 10px;
+      margin-top: 12px;
+    }
+
+    .result-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 32px;
+      margin-top: 10px;
+    }
+
+    .result-line {
+      margin: 0;
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .text-btn {
+      flex: none;
+      border: none;
+      background: transparent;
+      color: var(--blue);
+      font-size: 0.85rem;
+      font-weight: 800;
+      border-radius: 8px;
+      padding: 4px 8px;
+    }
+
+    .text-btn:hover { background: var(--blue-soft); }
+
+    .list {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 6px 0 20px;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: #c5cad3 transparent;
+    }
+
+    .group-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      margin: 0;
+      padding: 12px 16px 6px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      color: var(--secondary);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .pill-count {
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--ink);
+      display: inline-grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .person {
+      position: relative;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      width: calc(100% - 16px);
+      margin: 2px 8px;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      text-align: start;
+    }
+
+    .person:hover { background: #f2f4f7; }
+
+    .person[aria-current="true"] { background: var(--blue-soft); }
+    .person[aria-current="true"]:hover { background: #d9e9ff; }
+
+    .person[aria-current="true"]::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: 0;
+      top: 10px;
+      bottom: 10px;
+      width: 3px;
+      border-radius: 99px;
+      background: var(--blue);
+    }
+
+    .person:focus-visible {
+      outline: none;
+      box-shadow: inset 0 0 0 2px var(--blue);
+    }
+
+    .avatar, .avatar-lg {
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      user-select: none;
+    }
+
+    .avatar { width: 44px; height: 44px; font-size: 0.95rem; }
+
+    .person-copy { min-width: 0; }
+
+    .person-name {
+      display: block;
+      font-weight: 700;
+      font-size: 0.98rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .person-sub {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      margin-top: 2px;
+      color: var(--secondary);
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .person-sub-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .flag {
+      flex: none;
+      background: var(--chip);
+      color: #44474c;
+      border-radius: 999px;
+      padding: 1px 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
+    }
+
+    .person[aria-current="true"] .flag { background: #fff; }
+
+    .grade-pill {
+      min-width: 28px;
+      height: 28px;
+      padding: 0 6px;
+      border-radius: 8px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: grid;
+      place-items: center;
+    }
+
+    .person[aria-current="true"] .grade-pill { background: #fff; }
+    .grade-pill.is-empty { background: var(--chip); color: var(--secondary); }
+
+    mark {
+      background: #d6e8ff;
+      color: inherit;
+      border-radius: 3px;
+      padding: 0 1px;
+    }
+
+    .empty-list {
+      padding: 32px 20px;
+      color: var(--secondary);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .profile-scroll {
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+      background: var(--canvas);
+      padding: 12px 12px 24px;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: #c5cad3 transparent;
+    }
+
+    .profile-frame, .empty-state { width: 100%; margin-inline: auto; }
+
+    .back-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      margin: 0 0 12px;
+      padding: 8px 12px;
+      border: none;
+      background: var(--surface);
+      border-radius: 999px;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+    }
+
+    .dossier { container-type: inline-size; container-name: dossier; }
+
+    .identity-card, .panel, .empty-state {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+    }
+
+    .identity-card { overflow: hidden; }
+
+    .cover {
+      height: 112px;
+      display: flex;
+      align-items: flex-start;
+      padding: 14px 20px 0;
+      background-color: var(--blue);
+      background-image:
+        radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.22), transparent 36%),
+        radial-gradient(circle at 0% 120%, rgba(0, 0, 0, 0.14), transparent 42%);
+    }
+
+    .cover-kicker {
+      display: block;
+      margin-bottom: 2px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .cover-title {
+      display: block;
+      margin: 0;
+      color: #fff;
+      font-size: 2.15rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .tone-edit .cover { background-color: #0064e0; }
+    .tone-design .cover { background-color: #7c3aed; }
+    .tone-photo .cover { background-color: #e11d2e; }
+
+    .tone-edit .profession-value { color: #0064e0; }
+    .tone-design .profession-value { color: #6d28d9; }
+    .tone-photo .profession-value { color: #d0122a; }
+
+    .profession-value {
+      font-size: 1.45rem;
+      letter-spacing: -0.03em;
+    }
+
+    .tone-design .fact-study { background: #f3e8ff; }
+    .tone-design .fact-study .fact-label,
+    .tone-design .fact-study .fact-hint { color: #5b21b6; }
+    .tone-design .fact-study strong { color: #4c1d95; }
+    .tone-design .when { color: #6d28d9; }
+
+    .tone-photo .fact-study { background: #ffe4e6; }
+    .tone-photo .fact-study .fact-label,
+    .tone-photo .fact-study .fact-hint { color: #9f1239; }
+    .tone-photo .fact-study strong { color: #881337; }
+    .tone-photo .when { color: #d0122a; }
+
+    .group.tone-edit .group-label { color: #0064e0; }
+    .group.tone-design .group-label { color: #6d28d9; }
+    .group.tone-photo .group-label { color: #d0122a; }
+
+    .identity-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      margin-top: -26px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .avatar-lg {
+      width: 112px;
+      height: 112px;
+      flex: none;
+      border: 4px solid #fff;
+      font-size: 1.85rem;
+      box-shadow: 0 4px 14px rgba(4, 24, 64, 0.16);
+    }
+
+    .identity-id { flex: 0 1 auto; min-width: 0; padding-bottom: 2px; }
+
+    .identity-name {
+      margin: 0;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    .pid {
+      margin: 4px 0 0;
+      color: var(--secondary);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .num {
+      color: var(--ink);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-start;
+      margin-inline-start: auto;
+      padding-bottom: 6px;
+      flex: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: var(--blue-hover); color: #fff; }
+    .btn-secondary { background: #e4e6eb; color: var(--ink); }
+    .btn-secondary:hover { background: #d8dadf; }
+    a.btn-primary:hover { text-decoration: none; }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 18px 20px 20px;
+    }
+
+    .fact {
+      min-width: 0;
+      padding: 10px 12px 11px;
+      border-radius: 12px;
+      background: #f7f8fa;
+    }
+
+    .fact .fact-label { margin-bottom: 3px; }
+
+    .fact .fact-value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      font-size: 1.02rem;
+      line-height: 1.3;
+    }
+
+    .fact .num { overflow-wrap: anywhere; }
+
+    .copy-id {
+      width: 28px;
+      height: 28px;
+      flex: none;
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--secondary);
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .copy-id:hover { color: var(--blue); background: var(--blue-soft); box-shadow: none; }
+
+    .copy-id .copy-idle,
+    .copy-id .copy-done { display: grid; }
+
+    .copy-id .copy-done { display: none; }
+
+    .copy-id.is-copied {
+      background: #e7f6ee;
+      color: #087443;
+      box-shadow: none;
+    }
+
+    .copy-id.is-copied .copy-idle { display: none; }
+    .copy-id.is-copied .copy-done { display: grid; }
+
+    .fact-study {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--blue-soft);
+    }
+
+    .fact-study .study-main { min-width: 0; }
+
+    .fact-study .fact-label { color: #35527a; }
+
+    .fact-study strong {
+      display: block;
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: var(--blue-deep);
+    }
+
+    .fact-study .fact-hint { color: #35527a; }
+
+    .fact-study.is-past,
+    .tone-design .fact-study.is-past,
+    .tone-photo .fact-study.is-past { background: #f2f4f7; }
+
+    .fact-study.is-past strong,
+    .tone-design .fact-study.is-past strong,
+    .tone-photo .fact-study.is-past strong { color: var(--ink); }
+
+    .fact-study.is-past .fact-label,
+    .fact-study.is-past .fact-hint,
+    .fact-study.is-past .when,
+    .tone-design .fact-study.is-past .fact-label,
+    .tone-design .fact-study.is-past .fact-hint,
+    .tone-design .fact-study.is-past .when,
+    .tone-photo .fact-study.is-past .fact-label,
+    .tone-photo .fact-study.is-past .fact-hint,
+    .tone-photo .fact-study.is-past .when { color: var(--secondary); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .chip-accent { background: var(--blue-soft); color: #0546b6; }
+
+    .when {
+      margin-inline-start: auto;
+      background: #fff;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      padding: 6px 12px;
+      white-space: nowrap;
+    }
+
+    .panel { margin-top: 12px; padding: 18px 20px 20px; }
+
+    .panel h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .panel h3 svg { color: var(--secondary); }
+    .panel p { margin: 0; white-space: pre-wrap; line-height: 1.6; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .about-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      min-width: 0;
+      background: #f7f8fa;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .about-ico {
+      width: 36px;
+      height: 36px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e4e6eb;
+      color: var(--ink);
+    }
+
+    .about-copy { min-width: 0; }
+
+    .fact-label {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .fact-value {
+      display: block;
+      font-weight: 800;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
+    }
+
+    .fact-hint {
+      display: block;
+      margin-top: 2px;
+      color: var(--secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    a.phone {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    a.phone:hover { text-decoration: underline; }
+
+    .empty-state {
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .empty-state h2 { margin: 12px 0 6px; font-size: 1.4rem; font-weight: 800; }
+    .empty-state p { margin: 0 0 16px; max-width: 28rem; color: var(--secondary); }
+
+    .empty-mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+    }
+
+    #profile > .empty-state { margin-bottom: 16px; }
+
+    .editor {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 22px 22px 20px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+    }
+
+    .editor h2 {
+      margin: 0 0 6px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .editor-lead {
+      margin: 0 0 18px;
+      color: var(--secondary);
+      font-size: 0.95rem;
+    }
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 14px;
+    }
+
+    .editor-grid label {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .editor-wide { grid-column: 1 / -1; }
+
+    .editor input,
+    .editor textarea,
+    .editor select {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--chip);
+      color: var(--ink);
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .editor input,
+    .editor select { height: 44px; }
+
+    .editor select {
+      appearance: none;
+      padding-inline-end: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2365676B' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 10px center;
+      background-size: 16px;
+      cursor: pointer;
+    }
+
+    .editor input:focus-visible,
+    .editor textarea:focus-visible,
+    .editor select:focus-visible {
+      outline: none;
+      background-color: #fff;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
+    }
+
+    .editor textarea {
+      min-height: 88px;
+      resize: vertical;
+      font: inherit;
+    }
+
+    .editor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .shalishut {
+      container-type: inline-size;
+      container-name: shalishut;
+      margin-bottom: 10px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .shalishut-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 40px;
+      padding: 4px 6px 4px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .shalishut-head h2 {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .shalishut-edit {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 28px;
+    }
+
+    .shalishut-body { padding: 8px 12px 6px; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 0.75fr 0.75fr;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .shalishut-metric {
+      min-width: 0;
+      padding: 6px 10px;
+    }
+
+    .shalishut-metric + .shalishut-metric { border-inline-start: 1px solid var(--line); }
+
+    .shalishut-metric .fact-label { margin-bottom: 0; font-size: 0.7rem; }
+
+    .shalishut-metric .fact-value { font-size: 0.92rem; }
+
+    .metric-fields { grid-template-columns: 1.4fr 0.8fr 0.8fr; }
+
+    .role-list { margin-top: 2px; }
+
+    .role-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 0;
+      padding: 6px 2px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .role-card:last-child { border-bottom: none; }
+
+    .role-card .fact-label {
+      margin: 0;
+      color: var(--secondary);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .role-person {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 2px 10px;
+      min-width: 0;
+      text-align: end;
+      font-size: 0.9rem;
+    }
+
+    .role-person .fact-value { font-size: 0.9rem; }
+
+    .missing { color: var(--secondary); font-weight: 600; }
+
+    .role-fields {
+      margin: 14px 0 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .role-fields legend {
+      padding-inline: 6px;
+      font-weight: 800;
+    }
+
+    .form-error {
+      margin: 8px 0 0;
+      color: #b42318;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .print-shalishut { display: none; }
+
+    @container shalishut (max-width: 420px) {
+      .metric-grid,
+      .role-fields .editor-grid { grid-template-columns: 1fr; }
+      .shalishut-metric + .shalishut-metric { border-inline-start: none; border-top: 1px solid var(--line); }
+      .role-card { align-items: flex-start; flex-direction: column; gap: 2px; }
+      .role-person { justify-content: flex-start; text-align: start; }
+    }
+
+    @media (max-width: 520px) {
+      .editor-grid,
+      .metric-fields { grid-template-columns: 1fr; }
+    }
+
+    .print-root { display: none; }
+
+    .list::-webkit-scrollbar, .profile-scroll::-webkit-scrollbar { width: 10px; }
+    .list::-webkit-scrollbar-thumb, .profile-scroll::-webkit-scrollbar-thumb {
+      background: #c5cad3;
+      border-radius: 99px;
+      border: 2px solid #fff;
+    }
+    .profile-scroll::-webkit-scrollbar-thumb { border-color: var(--canvas); }
+
+    :focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    .btn-primary:focus-visible { outline-color: var(--blue-deep); }
+
+    ::selection { background: #b9d6ff; }
+
+    @container dossier (max-width: 640px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .facts { grid-template-columns: 1fr 1fr; margin-inline: 16px; }
+      .fact-study { flex-wrap: wrap; align-items: flex-start; }
+      .identity-row { flex-wrap: wrap; margin-top: -28px; }
+      .avatar-lg { width: 88px; height: 88px; font-size: 1.45rem; }
+      .identity-name { font-size: 1.55rem; }
+      .cover { height: 96px; padding-top: 12px; }
+      .cover-title { font-size: 1.7rem; }
+    }
+
+    @container dossier (max-width: 420px) {
+      .facts { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .appbar { padding: 0 14px; height: 60px; }
+      .brand p { display: none; }
+      .workspace { display: block; }
+      .sidebar { height: 100%; border-inline-end: none; }
+      .profile-scroll { display: none; height: 100%; padding: 8px 8px 20px; }
+      body.profile-open .sidebar { display: none; }
+      body.profile-open .profile-scroll { display: block; }
+      body.profile-open .back-btn { display: inline-flex; }
+      kbd { display: none; }
+    }
+
+    @media (max-width: 420px) {
+      .filters { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; scroll-behavior: auto !important; }
+    }
+
+    @media print {
+      body {
+        display: block;
+        overflow: visible;
+        height: auto;
+        background: #fff;
+      }
+      .skip, .appbar, .workspace { display: none !important; }
+      .print-root { display: block; }
+      .profile-frame { width: auto; margin: 0 0 18px; break-inside: avoid; }
+      .dossier-print .cover { height: auto; padding: 14px 18px; }
+      .dossier-print .cover-title { font-size: 22pt; }
+      .dossier-print .identity-row { margin-top: 0; padding-top: 16px; }
+      .dossier-print .avatar-lg { width: 64px; height: 64px; font-size: 1.2rem; box-shadow: none; }
+      .dossier-print .facts { margin-inline: 0; }
+      .dossier-print .copy-id { display: none; }
+      .identity-card, .panel { box-shadow: none; border: 1px solid #ddd; }
+      .cover, .avatar, .avatar-lg, .fact, .fact-study, .chip-accent, .about-ico {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      a.phone { color: inherit; text-decoration: none; }
+      .print-mast { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; }
+      .print-logo { width: 48px; height: 48px; object-fit: contain; }
+      .print-mast h1 { margin: 0; font-size: 22pt; font-weight: 800; }
+      .print-mast p { margin: 2px 0 0; color: #333; }
+      .print-shalishut {
+        display: block;
+        margin: 0 0 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      .print-shalishut h2 { margin: 0 0 6px; font-size: 16pt; }
+      .print-shalishut p { margin: 2px 0; }
+    }
+
+    @page { margin: 12mm; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#search">דילוג לחיפוש</a>
+  <p class="sr-only" id="live" aria-live="polite"></p>
+  <header class="appbar">
+    <div class="brand">
+      <img class="brand-mark" src="hebet-logo.png" alt="הבט" width="40" height="40">
+      <div class="brand-text">
+        <h1 id="doc-title">תקן מצבה זרועי</h1>
+      </div>
+    </div>
+    <div class="app-actions">
+    <button class="btn btn-primary" id="add-btn" type="button">חייל חדש</button>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <aside class="sidebar" aria-label="סינון ורשימה">
+      <div class="sidebar-head">
+        <div class="unit-picker" id="unit-picker"></div>
+        <div class="search-wrap-block">
+          <div class="label-row">
+            <label class="field-label" for="search">חיפוש</label>
+            <kbd title="קיצור מקלדת">/</kbd>
+          </div>
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="M20 20l-3.2-3.2"></path>
+            </svg>
+            <input class="search" id="search" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="שם, מ״א, טלפון, עיר או הערה">
+          </div>
+        </div>
+        <div class="filters">
+          <label class="filter">
+            <span class="field-label">מקצוע</span>
+            <select id="filter-profession"></select>
+          </label>
+          <label class="filter">
+            <span class="field-label">מחזור</span>
+            <select id="filter-cycle"></select>
+          </label>
+          <label class="filter">
+            <span class="field-label">מדרג</span>
+            <select id="filter-grade"></select>
+          </label>
+          <label class="filter">
+            <span class="field-label">יום עיון</span>
+            <select id="filter-date"></select>
+          </label>
+        </div>
+        <div class="result-row">
+          <p class="result-line" id="result-line">כל הרשימה מוצגת</p>
+          <button class="text-btn" id="clear-btn" type="button" hidden>נקה</button>
+        </div>
+      </div>
+      <div class="list" id="list"></div>
+    </aside>
+    <main class="profile-scroll" id="profile" aria-label="כרטיס חייל"></main>
+  </div>
+  <div class="print-root" id="print-root" aria-hidden="true"></div>
+  <noscript><p style="padding:24px">כדי לראות את הרשימה צריך להפעיל JavaScript.</p></noscript>
+
+  <script>
+    /*
+      מוסיפים חייל אחד = אובייקט אחד במערך.
+      profession   מקצוע          (עריכה, צילום, גרפיקה)
+      unit         יחידה          (מזהה מתוך UNITS)
+      name         שם
+      personalId   מ״א
+      phone        טלפון
+      tatash       תת״ש
+      cycle        מחזור קורס
+      detail       פרט            (רשות)
+      residence    מקום מגורים
+      grade        מדרג
+      studyDate    תאריך יום עיון
+      notes        הערות          (רשות)
+    */
+    var SOLDIERS = [];
+
+    var CONFIG = {
+      title: "תקן מצבה זרועי",
+      subtitle: ""
+    };
+
+    var DAYS = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "יום שישי", "שבת"];
+    var MONTHS = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
+    var SHORT_MONTHS = ["ינו׳", "פבר׳", "מרץ", "אפר׳", "מאי", "יוני", "יולי", "אוג׳", "ספט׳", "אוק׳", "נוב׳", "דצמ׳"];
+    var PALETTE = [
+      ["#e8f2ff", "#0064e0"],
+      ["#e7f6ee", "#087443"],
+      ["#f3eeff", "#6941c6"],
+      ["#fff4e5", "#b54708"],
+      ["#fdecec", "#b42318"],
+      ["#e7f6f8", "#0e7090"]
+    ];
+
+    var ICONS = {
+      search: '<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.2-3.2"></path>',
+      phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.57 2.61a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.84.25 1.71.45 2.61.57A2 2 0 0 1 22 16.92z"></path>',
+      id: '<rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M7 10h4M7 14h10"></path>',
+      pin: '<path d="M12 21s7-5.33 7-11a7 7 0 1 0-14 0c0 5.67 7 11 7 11z"></path><circle cx="12" cy="10" r="2.25"></circle>',
+      calendar: '<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path>',
+      hash: '<path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"></path>',
+      layers: '<path d="M12 2l9 5-9 5-9-5 9-5z"></path><path d="M3 12l9 5 9-5"></path><path d="M3 17l9 5 9-5"></path>',
+      badge: '<circle cx="12" cy="8" r="5"></circle><path d="M8.5 12.5L7.2 21 12 18.2 16.8 21l-1.3-8.5"></path>',
+      briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3 12h18"></path>',
+      copy: '<rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path>',
+      chevron: '<path d="M9 6l6 6-6 6"></path>',
+      chevronDown: '<path d="M6 9l6 6 6-6"></path>',
+      pencil: '<path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"></path>',
+      check: '<path d="M20 6L9 17l-5-5"></path>',
+      users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="3"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
+      file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M8 13h8M8 17h5"></path>',
+      note: '<path d="M21 15a2 2 0 0 1-2 2H8l-4 3V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"></path>'
+    };
+
+    var PROFESSIONS = ["עריכה", "צילום", "גרפיקה"];
+    var UNITS = [
+      { id: "1", name: "יחידה 1" },
+      { id: "2", name: "יחידה 2" }
+    ];
+    var UNIT_PARAMS = ["quota", "strength", "gepahName", "gepahPhone", "officerName", "officerPhone", "ramadName", "ramadPhone"];
+    var SHALISHUT_ROLES = [
+      { label: "מפקד גפ״ה", name: "gepahName", phone: "gepahPhone" },
+      { label: "קצין", name: "officerName", phone: "officerPhone" },
+      { label: "רמ״ד פל״א", name: "ramadName", phone: "ramadPhone" }
+    ];
+    var STORAGE_KEY = "hebet-matrix-soldiers-v7";
+    var UNIT_KEY = "hebet-matrix-unit";
+    var UNITS_KEY = "hebet-matrix-units-v1";
+    var FIELDS = [
+      { key: "profession", label: "מקצוע", required: true, options: PROFESSIONS },
+      { key: "unit", label: "יחידה", required: true, unit: true },
+      { key: "name", label: "שם", required: true },
+      { key: "personalId", label: "מ״א" },
+      { key: "phone", label: "טלפון", type: "tel" },
+      { key: "tatash", label: "תת״ש" },
+      { key: "cycle", label: "מחזור קורס" },
+      { key: "residence", label: "מקום מגורים" },
+      { key: "grade", label: "מדרג" },
+      { key: "studyDate", label: "תאריך יום עיון", placeholder: "05.11.2026" },
+      { key: "detail", label: "פרט", wide: true },
+      { key: "notes", label: "הערות", wide: true }
+    ];
+
+    var state = {
+      unit: "1",
+      selectedKey: "",
+      prevKey: "",
+      profileOpen: false,
+      announced: "",
+      creating: false,
+      editingIndex: -1,
+      draft: {},
+      unitOpen: false,
+      unitEdit: "",
+      unitNameDraft: "",
+      unitError: "",
+      shalishutOpen: false,
+      editingShalishut: false,
+      shalishutDraft: null,
+      shalishutError: ""
+    };
+    var suppressUnitClose = false;
+
+    function esc(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function clean(value) {
+      return String(value == null ? "" : value).trim();
+    }
+
+    function present(value) {
+      var text = clean(value);
+      return Boolean(text && text !== "—");
+    }
+
+    function digits(value) {
+      return String(value == null ? "" : value).replace(/\D/g, "");
+    }
+
+    function countWord(n, one, many) {
+      return n === 1 ? one : many;
+    }
+
+    function compareHe(a, b) {
+      return String(a).localeCompare(String(b), "he", { numeric: true, sensitivity: "base" });
+    }
+
+    function valuesOf(list, key) {
+      return list.map(function (item) { return clean(item[key]); }).filter(Boolean);
+    }
+
+    function parseDate(value) {
+      var match = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(clean(value));
+      if (!match) return null;
+      var day = Number(match[1]);
+      var month = Number(match[2]);
+      var year = Number(match[3]);
+      var date = new Date(year, month - 1, day);
+      if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+      return date;
+    }
+
+    function startOfDay(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    function prettyDate(date) {
+      return DAYS[date.getDay()] + ", " + date.getDate() + " ב" + MONTHS[date.getMonth()] + " " + date.getFullYear();
+    }
+
+    function relativeDay(diff) {
+      if (diff === 0) return "היום";
+      if (diff === 1) return "מחר";
+      if (diff === 2) return "בעוד יומיים";
+      if (diff > 2) return "בעוד " + diff + " ימים";
+      if (diff === -1) return "אתמול";
+      if (diff === -2) return "שלשום";
+      return "לפני " + Math.abs(diff) + " ימים";
+    }
+
+    function dateParts(value) {
+      var raw = clean(value);
+      if (!present(value)) return { raw: "", pretty: "", relative: "", diff: null };
+      var date = parseDate(raw);
+      if (!date) return { raw: raw, pretty: raw, relative: "", diff: null };
+      var diff = Math.round((startOfDay(date) - startOfDay(new Date())) / 86400000);
+      return { raw: raw, pretty: prettyDate(date), relative: relativeDay(diff), diff: diff };
+    }
+
+    function shortDate(value) {
+      if (!present(value)) return "";
+      var raw = clean(value);
+      var date = parseDate(raw);
+      if (!date) return raw;
+      return date.getDate() + " ב" + SHORT_MONTHS[date.getMonth()];
+    }
+
+    function initials(name) {
+      var parts = clean(name).split(/\s+/).filter(Boolean);
+      if (!parts.length) return "•";
+      if (parts.length === 1) return parts[0].charAt(0);
+      return parts[0].charAt(0) + parts[parts.length - 1].charAt(0);
+    }
+
+    function hashName(name) {
+      var text = clean(name);
+      var hash = 0;
+      for (var i = 0; i < text.length; i++) hash = (hash + text.charCodeAt(i) * (i + 1)) % PALETTE.length;
+      return hash;
+    }
+
+    function avatarStyle(name) {
+      var pair = PALETTE[hashName(name)];
+      return "background:" + pair[0] + ";color:" + pair[1];
+    }
+
+    function keyOf(soldier) {
+      return present(soldier.personalId) ? clean(soldier.personalId) : clean(soldier.name);
+    }
+
+    function hasPhone(soldier) {
+      return digits(soldier.phone).length >= 7;
+    }
+
+    function svg(name, size) {
+      return '<svg viewBox="0 0 24 24" width="' + (size || 20) + '" height="' + (size || 20) + '" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[name] || "") + "</svg>";
+    }
+
+    function highlight(text, query) {
+      var raw = String(text == null ? "" : text);
+      var q = clean(query);
+      if (!q) return esc(raw);
+      var idx = raw.toLowerCase().indexOf(q.toLowerCase());
+      if (idx === -1) return esc(raw);
+      return esc(raw.slice(0, idx)) + "<mark>" + esc(raw.slice(idx, idx + q.length)) + "</mark>" + esc(raw.slice(idx + q.length));
+    }
+
+    function fillSelect(select, values, allLabel) {
+      var unique = Array.from(new Set(values)).filter(Boolean).sort(compareHe);
+      var sig = allLabel + "\n" + unique.join("\n");
+      var current = select.value;
+      if (select.getAttribute("data-sig") === sig) return;
+      var html = '<option value="">' + esc(allLabel) + "</option>";
+      unique.forEach(function (value) {
+        html += '<option value="' + esc(value) + '">' + esc(value) + "</option>";
+      });
+      select.innerHTML = html;
+      select.setAttribute("data-sig", sig);
+      if (Array.prototype.some.call(select.options, function (option) { return option.value === current; })) {
+        select.value = current;
+      }
+    }
+
+    function aboutItem(icon, label, valueHtml, hint) {
+      return '<div class="about-item"><span class="about-ico">' + svg(icon, 18) + '</span><span class="about-copy"><span class="fact-label">' + esc(label) + '</span><span class="fact-value">' + valueHtml + "</span>" + (hint ? '<span class="fact-hint">' + hint + "</span>" : "") + "</span></div>";
+    }
+
+    function professionTone(value) {
+      var name = clean(value);
+      if (name === "גרפיקה") return "tone-design";
+      if (name === "צילום") return "tone-photo";
+      if (name === "עריכה") return "tone-edit";
+      return "";
+    }
+
+    function extraPanel(label, value, icon) {
+      if (!present(value)) return "";
+      return '<section class="panel"><h3>' + svg(icon, 18) + esc(label) + "</h3><p>" + esc(clean(value)) + "</p></section>";
+    }
+
+    function factCell(label, valueHtml) {
+      if (!valueHtml) return "";
+      return '<div class="fact"><span class="fact-label">' + esc(label) + '</span><span class="fact-value">' + valueHtml + "</span></div>";
+    }
+
+    function renderDossier(soldier, opts) {
+      opts = opts || {};
+      var name = clean(soldier.name) || (opts.preview ? "שם מלא" : "ללא שם");
+      var profession = clean(soldier.profession) || "ללא מקצוע";
+      var tone = professionTone(profession);
+      var id = present(soldier.personalId) ? clean(soldier.personalId) : "";
+      var phone = clean(soldier.phone);
+      var parts = dateParts(soldier.studyDate);
+
+      var idHtml = "";
+      if (id) {
+        idHtml = '<bdi dir="ltr" class="num">' + esc(id) + "</bdi>";
+        if (opts.interactive) {
+          idHtml += '<button class="copy-id" type="button" data-action="copy" data-copy="' + esc(id) + '" aria-label="העתק מ״א">' +
+            '<span class="copy-idle">' + svg("copy", 15) + "</span>" +
+            '<span class="copy-done">' + svg("check", 15) + "</span></button>";
+        }
+      }
+
+      var facts = "";
+      facts += factCell("מ״א", idHtml);
+      facts += factCell("טלפון", present(phone) ? '<bdi dir="ltr">' + esc(phone) + "</bdi>" : "");
+      facts += factCell("מחזור", present(soldier.cycle) ? esc(clean(soldier.cycle)) : "");
+      facts += factCell("מדרג", present(soldier.grade) ? esc(clean(soldier.grade)) : "");
+      facts += factCell("תת״ש", present(soldier.tatash) ? esc(clean(soldier.tatash)) : "");
+      facts += factCell("מגורים", present(soldier.residence) ? esc(clean(soldier.residence)) : "");
+
+      var study = "";
+      if (present(soldier.studyDate)) {
+        var past = parts.diff !== null && parts.diff < 0;
+        study = '<div class="fact fact-study' + (past ? " is-past" : "") + '"><div class="study-main"><span class="fact-label">יום עיון</span><strong>' + esc(parts.pretty || parts.raw) + "</strong>" + (parts.raw && parts.pretty !== parts.raw ? '<span class="fact-hint">' + esc(parts.raw) + "</span>" : "") + "</div>" + (parts.relative ? '<span class="when">' + esc(parts.relative) + "</span>" : "") + "</div>";
+      }
+
+      var back = opts.interactive
+        ? '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>"
+        : "";
+      var nameId = opts.compact ? "" : ' id="profile-name"';
+
+      return '<div class="profile-frame">' + back +
+        '<article class="dossier' + (tone ? " " + tone : "") + (opts.compact ? " dossier-print" : "") + '">' +
+          '<section class="identity-card">' +
+            '<div class="cover"><span class="cover-copy"><span class="cover-kicker">מקצוע</span><span class="cover-title">' + esc(profession) + "</span></span></div>" +
+            '<div class="identity-row">' +
+              '<div class="avatar-lg" style="' + avatarStyle(name) + '" aria-hidden="true">' + esc(initials(name)) + "</div>" +
+              '<div class="identity-id">' +
+                "<h2 class=\"identity-name\"" + nameId + ">" + esc(name) + "</h2>" +
+              "</div>" +
+              (opts.interactive
+                ? '<div class="actions"><button class="btn btn-secondary" type="button" data-action="edit-soldier" aria-label="עריכת ' + esc(name) + '">' + svg("pencil", 16) + "<span>עריכה</span></button></div>"
+                : "") +
+            "</div>" +
+            ((facts || study) ? '<div class="facts">' + facts + study + "</div>" : "") +
+          "</section>" +
+          extraPanel("פרט", soldier.detail, "file") +
+          extraPanel("הערות", soldier.notes, "note") +
+        "</article></div>";
+    }
+
+    function subline(soldier) {
+      var parts = [];
+      var date = shortDate(soldier.studyDate);
+      if (date) parts.push(date);
+      if (present(soldier.residence)) parts.push(clean(soldier.residence));
+      if (!parts.length && hasPhone(soldier)) parts.push(clean(soldier.phone));
+      return parts.join(" · ");
+    }
+
+    function flags(soldier) {
+      var html = "";
+      if (present(soldier.detail)) html += '<span class="flag">פרט</span>';
+      if (present(soldier.notes)) html += '<span class="flag">הערה</span>';
+      return html;
+    }
+
+    function groupSoldiers(list) {
+      var map = new Map();
+      list.forEach(function (soldier) {
+        var key = clean(soldier.profession) || "ללא מקצוע";
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(soldier);
+      });
+      return Array.from(map.keys()).sort(compareHe).map(function (key) {
+        var items = map.get(key).slice().sort(function (a, b) {
+          var byGrade = compareHe(a.grade || "", b.grade || "");
+          if (byGrade) return byGrade;
+          var byName = compareHe(a.name || "", b.name || "");
+          if (byName) return byName;
+          return compareHe(a.personalId || "", b.personalId || "");
+        });
+        return { key: key, items: items };
+      });
+    }
+
+    function renderList(groups, query, rosterCount) {
+      if (!groups.length) {
+        var message = rosterCount ? "אין חיילים תואמים" : "אין חיילים ב" + unitName(state.unit);
+        return '<div class="empty-list"><p>' + message + "</p></div>";
+      }
+      return groups.map(function (group) {
+        var people = group.items.map(function (soldier) {
+          var key = keyOf(soldier);
+          var current = key === state.selectedKey ? ' aria-current="true"' : "";
+          return '<div role="listitem"><button class="person" type="button" data-key="' + esc(key) + '"' + current + ' aria-controls="profile">' +
+            '<span class="avatar" style="' + avatarStyle(clean(soldier.name)) + '" aria-hidden="true">' + esc(initials(soldier.name)) + "</span>" +
+            '<span class="person-copy"><span class="person-name">' + highlight(clean(soldier.name) || "ללא שם", query) + "</span>" +
+            '<span class="person-sub"><span class="person-sub-text">' + esc(subline(soldier)) + "</span>" + flags(soldier) + "</span></span>" +
+            (present(soldier.grade) ? '<span class="grade-pill">' + esc(clean(soldier.grade)) + "</span>" : "") +
+            "</button></div>";
+        }).join("");
+        var tone = professionTone(group.key);
+        return '<section class="group' + (tone ? " " + tone : "") + '"><p class="group-label"><span>' + esc(group.key) + '</span><span class="pill-count">' + group.items.length + "</span></p>" +
+          '<div role="list">' + people + "</div></section>";
+      }).join("");
+    }
+
+    function emptyProfile(kind) {
+      if (kind === "nodata") {
+        return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>הרשימה ממתינה לנתונים</h2><p>לחצו על «חייל חדש» כדי להוסיף את החייל הראשון. כל חייל יופיע ככרטיס מלא: זהות, קשר, מקצוע, מחזור, תת״ש, מקום מגורים, מדרג ויום עיון.</p></div>";
+      }
+      if (kind === "unit") {
+        var others = UNITS.filter(function (unit) { return unit.id !== state.unit; });
+        var extra = !others.length
+          ? "אפשר להוסיף חייל חדש."
+          : others.length === 1
+            ? "אפשר להוסיף חייל חדש, או לעבור ל" + esc(others[0].name) + "."
+            : "אפשר להוסיף חייל חדש, או לבחור יחידה אחרת.";
+        return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>אין חיילים ב" + esc(unitName(state.unit)) + "</h2><p>" + extra + "</p></div>";
+      }
+      return '<div class="empty-state"><div class="empty-mark">' + svg("search", 26) + '</div><h2>אין חיילים תואמים</h2><p>אף רשומה לא מתאימה לחיפוש או לסינון. אפשר לנקות ולבחור מחדש.</p><button class="btn btn-primary" type="button" data-action="clear">נקה סינון</button></div>';
+    }
+
+    function filterSummary(filters, query) {
+      var parts = [];
+      if (query) parts.push("חיפוש: " + query);
+      if (filters.profession) parts.push("מקצוע: " + filters.profession);
+      if (filters.cycle) parts.push("מחזור: " + filters.cycle);
+      if (filters.grade) parts.push("מדרג: " + filters.grade);
+      if (filters.date) parts.push("יום עיון: " + filters.date);
+      return parts.join(" · ");
+    }
+
+    function matches(soldier, query, filters) {
+      if (filters.profession && clean(soldier.profession) !== filters.profession) return false;
+      if (filters.cycle && clean(soldier.cycle) !== filters.cycle) return false;
+      if (filters.grade && clean(soldier.grade) !== filters.grade) return false;
+      if (filters.date && clean(soldier.studyDate) !== filters.date) return false;
+      if (!query) return true;
+      var blob = [
+        soldier.profession, soldier.name, soldier.personalId, soldier.phone, soldier.tatash,
+        soldier.cycle, soldier.detail, soldier.residence, soldier.grade, soldier.studyDate, soldier.notes
+      ].map(function (value) { return clean(value).toLowerCase(); }).join(" ");
+      if (blob.indexOf(query) !== -1) return true;
+      var queryDigits = digits(query);
+      if (!queryDigits) return false;
+      return digits(soldier.personalId).indexOf(queryDigits) !== -1 || digits(soldier.phone).indexOf(queryDigits) !== -1;
+    }
+
+    function findSoldier(list, key) {
+      for (var i = 0; i < list.length; i++) {
+        if (keyOf(list[i]) === key) return list[i];
+      }
+      return null;
+    }
+
+    function syncHash(key) {
+      try {
+        var base = location.pathname + location.search;
+        var desired = key ? base + "#" + encodeURIComponent(key) : base;
+        var current = location.pathname + location.search + location.hash;
+        if (current !== desired) history.replaceState(null, "", desired);
+      } catch (err) {}
+    }
+
+    function syncShell() {
+      var narrow = window.matchMedia("(max-width: 860px)").matches;
+      document.body.classList.toggle("profile-open", Boolean(narrow && state.profileOpen && (state.selectedKey || state.creating || state.editingIndex >= 0 || state.shalishutOpen)));
+    }
+
+    function blankDraft() {
+      var draft = {};
+      FIELDS.forEach(function (field) { draft[field.key] = ""; });
+      draft.unit = state.unit || UNITS[0].id;
+      return draft;
+    }
+
+    function captureDraft() {
+      var form = document.querySelector(".editor-form");
+      if (!form) return;
+      var data = {};
+      FIELDS.forEach(function (field) {
+        var input = form.elements[field.key];
+        data[field.key] = input ? input.value : "";
+      });
+      state.draft = data;
+    }
+
+    function soldierFromForm(form) {
+      var soldier = {};
+      FIELDS.forEach(function (field) {
+        var input = form.elements[field.key];
+        soldier[field.key] = clean(input ? input.value : "");
+      });
+      return soldier;
+    }
+
+    function loadStored() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        var parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return;
+        SOLDIERS = parsed.map(function (item) {
+          var soldier = {};
+          FIELDS.forEach(function (field) {
+            soldier[field.key] = clean(item && item[field.key]);
+          });
+          return soldier;
+        });
+      } catch (err) {}
+    }
+
+    function persist() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(SOLDIERS));
+    }
+
+    function loadUnits() {
+      try {
+        var raw = localStorage.getItem(UNITS_KEY);
+        if (!raw) return;
+        var parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return;
+        var next = [];
+        parsed.forEach(function (item) {
+          var unit = normalizeUnit(item);
+          if (!unit.id || !unit.name) return;
+          if (next.some(function (existing) { return existing.id === unit.id; })) return;
+          next.push(unit);
+        });
+        if (next.length) UNITS = next;
+      } catch (err) {}
+    }
+
+    function normalizeUnit(item) {
+      var unit = {
+        id: clean(item && item.id),
+        name: clean(item && item.name)
+      };
+      UNIT_PARAMS.forEach(function (key) {
+        unit[key] = clean(item && item[key]);
+      });
+      unit.quota = digits(unit.quota);
+      unit.strength = digits(unit.strength);
+      return unit;
+    }
+
+    function currentUnit() {
+      var id = unitId(state.unit) || (UNITS[0] && UNITS[0].id);
+      for (var i = 0; i < UNITS.length; i++) {
+        if (UNITS[i].id === id) return UNITS[i];
+      }
+      return UNITS[0];
+    }
+
+    function phoneMarkup(phone) {
+      var text = clean(phone);
+      if (!text) return "";
+      if (digits(text).length >= 7) {
+        return '<a class="phone" href="tel:' + esc(digits(text)) + '"><bdi dir="ltr">' + esc(text) + "</bdi></a>";
+      }
+      return "<bdi dir=\"ltr\">" + esc(text) + "</bdi>";
+    }
+
+    function shalishutValue(unit) {
+      var source = state.shalishutDraft || unit || {};
+      var data = { name: clean(source.name) };
+      UNIT_PARAMS.forEach(function (key) { data[key] = clean(source[key]); });
+      data.quota = digits(data.quota);
+      data.strength = digits(data.strength);
+      return data;
+    }
+
+    function metricCell(label, value) {
+      var shown = present(value) ? esc(clean(value)) : "—";
+      var cls = present(value) ? "fact-value num" : "fact-value missing";
+      return '<div class="shalishut-metric"><span class="fact-label">' + esc(label) + '</span><span class="' + cls + '">' + shown + "</span></div>";
+    }
+
+    function roleCard(role, data) {
+      var name = clean(data[role.name]);
+      var phone = clean(data[role.phone]);
+      var person;
+      if (!present(name) && !present(phone)) person = '<span class="missing">לא הוזן</span>';
+      else {
+        person = present(name) ? '<strong class="fact-value">' + esc(name) + "</strong>" : '<span class="missing">לא הוזן שם</span>';
+        person += present(phone) ? phoneMarkup(phone) : '<span class="missing">אין טלפון</span>';
+      }
+      return '<div class="role-card"><span class="fact-label">' + esc(role.label) + '</span><div class="role-person">' + person + "</div></div>";
+    }
+
+    function shalishutField(name, label, value, extra) {
+      return '<label><span class="field-label">' + esc(label) + '</span><input name="' + name + '" value="' + esc(value || "") + '"' + (extra || "") + "></label>";
+    }
+
+    function renderShalishutForm(unit, opts) {
+      var data = shalishutValue(unit);
+      var roles = SHALISHUT_ROLES.map(function (role) {
+        return '<fieldset class="role-fields"><legend>' + esc(role.label) + '</legend><div class="editor-grid">' +
+          shalishutField(role.name, "שם מלא", data[role.name], ' autocomplete="name"') +
+          shalishutField(role.phone, "טלפון", data[role.phone], ' type="tel" inputmode="tel" autocomplete="tel"') +
+          "</div></fieldset>";
+      }).join("");
+      var back = opts.back
+        ? '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>"
+        : "";
+      return back +
+        '<form class="editor shalishut-form" id="shalishut" autocomplete="off">' +
+          "<h2>" + esc((data.name || unit.name) + " - שלישות") + "</h2>" +
+          '<p class="editor-lead">הפרטים נשמרים ליחידה הזו.</p>' +
+          '<div class="editor-grid metric-fields">' +
+            shalishutField("name", "יחידה", data.name, ' autocomplete="organization" required maxlength="48"') +
+            shalishutField("quota", "תקן", data.quota, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
+            shalishutField("strength", "מצבה", data.strength, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
+          "</div>" +
+          roles +
+          (state.shalishutError ? '<p class="form-error">' + esc(state.shalishutError) + "</p>" : "") +
+          '<div class="editor-actions">' +
+            '<button class="btn btn-primary" type="submit">שמירה</button>' +
+            '<button class="btn btn-secondary" type="button" data-action="cancel-shalishut">ביטול</button>' +
+          "</div>" +
+        "</form>";
+    }
+
+    function renderShalishutCard(unit, opts) {
+      var back = opts.back
+        ? '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>"
+        : "";
+      return back +
+        '<section class="shalishut" id="shalishut">' +
+          '<div class="shalishut-head">' +
+            "<h2>" + esc(unit.name + " - שלישות") + "</h2>" +
+            '<button class="text-btn shalishut-edit" type="button" data-action="edit-shalishut">' + svg("pencil", 15) + "<span>עריכה</span></button>" +
+          "</div>" +
+          '<div class="shalishut-body">' +
+            '<div class="metric-grid">' +
+              metricCell("יחידה", unit.name) +
+              metricCell("תקן", unit.quota) +
+              metricCell("מצבה", unit.strength) +
+            "</div>" +
+            '<div class="role-list">' +
+              SHALISHUT_ROLES.map(function (role) { return roleCard(role, unit); }).join("") +
+            "</div>" +
+          "</div>" +
+        "</section>";
+    }
+
+    function renderShalishut(opts) {
+      var unit = currentUnit();
+      if (!unit) return "";
+      if (state.editingShalishut) return renderShalishutForm(unit, opts || {});
+      return renderShalishutCard(unit, opts || {});
+    }
+
+    function renderShalishutPrint(unit) {
+      if (!unit) return "";
+      var metrics = "יחידה: " + unit.name + " · תקן: " + (present(unit.quota) ? unit.quota : "—") + " · מצבה: " + (present(unit.strength) ? unit.strength : "—");
+      var roles = SHALISHUT_ROLES.map(function (role) {
+        var name = clean(unit[role.name]);
+        var phone = clean(unit[role.phone]);
+        var detail = [name, phone].filter(Boolean).join(" · ");
+        return "<p>" + esc(role.label + ": " + (detail || "—")) + "</p>";
+      }).join("");
+      return '<section class="print-shalishut"><h2>' + esc(unit.name + " - שלישות") + "</h2><p>" + esc(metrics) + "</p>" + roles + "</section>";
+    }
+
+    function shalishutFromForm(form) {
+      var data = { name: clean(form.elements.name ? form.elements.name.value : "") };
+      UNIT_PARAMS.forEach(function (key) {
+        var input = form.elements[key];
+        data[key] = clean(input ? input.value : "");
+      });
+      data.quota = digits(data.quota);
+      data.strength = digits(data.strength);
+      return data;
+    }
+
+    function captureShalishut() {
+      var form = document.querySelector(".shalishut-form");
+      if (!form) return;
+      state.shalishutDraft = shalishutFromForm(form);
+    }
+
+    function closeShalishutEditor() {
+      state.editingShalishut = false;
+      state.shalishutDraft = null;
+      state.shalishutError = "";
+    }
+
+    function saveShalishut(data) {
+      var unit = currentUnit();
+      if (!unit) return false;
+      var name = clean(data.name);
+      if (!name) {
+        state.shalishutError = "צריך שם ליחידה";
+        return false;
+      }
+      if (nameTaken(name, unit.id)) {
+        state.shalishutError = "כבר יש יחידה בשם הזה";
+        return false;
+      }
+      unit.name = name;
+      UNIT_PARAMS.forEach(function (key) { unit[key] = clean(data[key]); });
+      unit.quota = digits(unit.quota);
+      unit.strength = digits(unit.strength);
+      saveUnits();
+      closeShalishutEditor();
+      return true;
+    }
+
+    function saveUnits() {
+      try { localStorage.setItem(UNITS_KEY, JSON.stringify(UNITS)); } catch (err) {}
+    }
+
+    function nextUnitId() {
+      var n = 1;
+      var used = {};
+      UNITS.forEach(function (unit) { used[unit.id] = true; });
+      while (used[String(n)]) n += 1;
+      return String(n);
+    }
+
+    function unitId(value) {
+      var text = clean(value);
+      for (var i = 0; i < UNITS.length; i++) {
+        if (UNITS[i].id === text || UNITS[i].name === text) return UNITS[i].id;
+      }
+      return "";
+    }
+
+    function unitName(id) {
+      var resolved = unitId(id) || id;
+      for (var i = 0; i < UNITS.length; i++) {
+        if (UNITS[i].id === resolved) return UNITS[i].name;
+      }
+      return UNITS[0].name;
+    }
+
+    function matchesElsewhere(query, filters) {
+      var byUnit = {};
+      SOLDIERS.forEach(function (soldier) {
+        var id = unitId(soldier.unit);
+        if (!id || id === state.unit || !matches(soldier, query, filters)) return;
+        byUnit[id] = (byUnit[id] || 0) + 1;
+      });
+      var ids = Object.keys(byUnit);
+      var total = 0;
+      ids.forEach(function (id) { total += byUnit[id]; });
+      if (!total) return "";
+      var noun = total + " " + countWord(total, "חייל", "חיילים");
+      if (ids.length === 1) return noun + " ב" + unitName(ids[0]);
+      return noun + " ביחידות אחרות";
+    }
+
+    function unitIdOfKey(key) {
+      if (!key) return "";
+      for (var i = 0; i < SOLDIERS.length; i++) {
+        if (keyOf(SOLDIERS[i]) === key) return unitId(SOLDIERS[i].unit);
+      }
+      return "";
+    }
+
+    function saveUnit() {
+      try { localStorage.setItem(UNIT_KEY, state.unit); } catch (err) {}
+    }
+
+    function ensureUnits() {
+      var missing = SOLDIERS.filter(function (soldier) { return !unitId(soldier.unit); });
+      if (!missing.length) {
+        var normalized = false;
+        SOLDIERS.forEach(function (soldier) {
+          var id = unitId(soldier.unit);
+          if (soldier.unit !== id) {
+            soldier.unit = id;
+            normalized = true;
+          }
+        });
+        return normalized;
+      }
+      var splitAll = missing.length === SOLDIERS.length;
+      var half = Math.ceil(missing.length / 2);
+      var assigned = 0;
+      SOLDIERS.forEach(function (soldier) {
+        var id = unitId(soldier.unit);
+        if (id) {
+          soldier.unit = id;
+          return;
+        }
+        var second = UNITS.length > 1 ? UNITS[1].id : UNITS[0].id;
+        soldier.unit = splitAll && assigned >= half ? second : UNITS[0].id;
+        assigned += 1;
+      });
+      return true;
+    }
+
+    function unitCount(id) {
+      return SOLDIERS.filter(function (soldier) { return unitId(soldier.unit) === id; }).length;
+    }
+
+    function closeUnitEditor() {
+      state.unitEdit = "";
+      state.unitNameDraft = "";
+      state.unitError = "";
+    }
+
+    function renderUnitPicker() {
+      var open = state.unitOpen;
+      var rows = UNITS.map(function (unit) {
+        var selected = unit.id === state.unit;
+        if (state.unitEdit === unit.id) {
+          return '<form class="unit-edit" data-unit="' + esc(unit.id) + '">' +
+            '<input class="unit-name-input" type="text" value="' + esc(state.unitNameDraft) + '" aria-label="שם היחידה" maxlength="48" autocomplete="off" required>' +
+            '<button class="icon-btn icon-btn-primary" type="submit" aria-label="שמירת השם">' + svg("check", 16) + "</button>" +
+            (state.unitError ? '<p class="unit-error">' + esc(state.unitError) + "</p>" : "") +
+            "</form>";
+        }
+        return '<div class="unit-option' + (selected ? " is-current" : "") + '" role="option" aria-selected="' + (selected ? "true" : "false") + '">' +
+          '<button class="unit-option-main" type="button" data-action="select-unit" data-unit="' + esc(unit.id) + '">' +
+            '<span class="unit-check" aria-hidden="true">' + (selected ? svg("check", 16) : "") + "</span>" +
+            '<span class="unit-option-name">' + esc(unit.name) + "</span>" +
+            '<span class="unit-count">' + unitCount(unit.id) + "</span>" +
+          "</button>" +
+          '<button class="icon-btn" type="button" data-action="edit-unit" data-unit="' + esc(unit.id) + '" title="עריכת שם" aria-label="עריכת השם של ' + esc(unit.name) + '">' + svg("pencil", 16) + "</button>" +
+          "</div>";
+      }).join("");
+      var addRow = state.unitEdit === "new"
+        ? '<form class="unit-edit unit-edit-new" data-unit="new">' +
+            '<input class="unit-name-input" type="text" value="' + esc(state.unitNameDraft) + '" placeholder="שם היחידה" aria-label="שם היחידה החדשה" maxlength="48" autocomplete="off" required>' +
+            '<button class="icon-btn icon-btn-primary" type="submit" aria-label="הוספת היחידה">' + svg("check", 16) + "</button>" +
+            (state.unitError ? '<p class="unit-error">' + esc(state.unitError) + "</p>" : "") +
+          "</form>"
+        : "";
+      document.getElementById("unit-picker").innerHTML =
+        '<div class="label-row">' +
+          '<span class="field-label" id="unit-label">יחידה</span>' +
+          '<span class="label-actions">' +
+            '<button class="text-btn" type="button" data-action="open-shalishut">שלישות</button>' +
+            '<button class="text-btn" type="button" data-action="add-unit">הוספת יחידה</button>' +
+          "</span>" +
+        "</div>" +
+        '<button class="unit-current" type="button" data-action="toggle-units" aria-haspopup="listbox" aria-expanded="' + (open ? "true" : "false") + '" aria-labelledby="unit-label unit-current-name">' +
+          '<span class="unit-current-name" id="unit-current-name">' + esc(unitName(state.unit)) + "</span>" +
+          '<span class="unit-count">' + unitCount(state.unit) + "</span>" +
+          '<span class="unit-chevron' + (open ? " is-open" : "") + '" aria-hidden="true">' + svg("chevronDown", 16) + "</span>" +
+        "</button>" +
+        '<div class="unit-menu" id="unit-menu" role="listbox" aria-label="יחידות"' + (open ? "" : " hidden") + ">" +
+          rows + addRow +
+        "</div>";
+    }
+
+    function resetRosterView() {
+      state.creating = false;
+      state.editingIndex = -1;
+      state.draft = blankDraft();
+      state.selectedKey = "";
+      state.prevKey = "";
+      state.profileOpen = false;
+      state.shalishutOpen = false;
+      closeShalishutEditor();
+      document.getElementById("search").value = "";
+      document.getElementById("filter-profession").value = "";
+      document.getElementById("filter-cycle").value = "";
+      document.getElementById("filter-grade").value = "";
+      document.getElementById("filter-date").value = "";
+    }
+
+    function selectUnit(id) {
+      id = unitId(id);
+      if (!id) return;
+      state.unitOpen = false;
+      closeUnitEditor();
+      if (id === state.unit) {
+        render();
+        return;
+      }
+      state.unit = id;
+      saveUnit();
+      resetRosterView();
+      render();
+    }
+
+    function nameTaken(name, exceptId) {
+      return UNITS.some(function (unit) { return unit.id !== exceptId && unit.name === name; });
+    }
+
+    function addUnit(name) {
+      name = clean(name);
+      if (!name) {
+        state.unitError = "צריך שם ליחידה";
+        return false;
+      }
+      if (nameTaken(name, "")) {
+        state.unitError = "כבר יש יחידה בשם הזה";
+        return false;
+      }
+      var unit = normalizeUnit({ id: nextUnitId(), name: name });
+      UNITS.push(unit);
+      saveUnits();
+      state.unit = unit.id;
+      saveUnit();
+      state.unitOpen = false;
+      closeUnitEditor();
+      resetRosterView();
+      return true;
+    }
+
+    function renameUnit(id, name) {
+      name = clean(name);
+      var unit = null;
+      for (var i = 0; i < UNITS.length; i++) {
+        if (UNITS[i].id === id) unit = UNITS[i];
+      }
+      if (!unit) return false;
+      if (unit.name === name) {
+        closeUnitEditor();
+        return true;
+      }
+      if (!name) {
+        state.unitError = "צריך שם ליחידה";
+        return false;
+      }
+      if (nameTaken(name, id)) {
+        state.unitError = "כבר יש יחידה בשם הזה";
+        return false;
+      }
+      unit.name = name;
+      saveUnits();
+      closeUnitEditor();
+      return true;
+    }
+
+    function fieldControl(field, draft) {
+      var raw = clean(draft[field.key] || "");
+      var value = esc(raw);
+      var wide = field.wide ? " editor-wide" : "";
+      var required = field.required ? " required" : "";
+      var control;
+      if (field.unit) {
+        control =
+          '<select name="unit" required>' +
+            UNITS.map(function (unit) {
+              return '<option value="' + esc(unit.id) + '"' + (unit.id === raw ? " selected" : "") + ">" + esc(unit.name) + "</option>";
+            }).join("") +
+          "</select>";
+      } else if (field.options) {
+        control =
+          '<select name="' + field.key + '"' + required + ">" +
+            '<option value="">בחירה</option>' +
+            field.options.map(function (option) {
+              return '<option value="' + esc(option) + '"' + (option === raw ? " selected" : "") + ">" + esc(option) + "</option>";
+            }).join("") +
+          "</select>";
+      } else if (field.wide) {
+        control = '<textarea name="' + field.key + '" rows="2">' + value + "</textarea>";
+      } else {
+        control = '<input name="' + field.key + '" type="' + (field.type || "text") + '" value="' + value + '"' + (field.placeholder ? ' placeholder="' + esc(field.placeholder) + '"' : "") + required + ">";
+      }
+      return '<label class="' + wide.trim() + '"><span class="field-label">' + esc(field.label) + "</span>" + control + "</label>";
+    }
+
+    function editorLead(draft) {
+      if (state.editingIndex >= 0) {
+        return "השינויים יישמרו בכרטיס של " + (clean(draft.name) || "החייל") + ".";
+      }
+      return "החייל יישמר ב" + unitName(draft.unit || state.unit) + " ויופיע בכרטיס מלא.";
+    }
+
+    function renderEditor(draft) {
+      var editing = state.editingIndex >= 0;
+      return (
+        '<form class="editor editor-form" autocomplete="off">' +
+          "<h2>" + (editing ? "עריכת חייל" : "חייל חדש") + "</h2>" +
+          '<p class="editor-lead">' + esc(editorLead(draft)) + "</p>" +
+          '<div class="editor-grid">' +
+            FIELDS.map(function (field) { return fieldControl(field, draft); }).join("") +
+          "</div>" +
+          '<div class="editor-actions">' +
+            '<button class="btn btn-primary" type="submit">שמירה</button>' +
+            '<button class="btn btn-secondary" type="button" data-action="cancel-new">ביטול</button>' +
+          "</div>" +
+        "</form>"
+      );
+    }
+
+    function draftFromSoldier(soldier) {
+      var draft = blankDraft();
+      FIELDS.forEach(function (field) {
+        draft[field.key] = clean(soldier[field.key] || "");
+      });
+      draft.unit = unitId(soldier.unit) || state.unit;
+      return draft;
+    }
+
+    function openCreator() {
+      state.creating = true;
+      state.editingIndex = -1;
+      state.draft = blankDraft();
+      state.shalishutOpen = false;
+      closeShalishutEditor();
+      state.profileOpen = true;
+      render({ focusEditor: true, freshDraft: true });
+    }
+
+    function openSoldierEditor() {
+      var soldier = null;
+      var index = -1;
+      for (var i = 0; i < SOLDIERS.length; i++) {
+        if (keyOf(SOLDIERS[i]) === state.selectedKey && unitId(SOLDIERS[i].unit) === state.unit) {
+          soldier = SOLDIERS[i];
+          index = i;
+          break;
+        }
+      }
+      if (!soldier) return;
+      state.creating = false;
+      state.editingIndex = index;
+      state.draft = draftFromSoldier(soldier);
+      state.shalishutOpen = false;
+      closeShalishutEditor();
+      state.profileOpen = true;
+      render({ focusEditor: true, freshDraft: true });
+    }
+
+    function closeCreator() {
+      var stayOnProfile = state.editingIndex >= 0;
+      state.creating = false;
+      state.editingIndex = -1;
+      state.draft = blankDraft();
+      if (!stayOnProfile) state.profileOpen = false;
+      render();
+    }
+
+    function render(opts) {
+      opts = opts || {};
+      if (!unitId(state.unit)) state.unit = UNITS[0].id;
+      renderUnitPicker();
+      var editing = state.editingIndex >= 0;
+      if ((state.creating || editing) && !opts.freshDraft) captureDraft();
+      if (state.editingShalishut) captureShalishut();
+      var queryRaw = clean(document.getElementById("search").value);
+      var query = queryRaw.toLowerCase();
+      var filters = {
+        profession: document.getElementById("filter-profession").value,
+        cycle: document.getElementById("filter-cycle").value,
+        grade: document.getElementById("filter-grade").value,
+        date: document.getElementById("filter-date").value
+      };
+      var roster = SOLDIERS.filter(function (soldier) { return unitId(soldier.unit) === state.unit; });
+
+      fillSelect(document.getElementById("filter-profession"), valuesOf(roster, "profession"), "כל המקצועות");
+      fillSelect(document.getElementById("filter-cycle"), valuesOf(roster, "cycle"), "כל המחזורים");
+      fillSelect(document.getElementById("filter-grade"), valuesOf(roster, "grade"), "כל המדרגים");
+      fillSelect(document.getElementById("filter-date"), valuesOf(roster, "studyDate"), "כל התאריכים");
+      ["filter-profession", "filter-cycle", "filter-grade", "filter-date"].forEach(function (id) {
+        var el = document.getElementById(id);
+        el.classList.toggle("is-active", el.value !== "");
+      });
+
+      var total = roster.length;
+      var professions = new Set(valuesOf(roster, "profession")).size;
+      var dates = new Set(valuesOf(roster, "studyDate")).size;
+      var stats = unitName(state.unit) + " · " + total + " " + countWord(total, "חייל", "חיילים") + " · " + professions + " " + countWord(professions, "מקצוע", "מקצועות");
+      var filtered = roster.filter(function (soldier) { return matches(soldier, query, filters); });
+      var active = Boolean(query || filters.profession || filters.cycle || filters.grade || filters.date);
+      var result = document.getElementById("result-line");
+      var clearBtn = document.getElementById("clear-btn");
+
+      if (!SOLDIERS.length) {
+        result.textContent = "המבנה מוכן להזנת חיילים";
+        clearBtn.hidden = true;
+      } else if (!total) {
+        result.textContent = "אין חיילים ב" + unitName(state.unit);
+        clearBtn.hidden = true;
+      } else if (!filtered.length) {
+        var elsewhere = matchesElsewhere(query, filters);
+        result.textContent = elsewhere
+          ? "אין תוצאות ביחידה הזו · " + elsewhere
+          : "אין תוצאות לסינון הזה";
+        clearBtn.hidden = !active;
+      } else if (active) {
+        result.textContent = "מוצגים " + filtered.length + " מתוך " + total;
+        clearBtn.hidden = false;
+      } else {
+        result.textContent = stats;
+        clearBtn.hidden = true;
+      }
+
+      var keys = filtered.map(keyOf);
+      if (keys.indexOf(state.selectedKey) === -1) state.selectedKey = keys[0] || "";
+      var selectionChanged = state.selectedKey !== state.prevKey;
+
+      var listEl = document.getElementById("list");
+      var prevScroll = listEl.scrollTop;
+      listEl.innerHTML = renderList(groupSoldiers(filtered), queryRaw, total);
+      var selectedBtn = listEl.querySelector('[aria-current="true"]');
+      if ((selectionChanged || opts.scroll) && selectedBtn) selectedBtn.scrollIntoView({ block: "nearest" });
+      else listEl.scrollTop = prevScroll;
+      if (opts.focusList && selectedBtn) selectedBtn.focus();
+
+      var profile = document.getElementById("profile");
+      var soldier = findSoldier(filtered, state.selectedKey);
+      var narrow = window.matchMedia("(max-width: 860px)").matches;
+      var shalishutOnly = narrow && state.shalishutOpen && !state.creating && !editing;
+      var shalishutHtml = (state.creating || editing) ? "" : renderShalishut({ back: shalishutOnly });
+      var mainHtml = "";
+      if (state.creating || editing) {
+        mainHtml = renderEditor(state.draft || blankDraft());
+      } else if (!shalishutOnly) {
+        if (!SOLDIERS.length) mainHtml = emptyProfile("nodata");
+        else if (!total) mainHtml = emptyProfile("unit");
+        else if (!soldier) mainHtml = emptyProfile("none");
+        else mainHtml = renderDossier(soldier, { interactive: true });
+      }
+      profile.innerHTML = shalishutHtml + mainHtml;
+      if ((state.creating || editing) && opts.focusEditor) {
+        var focusField = profile.querySelector('[name="' + (editing ? "name" : "profession") + '"]');
+        if (focusField) focusField.focus();
+      }
+      if (selectionChanged && !state.creating && !editing && !opts.focusShalishut) profile.scrollTop = 0;
+
+      var summary = filterSummary(filters, queryRaw);
+      var printLabel = (filtered.length || 0) + " " + countWord(filtered.length, "חייל", "חיילים");
+      document.getElementById("print-root").innerHTML =
+        '<header class="print-mast"><img class="print-logo" src="hebet-logo.png" alt=""><div><h1>' + esc(CONFIG.title) + "</h1><p>" +
+        esc(unitName(state.unit) + " · " + printLabel + (summary ? " · " + summary : "") + " · " + prettyDate(new Date())) + "</p></div></header>" +
+        renderShalishutPrint(currentUnit()) +
+        filtered.map(function (item) { return renderDossier(item, { compact: true }); }).join("");
+
+      if (state.creating) document.title = "חייל חדש · " + CONFIG.title;
+      else if (editing) document.title = "עריכת " + (clean(state.draft && state.draft.name) || "חייל") + " · " + CONFIG.title;
+      else document.title = soldier ? clean(soldier.name) + " · " + CONFIG.title : CONFIG.title;
+      if (!state.creating && !editing) syncHash(soldier ? state.selectedKey : "");
+      syncShell();
+
+      var announce = state.editingShalishut
+        ? "עריכת שלישות של " + unitName(state.unit)
+        : state.shalishutOpen && narrow
+          ? unitName(state.unit) + " - שלישות"
+          : editing
+            ? "עריכת " + (clean(state.draft && state.draft.name) || "חייל")
+            : state.creating
+            ? "טופס חייל חדש"
+            : !SOLDIERS.length ? "הרשימה ממתינה לנתונים" : !total ? "אין חיילים ב" + unitName(state.unit) : !soldier ? "אין חיילים תואמים" : "כרטיס של " + clean(soldier.name) + (present(soldier.profession) ? ", " + clean(soldier.profession) : "");
+      if (state.announced !== announce) {
+        state.announced = announce;
+        document.getElementById("live").textContent = announce;
+      }
+      state.prevKey = state.selectedKey;
+      if (opts.focusUnit) {
+        var unitInput = document.querySelector("#unit-picker .unit-name-input");
+        if (unitInput) {
+          unitInput.focus();
+          unitInput.select();
+        }
+      }
+      if (opts.focusShalishut) {
+        var shalishut = document.getElementById("shalishut");
+        if (shalishut) shalishut.scrollIntoView({ block: "start" });
+        var shalishutName = document.querySelector(".shalishut-form [name='name']");
+        if (shalishutName) shalishutName.focus();
+      }
+    }
+
+    function clearFilters() {
+      document.getElementById("search").value = "";
+      document.getElementById("filter-profession").value = "";
+      document.getElementById("filter-cycle").value = "";
+      document.getElementById("filter-grade").value = "";
+      document.getElementById("filter-date").value = "";
+      render();
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+      return new Promise(function (resolve, reject) {
+        var area = document.createElement("textarea");
+        area.value = text;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.top = "-1000px";
+        document.body.appendChild(area);
+        area.select();
+        try {
+          var ok = document.execCommand("copy");
+          document.body.removeChild(area);
+          if (ok) resolve();
+          else reject();
+        } catch (err) {
+          document.body.removeChild(area);
+          reject(err);
+        }
+      });
+    }
+
+    function moveSelection(delta) {
+      var buttons = Array.prototype.slice.call(document.querySelectorAll("#list .person"));
+      if (!buttons.length) return;
+      var idx = -1;
+      buttons.forEach(function (btn, i) {
+        if (btn.getAttribute("aria-current") === "true") idx = i;
+      });
+      var nextIndex = idx + delta;
+      if (nextIndex < 0) nextIndex = 0;
+      if (nextIndex > buttons.length - 1) nextIndex = buttons.length - 1;
+      var next = buttons[nextIndex];
+      if (!next || next.getAttribute("data-key") === state.selectedKey) return;
+      state.selectedKey = next.getAttribute("data-key");
+      state.profileOpen = true;
+      render({ scroll: true, focusList: true });
+    }
+
+    function init() {
+      loadUnits();
+      UNITS = UNITS.map(normalizeUnit);
+      loadStored();
+      if (ensureUnits()) persist();
+      try { state.unit = unitId(localStorage.getItem(UNIT_KEY)) || UNITS[0].id; } catch (err) { state.unit = UNITS[0].id; }
+      document.getElementById("doc-title").textContent = CONFIG.title;
+      try {
+        var hash = decodeURIComponent(location.hash.replace(/^#/, ""));
+        if (hash) state.selectedKey = hash;
+      } catch (err) {}
+      var owner = unitIdOfKey(state.selectedKey);
+      if (owner) state.unit = owner;
+      saveUnit();
+      var unitPicker = document.getElementById("unit-picker");
+      unitPicker.addEventListener("click", function (event) {
+        suppressUnitClose = true;
+        if (event.target.closest("[data-action='open-shalishut']")) {
+          state.unitOpen = false;
+          closeUnitEditor();
+          state.creating = false;
+          state.editingIndex = -1;
+          state.shalishutOpen = true;
+          state.profileOpen = true;
+          render({ focusShalishut: true });
+          return;
+        }
+        if (event.target.closest("[data-action='add-unit']")) {
+          state.unitOpen = true;
+          state.unitEdit = "new";
+          state.unitNameDraft = "";
+          state.unitError = "";
+          render({ focusUnit: true });
+          return;
+        }
+        if (event.target.closest("[data-action='toggle-units']")) {
+          state.unitOpen = !state.unitOpen;
+          if (!state.unitOpen) closeUnitEditor();
+          render();
+          return;
+        }
+        var editBtn = event.target.closest("[data-action='edit-unit']");
+        if (editBtn) {
+          state.unitOpen = true;
+          state.unitEdit = editBtn.getAttribute("data-unit");
+          state.unitNameDraft = unitName(state.unitEdit);
+          state.unitError = "";
+          render({ focusUnit: true });
+          return;
+        }
+        var selectBtn = event.target.closest("[data-action='select-unit']");
+        if (selectBtn) selectUnit(selectBtn.getAttribute("data-unit"));
+      });
+      unitPicker.addEventListener("input", function (event) {
+        if (!event.target.classList || !event.target.classList.contains("unit-name-input")) return;
+        state.unitNameDraft = event.target.value;
+        state.unitError = "";
+        var error = unitPicker.querySelector(".unit-error");
+        if (error) error.remove();
+      });
+      unitPicker.addEventListener("submit", function (event) {
+        var form = event.target;
+        if (!form.classList || !form.classList.contains("unit-edit")) return;
+        event.preventDefault();
+        var input = form.querySelector(".unit-name-input");
+        var name = input ? input.value : "";
+        state.unitNameDraft = name;
+        if (form.getAttribute("data-unit") === "new") {
+          if (!addUnit(name)) render({ focusUnit: true });
+          else render();
+          return;
+        }
+        if (renameUnit(form.getAttribute("data-unit"), name)) render();
+        else render({ focusUnit: true });
+      });
+      document.addEventListener("click", function (event) {
+        if (suppressUnitClose) {
+          suppressUnitClose = false;
+          return;
+        }
+        if (!state.unitOpen) return;
+        if (event.target.closest("#unit-picker")) return;
+        state.unitOpen = false;
+        closeUnitEditor();
+        render();
+      });
+
+      ["search", "filter-profession", "filter-cycle", "filter-grade", "filter-date"].forEach(function (id) {
+        document.getElementById(id).addEventListener("input", function () { render(); });
+        document.getElementById(id).addEventListener("change", function () { render(); });
+      });
+      document.getElementById("clear-btn").addEventListener("click", clearFilters);
+      document.getElementById("add-btn").addEventListener("click", openCreator);
+      document.getElementById("list").addEventListener("click", function (event) {
+        var btn = event.target.closest(".person");
+        if (!btn) return;
+        state.creating = false;
+        state.editingIndex = -1;
+        state.draft = blankDraft();
+        state.shalishutOpen = false;
+        state.selectedKey = btn.getAttribute("data-key");
+        state.profileOpen = true;
+        render();
+      });
+      document.getElementById("profile").addEventListener("change", function (event) {
+        if (!(state.creating || state.editingIndex >= 0) || !event.target || event.target.name !== "unit") return;
+        captureDraft();
+        var lead = document.querySelector(".editor-lead");
+        if (lead) lead.textContent = editorLead(state.draft);
+      });
+      document.getElementById("profile").addEventListener("submit", function (event) {
+        var form = event.target;
+        if (form.classList && form.classList.contains("shalishut-form")) {
+          event.preventDefault();
+          var data = shalishutFromForm(form);
+          state.shalishutDraft = data;
+          if (!saveShalishut(data)) render({ focusShalishut: true });
+          else render();
+          return;
+        }
+        if (!form.classList || !form.classList.contains("editor-form")) return;
+        event.preventDefault();
+        var soldier = soldierFromForm(form);
+        if (!soldier.profession || !soldier.name) return;
+        soldier.unit = unitId(soldier.unit) || state.unit;
+        if (state.editingIndex >= 0 && state.editingIndex < SOLDIERS.length) SOLDIERS[state.editingIndex] = soldier;
+        else SOLDIERS.push(soldier);
+        persist();
+        state.creating = false;
+        state.editingIndex = -1;
+        state.selectedKey = keyOf(soldier);
+        state.profileOpen = true;
+        if (state.unit !== soldier.unit) {
+          state.unit = soldier.unit;
+          saveUnit();
+        }
+        state.draft = blankDraft();
+        clearFilters();
+        render({ scroll: true });
+      });
+      document.getElementById("profile").addEventListener("click", function (event) {
+        if (event.target.closest("[data-action='edit-soldier']")) {
+          openSoldierEditor();
+          return;
+        }
+        if (event.target.closest("[data-action='edit-shalishut']")) {
+          var unit = currentUnit();
+          state.shalishutDraft = null;
+          state.editingShalishut = true;
+          state.shalishutError = "";
+          state.shalishutDraft = shalishutValue(unit);
+          state.shalishutOpen = true;
+          state.profileOpen = true;
+          render({ focusShalishut: true });
+          return;
+        }
+        if (event.target.closest("[data-action='cancel-shalishut']")) {
+          closeShalishutEditor();
+          render();
+          return;
+        }
+        if (event.target.closest("[data-action='cancel-new']")) {
+          closeCreator();
+          return;
+        }
+        if (event.target.closest("[data-action='clear']")) {
+          clearFilters();
+          return;
+        }
+        if (event.target.closest("[data-action='back']")) {
+          state.profileOpen = false;
+          state.shalishutOpen = false;
+          closeShalishutEditor();
+          syncShell();
+          var current = document.querySelector("#list .person[aria-current='true']");
+          if (current) current.focus();
+          return;
+        }
+        var copyBtn = event.target.closest("[data-action='copy']");
+        if (!copyBtn) return;
+        var label = copyBtn.querySelector(".btn-label");
+        var idleLabel = "העתק מ״א";
+        copyText(copyBtn.getAttribute("data-copy") || "").then(function () {
+          copyBtn.classList.add("is-copied");
+          copyBtn.setAttribute("aria-label", "הועתק");
+          if (label) label.textContent = "הועתק";
+          window.setTimeout(function () {
+            copyBtn.classList.remove("is-copied");
+            copyBtn.setAttribute("aria-label", idleLabel);
+            if (label) label.textContent = idleLabel;
+          }, 1500);
+        }, function () {
+          copyBtn.setAttribute("aria-label", "לא הועתק");
+          if (label) label.textContent = "לא הועתק";
+          window.setTimeout(function () {
+            copyBtn.setAttribute("aria-label", idleLabel);
+            if (label) label.textContent = idleLabel;
+          }, 1500);
+        });
+      });
+      document.addEventListener("keydown", function (event) {
+        var typing = event.target && (event.target.tagName === "INPUT" || event.target.tagName === "SELECT" || event.target.tagName === "TEXTAREA");
+        if (event.key === "/" && !typing) {
+          event.preventDefault();
+          document.getElementById("search").focus();
+          return;
+        }
+        if (event.key === "Escape" && (state.unitOpen || state.unitEdit)) {
+          if (state.unitEdit) closeUnitEditor();
+          else state.unitOpen = false;
+          render();
+          return;
+        }
+        if (event.key === "Escape" && state.editingShalishut) {
+          closeShalishutEditor();
+          render();
+          return;
+        }
+        if (event.key === "Escape" && (state.creating || state.editingIndex >= 0)) {
+          closeCreator();
+          return;
+        }
+        if (event.key === "Escape" && document.body.classList.contains("profile-open")) {
+          state.profileOpen = false;
+          state.shalishutOpen = false;
+          closeShalishutEditor();
+          syncShell();
+          return;
+        }
+        if ((event.key === "ArrowDown" || event.key === "ArrowUp") && !typing) {
+          event.preventDefault();
+          moveSelection(event.key === "ArrowDown" ? 1 : -1);
+        }
+      });
+      var mq = window.matchMedia("(max-width: 860px)");
+      if (mq.addEventListener) mq.addEventListener("change", syncShell);
+      render();
+    }
+
+    init();
+  </script>
+</body>
+</html>
