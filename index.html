@@ -307,6 +307,385 @@
       font-weight: 700;
     }
 
+    .unit-color-btn {
+      width: 32px;
+      height: 32px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      margin-inline-end: 2px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      padding: 0;
+    }
+
+    .unit-color-btn:hover { background: rgba(0, 0, 0, 0.06); }
+
+    .unit-option.is-current .unit-color-btn:hover { background: rgba(0, 100, 224, 0.12); }
+
+    .unit-color-fill {
+      width: 14px;
+      height: 14px;
+      display: block;
+      border-radius: 3px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      background:
+        linear-gradient(135deg, transparent 46%, #c5cad3 46%, #c5cad3 54%, transparent 54%),
+        #fff;
+    }
+
+    .unit-current .unit-color-fill { flex: none; }
+
+    .palette {
+      margin: 2px 4px 6px;
+      padding: 8px 10px 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .palette-auto {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 28px;
+      margin: 0;
+      padding: 2px 4px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: start;
+    }
+
+    .palette-auto:hover { background: #f2f4f7; }
+
+    .palette-auto.is-selected .unit-color-fill {
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #c45911;
+    }
+
+    .palette-auto .unit-color-fill { background: #000; }
+
+    .palette-label {
+      margin: 8px 2px 4px;
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .palette-row {
+      display: flex;
+      direction: ltr;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .palette-cell {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      padding: 0;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+    }
+
+    .palette-cell:hover { outline: 1px solid #65676b; outline-offset: 1px; }
+
+    .palette-cell.is-selected {
+      outline: 2px solid #c45911;
+      outline-offset: 1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .unit-menu.has-palette { max-height: min(560px, 80vh); }
+
+    .units-board {
+      width: min(1120px, 100%);
+      margin-inline: auto;
+      padding: 12px 8px 32px;
+    }
+
+    .units-board-head h2 {
+      margin: 0 0 4px;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .units-board-head p {
+      margin: 0 0 18px;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    .unit-tile {
+      min-width: 0;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      border-top: 6px solid var(--line);
+    }
+
+    .unit-tile.has-color { border-top-color: var(--unit); }
+
+    .unit-tile-open {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      width: 100%;
+      min-height: 188px;
+      padding: 16px 16px 14px;
+      border: none;
+      background: transparent;
+      text-align: start;
+    }
+
+    .unit-tile-open:hover { background: #f7f9fc; }
+
+    .unit-tile-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .unit-tile-sub {
+      color: var(--secondary);
+      font-size: 0.84rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .unit-tile-count {
+      margin-top: 14px;
+      font-size: 2.05rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .unit-tile-count-label {
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .unit-tile-metrics {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .unit-tile-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .unit-chip {
+      background: var(--chip);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #44474c;
+    }
+
+    .unit-commanders {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .unit-commander {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .unit-commander-role {
+      display: block;
+      color: var(--secondary);
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .unit-commander-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 2px 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .unit-commander-phone {
+      color: var(--blue);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+    }
+
+    .unit-tile-enter {
+      margin-top: auto;
+      padding-top: 14px;
+      color: var(--blue);
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .unit-tile-tools {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 4px 8px 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .unit-tile .palette { margin: 0 10px 10px; }
+
+    .unit-tile.is-editing { grid-column: 1 / -1; }
+
+    .unit-details-form { padding: 16px 18px 18px; }
+
+    .unit-details-form h2 {
+      margin: 0 0 4px;
+      font-size: 1.25rem;
+    }
+
+    .unit-tile .unit-edit-new {
+      margin: 0;
+      padding: 14px;
+      border-top: none;
+    }
+
+    .unit-tile-add {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 6px;
+      min-height: 220px;
+      padding: 18px;
+      border: 1.5px dashed #c5cad3;
+      border-radius: var(--radius);
+      background: transparent;
+      box-shadow: none;
+      text-align: start;
+    }
+
+    .unit-tile-add:hover {
+      background: var(--surface);
+      border-color: var(--blue);
+    }
+
+    .unit-tile-plus {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 1.7rem;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .unit-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .back-units {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      padding: 7px 12px 7px 10px;
+      border: none;
+      border-radius: 10px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .back-units:hover { background: #d4e6ff; }
+
+    .back-units:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
+    }
+
+    .unit-bar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .unit-bar-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      font-size: 1.08rem;
+      font-weight: 800;
+    }
+
+    .unit-bar-title strong {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    body.units-home .workspace { display: block; }
+    body.units-home .sidebar { display: none; }
+    body.units-home .profile-scroll { display: block; }
+
+    .shalishut.has-color { border-top: 4px solid var(--unit); }
+
+    .editor.has-color {
+      box-shadow: inset 0 4px 0 var(--unit), var(--shadow-card);
+    }
+
+    .print-color {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-inline-end: 6px;
+      border-radius: 2px;
+      vertical-align: middle;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
     .label-actions {
       display: flex;
       align-items: center;
@@ -628,6 +1007,25 @@
 
     .profile-frame, .empty-state { width: 100%; margin-inline: auto; }
 
+    .cycle-group { margin-bottom: 22px; }
+
+    .cycle-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 4px 2px 10px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .cycle-group .profile-frame + .profile-frame { margin-top: 12px; }
+
+    .dossier.is-selected .identity-card {
+      box-shadow: 0 0 0 2px var(--blue), var(--shadow-card);
+    }
+
     .back-btn {
       display: none;
       align-items: center;
@@ -782,6 +1180,8 @@
     .btn-primary:hover { background: var(--blue-hover); color: #fff; }
     .btn-secondary { background: #e4e6eb; color: var(--ink); }
     .btn-secondary:hover { background: #d8dadf; }
+    .btn-danger { background: #fdecec; color: #b42318; }
+    .btn-danger:hover { background: #f8d4d4; }
     a.btn-primary:hover { text-decoration: none; }
 
     .facts {
@@ -1090,6 +1490,8 @@
       margin-top: 16px;
     }
 
+    .editor-actions .btn-danger { margin-inline-start: auto; }
+
     .shalishut {
       container-type: inline-size;
       container-name: shalishut;
@@ -1148,39 +1550,46 @@
 
     .metric-fields { grid-template-columns: 1.4fr 0.8fr 0.8fr; }
 
-    .role-list { margin-top: 2px; }
+    .detail-grid,
+    .people-grid {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
 
-    .role-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+    .detail-grid { grid-template-columns: 1fr 1fr; }
+
+    .people-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .detail-cell,
+    .person-cell {
       min-width: 0;
-      padding: 6px 2px;
-      border-bottom: 1px solid var(--line);
+      padding: 8px 12px 10px;
+      border-radius: 10px;
+      background: #f7f8fa;
     }
 
-    .role-card:last-child { border-bottom: none; }
-
-    .role-card .fact-label {
-      margin: 0;
-      color: var(--secondary);
-      font-size: 0.8rem;
-      font-weight: 700;
+    .detail-cell .fact-label,
+    .person-cell .fact-label {
+      margin-bottom: 3px;
+      font-size: 0.75rem;
     }
 
-    .role-person {
+    .detail-cell .fact-value,
+    .person-cell .fact-value {
+      font-size: 0.98rem;
+      line-height: 1.35;
+    }
+
+    .person-line {
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
-      justify-content: flex-end;
-      gap: 2px 10px;
-      min-width: 0;
-      text-align: end;
-      font-size: 0.9rem;
+      gap: 2px 12px;
     }
 
-    .role-person .fact-value { font-size: 0.9rem; }
+    .person-line .phone,
+    .person-line bdi { font-size: 0.95rem; }
 
     .missing { color: var(--secondary); font-weight: 600; }
 
@@ -1205,12 +1614,15 @@
 
     .print-shalishut { display: none; }
 
+    @container shalishut (max-width: 720px) {
+      .people-grid { grid-template-columns: 1fr; }
+    }
+
     @container shalishut (max-width: 420px) {
       .metric-grid,
+      .detail-grid,
       .role-fields .editor-grid { grid-template-columns: 1fr; }
       .shalishut-metric + .shalishut-metric { border-inline-start: none; border-top: 1px solid var(--line); }
-      .role-card { align-items: flex-start; flex-direction: column; gap: 2px; }
-      .role-person { justify-content: flex-start; text-align: start; }
     }
 
     @media (max-width: 520px) {
@@ -1261,6 +1673,8 @@
       body.profile-open .sidebar { display: none; }
       body.profile-open .profile-scroll { display: block; }
       body.profile-open .back-btn { display: inline-flex; }
+      body.units-home .sidebar { display: none; }
+      body.units-home .profile-scroll { display: block; height: 100%; }
       kbd { display: none; }
     }
 
@@ -1430,10 +1844,87 @@
 
     var PROFESSIONS = ["עריכה", "צילום", "גרפיקה"];
     var UNITS = [
-      { id: "1", name: "יחידה 1" },
-      { id: "2", name: "יחידה 2" }
+      {
+        id: "bislach",
+        name: "ביסל״ח",
+        shalishutName: "מפקדת חטיבה 828",
+        organ: "יתר 828 ביסל״ח",
+        quota: "3",
+        strength: "5",
+        color: "#E97132",
+        gepahName: "מאי חוסיד",
+        gepahPhone: "0547340088",
+        officerName: "קצינת צפ״ה יעל תמני",
+        officerPhone: "0522833363"
+      },
+      {
+        id: "shivta",
+        name: "שבטה",
+        shalishutName: "בי״ס לתותחנות ולסיוע אש ביבשה 425",
+        organ: "אגד 425 שיבטה",
+        quota: "3",
+        strength: "4",
+        color: "#4E94D9",
+        gepahName: "מעין קוריצק",
+        gepahPhone: "0503498800"
+      },
+      {
+        id: "shiryon",
+        name: "שריון",
+        shalishutName: "מפקדת חטיבה 460",
+        organ: "יתר חט׳ 460 שיזפון",
+        quota: "3",
+        strength: "3",
+        color: "#7F7F7F",
+        gepahName: "דניאל שלם",
+        gepahPhone: "0508570015",
+        officerName: "מעין",
+        officerPhone: "0524245411",
+        ramadName: "עמית שלם",
+        ramadPhone: "0556615120"
+      },
+      {
+        id: "bahalag",
+        name: "בהל״ג",
+        shalishutName: "בהל״ג 764",
+        organ: "בהל״ג 764",
+        quota: "3",
+        strength: "4",
+        color: "#FFC000",
+        gepahName: "עופרי אוחנה",
+        gepahPhone: "0529568433",
+        ramadName: "אלה שמיר",
+        ramadPhone: "0542478574"
+      },
+      {
+        id: "bahalatz",
+        name: "בהל״צ",
+        shalishutName: "בהל״צ 14",
+        organ: "בהל״צ 14",
+        quota: "3",
+        strength: "5",
+        color: "#BFBFBF",
+        gepahName: "סוניה",
+        gepahPhone: "0543077757",
+        ramadName: "מעיין קרפט",
+        ramadPhone: "0558862712"
+      }
     ];
-    var UNIT_PARAMS = ["quota", "strength", "gepahName", "gepahPhone", "officerName", "officerPhone", "ramadName", "ramadPhone"];
+    var THEME_COLORS = [
+      ["#FFFFFF", "#000000", "#E8E8E8", "#0E2841", "#156082", "#E97132", "#196B24", "#0F9ED5", "#A02B93", "#4EA72E"],
+      ["#F2F2F2", "#7F7F7F", "#D0D0D0", "#DCE8F6", "#C0E4F4", "#FAE2D6", "#C1EFC8", "#C9EDFB", "#F1CEEE", "#DAF3D3"],
+      ["#D8D8D8", "#595959", "#AEAEAE", "#A6C8EB", "#85CAEB", "#F5C6AC", "#85E291", "#96DCF6", "#E59FDE", "#B3E5A0"],
+      ["#BFBFBF", "#3F3F3F", "#747474", "#4E94D9", "#47B1E3", "#F2AA84", "#46D45A", "#60CCF3", "#D76ECD", "#8DD774"],
+      ["#A5A5A5", "#262626", "#3A3A3A", "#215D99", "#0F4863", "#C04F17", "#11501B", "#0B76A0", "#78206E", "#3B7D23"],
+      ["#7F7F7F", "#0C0C0C", "#171717", "#163C63", "#0B3042", "#7F340D", "#0D3512", "#094E6B", "#501649", "#275318"]
+    ];
+    var STANDARD_COLORS = ["#C00000", "#FF0000", "#FFC000", "#FFFF00", "#92D050", "#00B050", "#00B0F0", "#0070C0", "#002060", "#7030A0"];
+    var PALETTE_COLORS = {};
+    THEME_COLORS.forEach(function (row) {
+      row.forEach(function (hex) { PALETTE_COLORS[hex.toUpperCase()] = hex; });
+    });
+    STANDARD_COLORS.forEach(function (hex) { PALETTE_COLORS[hex.toUpperCase()] = hex; });
+    var UNIT_PARAMS = ["quota", "strength", "shalishutName", "organ", "gepahName", "gepahPhone", "officerName", "officerPhone", "ramadName", "ramadPhone"];
     var SHALISHUT_ROLES = [
       { label: "מפקד גפ״ה", name: "gepahName", phone: "gepahPhone" },
       { label: "קצין", name: "officerName", phone: "officerPhone" },
@@ -1441,7 +1932,7 @@
     ];
     var STORAGE_KEY = "hebet-matrix-soldiers-v7";
     var UNIT_KEY = "hebet-matrix-unit";
-    var UNITS_KEY = "hebet-matrix-units-v1";
+    var UNITS_KEY = "hebet-matrix-units-v2";
     var FIELDS = [
       { key: "profession", label: "מקצוע", required: true, options: PROFESSIONS },
       { key: "unit", label: "יחידה", required: true, unit: true },
@@ -1468,8 +1959,10 @@
       draft: {},
       unitOpen: false,
       unitEdit: "",
-      unitNameDraft: "",
+      unitDraft: null,
       unitError: "",
+      colorUnit: "",
+      unitsHome: true,
       shalishutOpen: false,
       editingShalishut: false,
       shalishutDraft: null,
@@ -1667,13 +2160,14 @@
         study = '<div class="fact fact-study' + (past ? " is-past" : "") + '"><div class="study-main"><span class="fact-label">יום עיון</span><strong>' + esc(parts.pretty || parts.raw) + "</strong>" + (parts.raw && parts.pretty !== parts.raw ? '<span class="fact-hint">' + esc(parts.raw) + "</span>" : "") + "</div>" + (parts.relative ? '<span class="when">' + esc(parts.relative) + "</span>" : "") + "</div>";
       }
 
-      var back = opts.interactive
+      var back = opts.back
         ? '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>"
         : "";
-      var nameId = opts.compact ? "" : ' id="profile-name"';
+      var nameId = opts.selected ? ' id="profile-name"' : "";
+      var soldierKey = keyOf(soldier);
 
-      return '<div class="profile-frame">' + back +
-        '<article class="dossier' + (tone ? " " + tone : "") + (opts.compact ? " dossier-print" : "") + '">' +
+      return '<div class="profile-frame"' + (opts.compact ? "" : ' data-soldier="' + esc(soldierKey) + '"') + ">" + back +
+        '<article class="dossier' + (tone ? " " + tone : "") + (opts.selected ? " is-selected" : "") + (opts.compact ? " dossier-print" : "") + '">' +
           '<section class="identity-card">' +
             '<div class="cover"><span class="cover-copy"><span class="cover-kicker">מקצוע</span><span class="cover-title">' + esc(profession) + "</span></span></div>" +
             '<div class="identity-row">' +
@@ -1682,7 +2176,7 @@
                 "<h2 class=\"identity-name\"" + nameId + ">" + esc(name) + "</h2>" +
               "</div>" +
               (opts.interactive
-                ? '<div class="actions"><button class="btn btn-secondary" type="button" data-action="edit-soldier" aria-label="עריכת ' + esc(name) + '">' + svg("pencil", 16) + "<span>עריכה</span></button></div>"
+                ? '<div class="actions"><button class="btn btn-secondary" type="button" data-action="edit-soldier" data-key="' + esc(soldierKey) + '" aria-label="עריכת ' + esc(name) + '">' + svg("pencil", 16) + "<span>עריכה</span></button></div>"
                 : "") +
             "</div>" +
             ((facts || study) ? '<div class="facts">' + facts + study + "</div>" : "") +
@@ -1694,10 +2188,11 @@
 
     function subline(soldier) {
       var parts = [];
+      if (present(soldier.profession)) parts.push(clean(soldier.profession));
       var date = shortDate(soldier.studyDate);
       if (date) parts.push(date);
       if (present(soldier.residence)) parts.push(clean(soldier.residence));
-      if (!parts.length && hasPhone(soldier)) parts.push(clean(soldier.phone));
+      if (parts.length < 2 && hasPhone(soldier)) parts.push(clean(soldier.phone));
       return parts.join(" · ");
     }
 
@@ -1708,23 +2203,49 @@
       return html;
     }
 
+    function cycleLabel(key) {
+      return key === "ללא מחזור" ? key : "מחזור " + key;
+    }
+
     function groupSoldiers(list) {
       var map = new Map();
       list.forEach(function (soldier) {
-        var key = clean(soldier.profession) || "ללא מקצוע";
+        var key = clean(soldier.cycle) || "ללא מחזור";
         if (!map.has(key)) map.set(key, []);
         map.get(key).push(soldier);
       });
-      return Array.from(map.keys()).sort(compareHe).map(function (key) {
+      return Array.from(map.keys()).sort(function (a, b) {
+        if (a === "ללא מחזור") return 1;
+        if (b === "ללא מחזור") return -1;
+        return compareHe(a, b);
+      }).map(function (key) {
         var items = map.get(key).slice().sort(function (a, b) {
-          var byGrade = compareHe(a.grade || "", b.grade || "");
-          if (byGrade) return byGrade;
           var byName = compareHe(a.name || "", b.name || "");
           if (byName) return byName;
+          var byGrade = compareHe(a.grade || "", b.grade || "");
+          if (byGrade) return byGrade;
           return compareHe(a.personalId || "", b.personalId || "");
         });
         return { key: key, items: items };
       });
+    }
+
+    function renderRoster(list, opts) {
+      opts = opts || {};
+      return groupSoldiers(list).map(function (group) {
+        var cards = group.items.map(function (soldier) {
+          var selected = !!opts.interactive && keyOf(soldier) === state.selectedKey;
+          return renderDossier(soldier, {
+            interactive: !!opts.interactive,
+            compact: !!opts.compact,
+            selected: selected
+          });
+        }).join("");
+        var heading = opts.compact
+          ? '<h2 class="cycle-heading">' + esc(cycleLabel(group.key) + " · " + group.items.length) + "</h2>"
+          : '<h2 class="cycle-heading"><span>' + esc(cycleLabel(group.key)) + '</span><span class="pill-count">' + group.items.length + "</span></h2>";
+        return '<section class="cycle-group">' + heading + cards + "</section>";
+      }).join("");
     }
 
     function renderList(groups, query, rosterCount) {
@@ -1743,8 +2264,7 @@
             (present(soldier.grade) ? '<span class="grade-pill">' + esc(clean(soldier.grade)) + "</span>" : "") +
             "</button></div>";
         }).join("");
-        var tone = professionTone(group.key);
-        return '<section class="group' + (tone ? " " + tone : "") + '"><p class="group-label"><span>' + esc(group.key) + '</span><span class="pill-count">' + group.items.length + "</span></p>" +
+        return '<section class="group"><p class="group-label"><span>' + esc(cycleLabel(group.key)) + '</span><span class="pill-count">' + group.items.length + "</span></p>" +
           '<div role="list">' + people + "</div></section>";
       }).join("");
     }
@@ -1809,7 +2329,8 @@
 
     function syncShell() {
       var narrow = window.matchMedia("(max-width: 860px)").matches;
-      document.body.classList.toggle("profile-open", Boolean(narrow && state.profileOpen && (state.selectedKey || state.creating || state.editingIndex >= 0 || state.shalishutOpen)));
+      document.body.classList.toggle("units-home", Boolean(state.unitsHome));
+      document.body.classList.toggle("profile-open", Boolean(!state.unitsHome && narrow && state.profileOpen && (state.selectedKey || state.creating || state.editingIndex >= 0 || state.shalishutOpen)));
     }
 
     function blankDraft() {
@@ -1886,7 +2407,53 @@
       });
       unit.quota = digits(unit.quota);
       unit.strength = digits(unit.strength);
+      unit.color = paletteColor(item && item.color);
       return unit;
+    }
+
+    function paletteColor(value) {
+      var text = clean(value).toUpperCase();
+      if (!text) return "";
+      if (text.charAt(0) !== "#") text = "#" + text;
+      return PALETTE_COLORS[text] || "";
+    }
+
+    function unitColor(unit) {
+      return paletteColor(unit && unit.color);
+    }
+
+    function colorFill(color) {
+      return '<span class="unit-color-fill"' + (color ? ' style="background:' + color + '"' : "") + "></span>";
+    }
+
+    function paletteCell(unit, hex) {
+      var selected = unitColor(unit) === hex;
+      return '<button class="palette-cell' + (selected ? " is-selected" : "") + '" type="button" data-action="set-color" data-unit="' + esc(unit.id) + '" data-color="' + hex + '" style="background:' + hex + '" aria-label="' + hex + '"' + (selected ? ' aria-pressed="true"' : "") + "></button>";
+    }
+
+    function renderPalette(unit) {
+      var current = unitColor(unit);
+      var theme = THEME_COLORS.map(function (row) {
+        return '<div class="palette-row">' + row.map(function (hex) { return paletteCell(unit, hex); }).join("") + "</div>";
+      }).join("");
+      var standard = '<div class="palette-row">' + STANDARD_COLORS.map(function (hex) { return paletteCell(unit, hex); }).join("") + "</div>";
+      return '<div class="palette" role="group" aria-label="בחירת צבע">' +
+        '<button class="palette-auto' + (current ? "" : " is-selected") + '" type="button" data-action="set-color" data-unit="' + esc(unit.id) + '" data-color=""' + (current ? "" : ' aria-pressed="true"') + ">" +
+          colorFill("") + "<span>אוטומטי</span></button>" +
+        '<p class="palette-label">צבעי ערכת נושא</p>' + theme +
+        '<p class="palette-label">צבעים רגילים</p>' + standard +
+      "</div>";
+    }
+
+    function setUnitColor(id, color) {
+      var unit = null;
+      for (var i = 0; i < UNITS.length; i++) {
+        if (UNITS[i].id === id) unit = UNITS[i];
+      }
+      if (!unit) return;
+      unit.color = paletteColor(color);
+      saveUnits();
+      state.colorUnit = "";
     }
 
     function currentUnit() {
@@ -1930,11 +2497,19 @@
         person = present(name) ? '<strong class="fact-value">' + esc(name) + "</strong>" : '<span class="missing">לא הוזן שם</span>';
         person += present(phone) ? phoneMarkup(phone) : '<span class="missing">אין טלפון</span>';
       }
-      return '<div class="role-card"><span class="fact-label">' + esc(role.label) + '</span><div class="role-person">' + person + "</div></div>";
+      return '<div class="person-cell"><span class="fact-label">' + esc(role.label) + '</span><div class="person-line">' + person + "</div></div>";
     }
 
-    function shalishutField(name, label, value, extra) {
-      return '<label><span class="field-label">' + esc(label) + '</span><input name="' + name + '" value="' + esc(value || "") + '"' + (extra || "") + "></label>";
+    function shalishutField(name, label, value, extra, wide) {
+      return '<label' + (wide ? ' class="editor-wide"' : "") + '><span class="field-label">' + esc(label) + '</span><input name="' + name + '" value="' + esc(value || "") + '"' + (extra || "") + "></label>";
+    }
+
+    function infoRow(label, value) {
+      var text = clean(value);
+      var person = present(text)
+        ? '<strong class="fact-value">' + esc(text) + "</strong>"
+        : '<span class="missing">לא הוזן</span>';
+      return '<div class="detail-cell"><span class="fact-label">' + esc(label) + '</span><span class="fact-value">' + person + "</span></div>";
     }
 
     function renderShalishutForm(unit, opts) {
@@ -1948,14 +2523,17 @@
       var back = opts.back
         ? '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>"
         : "";
+      var color = unitColor(unit);
       return back +
-        '<form class="editor shalishut-form" id="shalishut" autocomplete="off">' +
-          "<h2>" + esc((data.name || unit.name) + " - שלישות") + "</h2>" +
+        '<form class="editor shalishut-form' + (color ? " has-color" : "") + '" id="shalishut" autocomplete="off"' + (color ? ' style="--unit:' + color + '"' : "") + ">" +
+          "<h2>" + esc(data.name || unit.name) + "</h2>" +
           '<p class="editor-lead">הפרטים נשמרים ליחידה הזו.</p>' +
           '<div class="editor-grid metric-fields">' +
             shalishutField("name", "יחידה", data.name, ' autocomplete="organization" required maxlength="48"') +
             shalishutField("quota", "תקן", data.quota, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
             shalishutField("strength", "מצבה", data.strength, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
+            shalishutField("shalishutName", "שם יחידה (שלישות)", data.shalishutName, ' autocomplete="organization" maxlength="64"', true) +
+            shalishutField("organ", "אורגן (שלישות)", data.organ, ' autocomplete="organization" maxlength="64"', true) +
           "</div>" +
           roles +
           (state.shalishutError ? '<p class="form-error">' + esc(state.shalishutError) + "</p>" : "") +
@@ -1970,10 +2548,11 @@
       var back = opts.back
         ? '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>"
         : "";
+      var color = unitColor(unit);
       return back +
-        '<section class="shalishut" id="shalishut">' +
+        '<section class="shalishut' + (color ? " has-color" : "") + '" id="shalishut"' + (color ? ' style="--unit:' + color + '"' : "") + ">" +
           '<div class="shalishut-head">' +
-            "<h2>" + esc(unit.name + " - שלישות") + "</h2>" +
+            "<h2>" + esc(unit.name) + "</h2>" +
             '<button class="text-btn shalishut-edit" type="button" data-action="edit-shalishut">' + svg("pencil", 15) + "<span>עריכה</span></button>" +
           "</div>" +
           '<div class="shalishut-body">' +
@@ -1982,7 +2561,11 @@
               metricCell("תקן", unit.quota) +
               metricCell("מצבה", unit.strength) +
             "</div>" +
-            '<div class="role-list">' +
+            '<div class="detail-grid">' +
+              infoRow("שם יחידה (שלישות)", unit.shalishutName) +
+              infoRow("אורגן (שלישות)", unit.organ) +
+            "</div>" +
+            '<div class="people-grid">' +
               SHALISHUT_ROLES.map(function (role) { return roleCard(role, unit); }).join("") +
             "</div>" +
           "</div>" +
@@ -1998,14 +2581,16 @@
 
     function renderShalishutPrint(unit) {
       if (!unit) return "";
-      var metrics = "יחידה: " + unit.name + " · תקן: " + (present(unit.quota) ? unit.quota : "—") + " · מצבה: " + (present(unit.strength) ? unit.strength : "—");
+      var metrics = "יחידה: " + unit.name + " · שם יחידה (שלישות): " + (present(unit.shalishutName) ? unit.shalishutName : "—") + " · אורגן (שלישות): " + (present(unit.organ) ? unit.organ : "—") + " · תקן: " + (present(unit.quota) ? unit.quota : "—") + " · מצבה: " + (present(unit.strength) ? unit.strength : "—");
       var roles = SHALISHUT_ROLES.map(function (role) {
         var name = clean(unit[role.name]);
         var phone = clean(unit[role.phone]);
         var detail = [name, phone].filter(Boolean).join(" · ");
         return "<p>" + esc(role.label + ": " + (detail || "—")) + "</p>";
       }).join("");
-      return '<section class="print-shalishut"><h2>' + esc(unit.name + " - שלישות") + "</h2><p>" + esc(metrics) + "</p>" + roles + "</section>";
+      var color = unitColor(unit);
+      var mark = color ? '<span class="print-color" style="background:' + color + '"></span>' : "";
+      return '<section class="print-shalishut"><h2>' + mark + esc(unit.name) + "</h2><p>" + esc(metrics) + "</p>" + roles + "</section>";
     }
 
     function shalishutFromForm(form) {
@@ -2143,52 +2728,217 @@
 
     function closeUnitEditor() {
       state.unitEdit = "";
+      state.unitDraft = null;
       state.unitNameDraft = "";
       state.unitError = "";
+      state.colorUnit = "";
     }
 
-    function renderUnitPicker() {
-      var open = state.unitOpen;
-      var rows = UNITS.map(function (unit) {
-        var selected = unit.id === state.unit;
-        if (state.unitEdit === unit.id) {
-          return '<form class="unit-edit" data-unit="' + esc(unit.id) + '">' +
-            '<input class="unit-name-input" type="text" value="' + esc(state.unitNameDraft) + '" aria-label="שם היחידה" maxlength="48" autocomplete="off" required>' +
-            '<button class="icon-btn icon-btn-primary" type="submit" aria-label="שמירת השם">' + svg("check", 16) + "</button>" +
-            (state.unitError ? '<p class="unit-error">' + esc(state.unitError) + "</p>" : "") +
-            "</form>";
-        }
-        return '<div class="unit-option' + (selected ? " is-current" : "") + '" role="option" aria-selected="' + (selected ? "true" : "false") + '">' +
-          '<button class="unit-option-main" type="button" data-action="select-unit" data-unit="' + esc(unit.id) + '">' +
-            '<span class="unit-check" aria-hidden="true">' + (selected ? svg("check", 16) : "") + "</span>" +
-            '<span class="unit-option-name">' + esc(unit.name) + "</span>" +
-            '<span class="unit-count">' + unitCount(unit.id) + "</span>" +
-          "</button>" +
-          '<button class="icon-btn" type="button" data-action="edit-unit" data-unit="' + esc(unit.id) + '" title="עריכת שם" aria-label="עריכת השם של ' + esc(unit.name) + '">' + svg("pencil", 16) + "</button>" +
-          "</div>";
+    function blankUnitDraft() {
+      var data = { name: "" };
+      UNIT_PARAMS.forEach(function (key) { data[key] = ""; });
+      return data;
+    }
+
+    function unitDraftFrom(unit) {
+      var data = blankUnitDraft();
+      if (!unit) return data;
+      data.name = clean(unit.name);
+      UNIT_PARAMS.forEach(function (key) { data[key] = clean(unit[key]); });
+      return data;
+    }
+
+    function findUnit(id) {
+      for (var i = 0; i < UNITS.length; i++) {
+        if (UNITS[i].id === id) return UNITS[i];
+      }
+      return null;
+    }
+
+    function readUnitForm(form) {
+      var data = blankUnitDraft();
+      data.name = clean(form.elements.name ? form.elements.name.value : "");
+      UNIT_PARAMS.forEach(function (key) {
+        var input = form.elements[key];
+        data[key] = clean(input ? input.value : "");
+      });
+      data.quota = digits(data.quota);
+      data.strength = digits(data.strength);
+      return data;
+    }
+
+    function unitDetailsForm(id) {
+      var isNew = id === "new";
+      var data = state.unitDraft || blankUnitDraft();
+      var roles = SHALISHUT_ROLES.map(function (role) {
+        return '<fieldset class="role-fields"><legend>' + esc(role.label) + "</legend><div class=\"editor-grid\">" +
+          shalishutField(role.name, "שם מלא", data[role.name], ' autocomplete="name"') +
+          shalishutField(role.phone, "טלפון", data[role.phone], ' type="tel" inputmode="tel" autocomplete="tel"') +
+          "</div></fieldset>";
       }).join("");
-      var addRow = state.unitEdit === "new"
-        ? '<form class="unit-edit unit-edit-new" data-unit="new">' +
-            '<input class="unit-name-input" type="text" value="' + esc(state.unitNameDraft) + '" placeholder="שם היחידה" aria-label="שם היחידה החדשה" maxlength="48" autocomplete="off" required>' +
-            '<button class="icon-btn icon-btn-primary" type="submit" aria-label="הוספת היחידה">' + svg("check", 16) + "</button>" +
-            (state.unitError ? '<p class="unit-error">' + esc(state.unitError) + "</p>" : "") +
-          "</form>"
-        : "";
-      document.getElementById("unit-picker").innerHTML =
-        '<div class="label-row">' +
-          '<span class="field-label" id="unit-label">יחידה</span>' +
-          '<span class="label-actions">' +
-            '<button class="text-btn" type="button" data-action="open-shalishut">שלישות</button>' +
-            '<button class="text-btn" type="button" data-action="add-unit">הוספת יחידה</button>' +
-          "</span>" +
+      return '<form class="editor unit-edit unit-details-form" data-unit="' + esc(id) + '" autocomplete="off">' +
+        "<h2>" + (isNew ? "יחידה חדשה" : "עריכת " + esc(data.name || "יחידה")) + "</h2>" +
+        '<p class="editor-lead">' + (isNew ? "אפשר למלא כבר עכשיו את כל פרטי היחידה. הם יופיעו בכרטיס." : "השינויים נשמרים בכרטיס של היחידה.") + "</p>" +
+        '<div class="editor-grid metric-fields">' +
+          shalishutField("name", "יחידה", data.name, ' autocomplete="organization" required maxlength="48"') +
+          shalishutField("quota", "תקן", data.quota, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
+          shalishutField("strength", "מצבה", data.strength, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
+          shalishutField("shalishutName", "שם יחידה (שלישות)", data.shalishutName, ' autocomplete="organization" maxlength="64"', true) +
+          shalishutField("organ", "אורגן (שלישות)", data.organ, ' autocomplete="organization" maxlength="64"', true) +
         "</div>" +
-        '<button class="unit-current" type="button" data-action="toggle-units" aria-haspopup="listbox" aria-expanded="' + (open ? "true" : "false") + '" aria-labelledby="unit-label unit-current-name">' +
-          '<span class="unit-current-name" id="unit-current-name">' + esc(unitName(state.unit)) + "</span>" +
-          '<span class="unit-count">' + unitCount(state.unit) + "</span>" +
-          '<span class="unit-chevron' + (open ? " is-open" : "") + '" aria-hidden="true">' + svg("chevronDown", 16) + "</span>" +
-        "</button>" +
-        '<div class="unit-menu" id="unit-menu" role="listbox" aria-label="יחידות"' + (open ? "" : " hidden") + ">" +
-          rows + addRow +
+        roles +
+        (state.unitError ? '<p class="form-error">' + esc(state.unitError) + "</p>" : "") +
+        '<div class="editor-actions">' +
+          '<button class="btn btn-primary" type="submit">' + (isNew ? "הוספה" : "שמירה") + "</button>" +
+          '<button class="btn btn-secondary" type="button" data-action="cancel-unit">ביטול</button>' +
+        "</div>" +
+      "</form>";
+    }
+
+    function unitAccent(unit) {
+      var color = unitColor(unit);
+      if (!color || color.toUpperCase() === "#FFFFFF") return "";
+      return color;
+    }
+
+    function renderUnitCard(unit) {
+      var accent = unitAccent(unit);
+      var editing = state.unitEdit === unit.id;
+      var sub = present(unit.shalishutName) ? clean(unit.shalishutName) : (present(unit.organ) ? clean(unit.organ) : "");
+      var count = unitCount(unit.id);
+      var metrics = [];
+      if (present(unit.quota)) metrics.push("תקן " + clean(unit.quota));
+      if (present(unit.strength)) metrics.push("מצבה " + clean(unit.strength));
+      var professions = {};
+      SOLDIERS.forEach(function (soldier) {
+        if (unitId(soldier.unit) !== unit.id) return;
+        var name = clean(soldier.profession) || "ללא מקצוע";
+        professions[name] = (professions[name] || 0) + 1;
+      });
+      var chips = Object.keys(professions).sort(compareHe).map(function (name) {
+        return '<span class="unit-chip">' + esc(name) + " " + professions[name] + "</span>";
+      }).join("");
+      var gepahName = clean(unit.gepahName);
+      var gepahPhone = clean(unit.gepahPhone);
+      var commanders = (present(gepahName) || present(gepahPhone))
+        ? '<span class="unit-commander">' +
+            '<span class="unit-commander-role">מפקד גפ״ה</span>' +
+            '<span class="unit-commander-line">' +
+              (present(gepahName) ? '<span class="unit-commander-name">' + esc(gepahName) + "</span>" : "") +
+              (present(gepahPhone) ? '<bdi class="unit-commander-phone" dir="ltr">' + esc(gepahPhone) + "</bdi>" : "") +
+            "</span></span>"
+        : "";
+      var body = editing
+        ? unitDetailsForm(unit.id)
+        : '<button class="unit-tile-open" type="button" data-action="open-unit" data-unit="' + esc(unit.id) + '" aria-label="הצגת החיילים ב' + esc(unit.name) + '">' +
+            '<span class="unit-tile-name">' + esc(unit.name) + "</span>" +
+            (sub ? '<span class="unit-tile-sub">' + esc(sub) + "</span>" : "") +
+            '<span class="unit-tile-count">' + count + "</span>" +
+            '<span class="unit-tile-count-label">' + esc(countWord(count, "חייל", "חיילים")) + "</span>" +
+            (metrics.length ? '<span class="unit-tile-metrics">' + esc(metrics.join(" · ")) + "</span>" : "") +
+            (chips ? '<span class="unit-tile-chips">' + chips + "</span>" : "") +
+            (commanders ? '<span class="unit-commanders">' + commanders + "</span>" : "") +
+            '<span class="unit-tile-enter">הצגת חיילים</span>' +
+          "</button>";
+      var tools = editing ? "" :
+        '<div class="unit-tile-tools">' +
+          '<button class="unit-color-btn" type="button" data-action="pick-color" data-unit="' + esc(unit.id) + '" title="צבע היחידה" aria-label="צבע של ' + esc(unit.name) + '" aria-expanded="' + (state.colorUnit === unit.id ? "true" : "false") + '">' + colorFill(unitColor(unit)) + "</button>" +
+          '<button class="icon-btn" type="button" data-action="edit-unit" data-unit="' + esc(unit.id) + '" title="עריכת היחידה" aria-label="עריכת ' + esc(unit.name) + '">' + svg("pencil", 16) + "</button>" +
+        "</div>";
+      var palette = state.colorUnit === unit.id ? renderPalette(unit) : "";
+      return '<article class="unit-tile' + (editing ? " is-editing" : "") + (accent ? " has-color" : "") + '"' + (accent ? ' style="--unit:' + accent + '"' : "") + ">" +
+        body + tools + palette +
+      "</article>";
+    }
+
+    function renderUnitsHome(opts) {
+      opts = opts || {};
+      var totalUnits = UNITS.length;
+      var totalSoldiers = SOLDIERS.length;
+      var summary = totalUnits + " " + countWord(totalUnits, "יחידה", "יחידות") + " · " + totalSoldiers + " " + countWord(totalSoldiers, "חייל", "חיילים");
+      var addTile = state.unitEdit === "new"
+        ? '<article class="unit-tile is-editing">' + unitDetailsForm("new") + "</article>"
+        : '<button class="unit-tile-add" type="button" data-action="add-unit"><span class="unit-tile-plus" aria-hidden="true">+</span><span class="unit-tile-name">יחידה חדשה</span><span class="unit-tile-sub">הוספת כרטיס לגריד</span></button>';
+      var profile = document.getElementById("profile");
+      profile.setAttribute("aria-label", "יחידות");
+      profile.innerHTML =
+        '<div class="units-board" id="units-board">' +
+          '<div class="units-board-head"><h2>היחידות</h2><p>' + esc(summary) + "</p></div>" +
+          '<div class="unit-grid">' + UNITS.map(renderUnitCard).join("") + addTile + "</div>" +
+        "</div>";
+      document.getElementById("add-btn").hidden = true;
+      document.getElementById("print-root").innerHTML = "";
+      document.title = CONFIG.title;
+      syncHash("");
+      var announce = "בחירת יחידה. " + summary;
+      if (state.announced !== announce) {
+        state.announced = announce;
+        document.getElementById("live").textContent = announce;
+      }
+      if (opts.focusPalette) {
+        var palette = profile.querySelector(".palette");
+        if (palette) palette.scrollIntoView({ block: "nearest" });
+      }
+      if (opts.focusUnit) {
+        var unitInput = profile.querySelector(".unit-details-form [name='name']");
+        if (unitInput) {
+          unitInput.focus();
+          if (unitInput.value) unitInput.select();
+          var tile = unitInput.closest(".unit-tile");
+          if (tile) tile.scrollIntoView({ block: "nearest" });
+        }
+      }
+    }
+
+    function showUnitsHome() {
+      state.unitsHome = true;
+      state.unitOpen = false;
+      state.creating = false;
+      state.editingIndex = -1;
+      state.draft = blankDraft();
+      state.profileOpen = false;
+      state.shalishutOpen = false;
+      state.selectedKey = "";
+      closeShalishutEditor();
+      closeUnitEditor();
+      render();
+    }
+
+    function enterUnit(id, opts) {
+      opts = opts || {};
+      id = unitId(id);
+      if (!id) return;
+      var entering = state.unitsHome || id !== state.unit;
+      state.unitsHome = false;
+      state.unitOpen = false;
+      closeUnitEditor();
+      if (id !== state.unit) {
+        state.unit = id;
+        saveUnit();
+      }
+      if (entering) resetRosterView();
+      if (opts.shalishut) {
+        state.creating = false;
+        state.editingIndex = -1;
+        state.shalishutOpen = true;
+        state.profileOpen = true;
+      }
+      render(opts.shalishut ? { focusShalishut: true } : {});
+    }
+
+    function renderUnitBar() {
+      var unit = currentUnit();
+      var color = unit ? unitColor(unit) : "";
+      document.getElementById("unit-picker").innerHTML =
+        '<div class="unit-bar">' +
+          '<button class="back-units" type="button" data-action="units-home">' + svg("chevron", 20) + "<span>כל היחידות</span></button>" +
+          '<div class="unit-bar-row">' +
+            '<div class="unit-bar-title">' +
+              (color ? colorFill(color) : "") +
+              "<strong>" + esc(unitName(state.unit)) + "</strong>" +
+              '<span class="unit-count">' + unitCount(state.unit) + "</span>" +
+            "</div>" +
+          "</div>" +
         "</div>";
     }
 
@@ -2209,26 +2959,16 @@
     }
 
     function selectUnit(id) {
-      id = unitId(id);
-      if (!id) return;
-      state.unitOpen = false;
-      closeUnitEditor();
-      if (id === state.unit) {
-        render();
-        return;
-      }
-      state.unit = id;
-      saveUnit();
-      resetRosterView();
-      render();
+      enterUnit(id);
     }
 
     function nameTaken(name, exceptId) {
       return UNITS.some(function (unit) { return unit.id !== exceptId && unit.name === name; });
     }
 
-    function addUnit(name) {
-      name = clean(name);
+    function addUnit(data) {
+      data = data || blankUnitDraft();
+      var name = clean(data.name);
       if (!name) {
         state.unitError = "צריך שם ליחידה";
         return false;
@@ -2237,28 +2977,31 @@
         state.unitError = "כבר יש יחידה בשם הזה";
         return false;
       }
-      var unit = normalizeUnit({ id: nextUnitId(), name: name });
+      var unit = normalizeUnit({
+        id: nextUnitId(),
+        name: name,
+        quota: data.quota,
+        strength: data.strength,
+        shalishutName: data.shalishutName,
+        organ: data.organ,
+        gepahName: data.gepahName,
+        gepahPhone: data.gepahPhone,
+        officerName: data.officerName,
+        officerPhone: data.officerPhone,
+        ramadName: data.ramadName,
+        ramadPhone: data.ramadPhone
+      });
       UNITS.push(unit);
       saveUnits();
-      state.unit = unit.id;
-      saveUnit();
-      state.unitOpen = false;
       closeUnitEditor();
-      resetRosterView();
       return true;
     }
 
-    function renameUnit(id, name) {
-      name = clean(name);
-      var unit = null;
-      for (var i = 0; i < UNITS.length; i++) {
-        if (UNITS[i].id === id) unit = UNITS[i];
-      }
+    function saveUnitDetails(id, data) {
+      var unit = findUnit(id);
       if (!unit) return false;
-      if (unit.name === name) {
-        closeUnitEditor();
-        return true;
-      }
+      data = data || blankUnitDraft();
+      var name = clean(data.name);
       if (!name) {
         state.unitError = "צריך שם ליחידה";
         return false;
@@ -2268,6 +3011,9 @@
         return false;
       }
       unit.name = name;
+      UNIT_PARAMS.forEach(function (key) { unit[key] = clean(data[key]); });
+      unit.quota = digits(unit.quota);
+      unit.strength = digits(unit.strength);
       saveUnits();
       closeUnitEditor();
       return true;
@@ -2321,6 +3067,9 @@
           '<div class="editor-actions">' +
             '<button class="btn btn-primary" type="submit">שמירה</button>' +
             '<button class="btn btn-secondary" type="button" data-action="cancel-new">ביטול</button>' +
+            (editing
+              ? '<button class="btn btn-danger" type="button" data-action="delete-soldier">מחיקה</button>'
+              : "") +
           "</div>" +
         "</form>"
       );
@@ -2374,10 +3123,41 @@
       render();
     }
 
+    function deleteEditingSoldier() {
+      var index = state.editingIndex;
+      if (index < 0 || index >= SOLDIERS.length) return;
+      var soldier = SOLDIERS[index];
+      var name = clean(soldier.name) || "החייל";
+      if (!window.confirm("למחוק את " + name + "? לא ניתן לשחזר את הכרטיס.")) return;
+      var removedUnit = unitId(soldier.unit) || state.unit;
+      SOLDIERS.splice(index, 1);
+      persist();
+      state.creating = false;
+      state.editingIndex = -1;
+      state.draft = blankDraft();
+      state.profileOpen = true;
+      var next = null;
+      for (var i = 0; i < SOLDIERS.length; i++) {
+        if (unitId(SOLDIERS[i].unit) === removedUnit) {
+          next = SOLDIERS[i];
+          break;
+        }
+      }
+      state.selectedKey = next ? keyOf(next) : "";
+      render();
+    }
+
     function render(opts) {
       opts = opts || {};
+      syncShell();
+      if (state.unitsHome) {
+        renderUnitsHome(opts);
+        return;
+      }
+      document.getElementById("add-btn").hidden = false;
+      document.getElementById("profile").setAttribute("aria-label", "כרטיס חייל");
       if (!unitId(state.unit)) state.unit = UNITS[0].id;
-      renderUnitPicker();
+      renderUnitBar();
       var editing = state.editingIndex >= 0;
       if ((state.creating || editing) && !opts.freshDraft) captureDraft();
       if (state.editingShalishut) captureShalishut();
@@ -2453,14 +3233,22 @@
         if (!SOLDIERS.length) mainHtml = emptyProfile("nodata");
         else if (!total) mainHtml = emptyProfile("unit");
         else if (!soldier) mainHtml = emptyProfile("none");
-        else mainHtml = renderDossier(soldier, { interactive: true });
+        else mainHtml = '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>" + renderRoster(filtered, { interactive: true });
       }
       profile.innerHTML = shalishutHtml + mainHtml;
       if ((state.creating || editing) && opts.focusEditor) {
         var focusField = profile.querySelector('[name="' + (editing ? "name" : "profession") + '"]');
         if (focusField) focusField.focus();
       }
-      if (selectionChanged && !state.creating && !editing && !opts.focusShalishut) profile.scrollTop = 0;
+      if (selectionChanged && !state.creating && !editing && !opts.focusShalishut) {
+        var frames = profile.querySelectorAll("[data-soldier]");
+        var target = null;
+        for (var frameIndex = 0; frameIndex < frames.length; frameIndex++) {
+          if (frames[frameIndex].getAttribute("data-soldier") === state.selectedKey) target = frames[frameIndex];
+        }
+        if (target) target.scrollIntoView({ block: "nearest" });
+        else profile.scrollTop = 0;
+      }
 
       var summary = filterSummary(filters, queryRaw);
       var printLabel = (filtered.length || 0) + " " + countWord(filtered.length, "חייל", "חיילים");
@@ -2468,7 +3256,7 @@
         '<header class="print-mast"><img class="print-logo" src="hebet-logo.png" alt=""><div><h1>' + esc(CONFIG.title) + "</h1><p>" +
         esc(unitName(state.unit) + " · " + printLabel + (summary ? " · " + summary : "") + " · " + prettyDate(new Date())) + "</p></div></header>" +
         renderShalishutPrint(currentUnit()) +
-        filtered.map(function (item) { return renderDossier(item, { compact: true }); }).join("");
+        renderRoster(filtered, { compact: true });
 
       if (state.creating) document.title = "חייל חדש · " + CONFIG.title;
       else if (editing) document.title = "עריכת " + (clean(state.draft && state.draft.name) || "חייל") + " · " + CONFIG.title;
@@ -2479,7 +3267,7 @@
       var announce = state.editingShalishut
         ? "עריכת שלישות של " + unitName(state.unit)
         : state.shalishutOpen && narrow
-          ? unitName(state.unit) + " - שלישות"
+          ? unitName(state.unit)
           : editing
             ? "עריכת " + (clean(state.draft && state.draft.name) || "חייל")
             : state.creating
@@ -2490,6 +3278,10 @@
         document.getElementById("live").textContent = announce;
       }
       state.prevKey = state.selectedKey;
+      if (opts.focusPalette) {
+        var palette = document.querySelector("#unit-picker .palette");
+        if (palette) palette.scrollIntoView({ block: "nearest" });
+      }
       if (opts.focusUnit) {
         var unitInput = document.querySelector("#unit-picker .unit-name-input");
         if (unitInput) {
@@ -2565,68 +3357,19 @@
         if (hash) state.selectedKey = hash;
       } catch (err) {}
       var owner = unitIdOfKey(state.selectedKey);
-      if (owner) state.unit = owner;
+      if (owner) {
+        state.unit = owner;
+        state.unitsHome = false;
+      } else {
+        state.unitsHome = true;
+        state.selectedKey = "";
+      }
       saveUnit();
       var unitPicker = document.getElementById("unit-picker");
       unitPicker.addEventListener("click", function (event) {
-        suppressUnitClose = true;
-        if (event.target.closest("[data-action='open-shalishut']")) {
-          state.unitOpen = false;
-          closeUnitEditor();
-          state.creating = false;
-          state.editingIndex = -1;
-          state.shalishutOpen = true;
-          state.profileOpen = true;
-          render({ focusShalishut: true });
-          return;
+        if (event.target.closest("[data-action='units-home']")) {
+          showUnitsHome();
         }
-        if (event.target.closest("[data-action='add-unit']")) {
-          state.unitOpen = true;
-          state.unitEdit = "new";
-          state.unitNameDraft = "";
-          state.unitError = "";
-          render({ focusUnit: true });
-          return;
-        }
-        if (event.target.closest("[data-action='toggle-units']")) {
-          state.unitOpen = !state.unitOpen;
-          if (!state.unitOpen) closeUnitEditor();
-          render();
-          return;
-        }
-        var editBtn = event.target.closest("[data-action='edit-unit']");
-        if (editBtn) {
-          state.unitOpen = true;
-          state.unitEdit = editBtn.getAttribute("data-unit");
-          state.unitNameDraft = unitName(state.unitEdit);
-          state.unitError = "";
-          render({ focusUnit: true });
-          return;
-        }
-        var selectBtn = event.target.closest("[data-action='select-unit']");
-        if (selectBtn) selectUnit(selectBtn.getAttribute("data-unit"));
-      });
-      unitPicker.addEventListener("input", function (event) {
-        if (!event.target.classList || !event.target.classList.contains("unit-name-input")) return;
-        state.unitNameDraft = event.target.value;
-        state.unitError = "";
-        var error = unitPicker.querySelector(".unit-error");
-        if (error) error.remove();
-      });
-      unitPicker.addEventListener("submit", function (event) {
-        var form = event.target;
-        if (!form.classList || !form.classList.contains("unit-edit")) return;
-        event.preventDefault();
-        var input = form.querySelector(".unit-name-input");
-        var name = input ? input.value : "";
-        state.unitNameDraft = name;
-        if (form.getAttribute("data-unit") === "new") {
-          if (!addUnit(name)) render({ focusUnit: true });
-          else render();
-          return;
-        }
-        if (renameUnit(form.getAttribute("data-unit"), name)) render();
-        else render({ focusUnit: true });
       });
       document.addEventListener("click", function (event) {
         if (suppressUnitClose) {
@@ -2663,8 +3406,29 @@
         var lead = document.querySelector(".editor-lead");
         if (lead) lead.textContent = editorLead(state.draft);
       });
+      document.getElementById("profile").addEventListener("input", function (event) {
+        var form = event.target.form;
+        if (!form || !form.classList || !form.classList.contains("unit-edit")) return;
+        state.unitDraft = readUnitForm(form);
+        state.unitError = "";
+        var error = form.querySelector(".form-error");
+        if (error) error.remove();
+      });
       document.getElementById("profile").addEventListener("submit", function (event) {
         var form = event.target;
+        if (form.classList && form.classList.contains("unit-edit")) {
+          event.preventDefault();
+          var data = readUnitForm(form);
+          state.unitDraft = data;
+          if (form.getAttribute("data-unit") === "new") {
+            if (!addUnit(data)) render({ focusUnit: true });
+            else render();
+            return;
+          }
+          if (saveUnitDetails(form.getAttribute("data-unit"), data)) render();
+          else render({ focusUnit: true });
+          return;
+        }
         if (form.classList && form.classList.contains("shalishut-form")) {
           event.preventDefault();
           var data = shalishutFromForm(form);
@@ -2694,7 +3458,59 @@
         render({ scroll: true });
       });
       document.getElementById("profile").addEventListener("click", function (event) {
-        if (event.target.closest("[data-action='edit-soldier']")) {
+        if (state.unitsHome) {
+          if (event.target.closest("[data-action='cancel-unit']")) {
+            closeUnitEditor();
+            render();
+            return;
+          }
+          if (event.target.closest("[data-action='add-unit']")) {
+            closeUnitEditor();
+            state.unitEdit = "new";
+            state.unitDraft = blankUnitDraft();
+            state.unitError = "";
+            render({ focusUnit: true });
+            return;
+          }
+          var colorBtn = event.target.closest("[data-action='pick-color']");
+          if (colorBtn) {
+            var colorId = colorBtn.getAttribute("data-unit");
+            var nextColor = state.colorUnit === colorId ? "" : colorId;
+            state.unitEdit = "";
+            state.unitDraft = null;
+            state.unitError = "";
+            state.colorUnit = nextColor;
+            render({ focusPalette: Boolean(nextColor) });
+            return;
+          }
+          var setColorBtn = event.target.closest("[data-action='set-color']");
+          if (setColorBtn) {
+            setUnitColor(setColorBtn.getAttribute("data-unit"), setColorBtn.getAttribute("data-color") || "");
+            render();
+            return;
+          }
+          var editBtn = event.target.closest("[data-action='edit-unit']");
+          if (editBtn) {
+            state.colorUnit = "";
+            state.unitEdit = editBtn.getAttribute("data-unit");
+            state.unitDraft = unitDraftFrom(findUnit(state.unitEdit));
+            state.unitError = "";
+            render({ focusUnit: true });
+            return;
+          }
+          var shalishutBtn = event.target.closest("[data-action='open-shalishut']");
+          if (shalishutBtn) {
+            enterUnit(shalishutBtn.getAttribute("data-unit"), { shalishut: true });
+            return;
+          }
+          var openBtn = event.target.closest("[data-action='open-unit']");
+          if (openBtn) enterUnit(openBtn.getAttribute("data-unit"));
+          return;
+        }
+        var soldierEdit = event.target.closest("[data-action='edit-soldier']");
+        if (soldierEdit) {
+          var soldierKey = soldierEdit.getAttribute("data-key");
+          if (soldierKey) state.selectedKey = soldierKey;
           openSoldierEditor();
           return;
         }
@@ -2716,6 +3532,10 @@
         }
         if (event.target.closest("[data-action='cancel-new']")) {
           closeCreator();
+          return;
+        }
+        if (event.target.closest("[data-action='delete-soldier']")) {
+          deleteEditingSoldier();
           return;
         }
         if (event.target.closest("[data-action='clear']")) {
@@ -2755,9 +3575,14 @@
       });
       document.addEventListener("keydown", function (event) {
         var typing = event.target && (event.target.tagName === "INPUT" || event.target.tagName === "SELECT" || event.target.tagName === "TEXTAREA");
-        if (event.key === "/" && !typing) {
+        if (event.key === "/" && !typing && !state.unitsHome) {
           event.preventDefault();
           document.getElementById("search").focus();
+          return;
+        }
+        if (event.key === "Escape" && state.colorUnit) {
+          state.colorUnit = "";
+          render();
           return;
         }
         if (event.key === "Escape" && (state.unitOpen || state.unitEdit)) {
@@ -2782,7 +3607,7 @@
           syncShell();
           return;
         }
-        if ((event.key === "ArrowDown" || event.key === "ArrowUp") && !typing) {
+        if ((event.key === "ArrowDown" || event.key === "ArrowUp") && !typing && !state.unitsHome) {
           event.preventDefault();
           moveSelection(event.key === "ArrowDown" ? 1 : -1);
         }
