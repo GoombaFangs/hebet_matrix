@@ -325,7 +325,8 @@
       padding: 0;
     }
 
-    .unit-color-btn:hover { background: rgba(0, 0, 0, 0.06); }
+    .unit-color-btn:hover,
+    .unit-color-btn[aria-expanded="true"] { background: rgba(0, 0, 0, 0.06); }
 
     .unit-option.is-current .unit-color-btn:hover { background: rgba(0, 100, 224, 0.12); }
 
@@ -343,12 +344,16 @@
     .unit-current .unit-color-fill { flex: none; }
 
     .palette {
-      margin: 2px 4px 6px;
+      position: fixed;
+      z-index: 60;
+      width: max-content;
+      max-width: calc(100vw - 16px);
+      margin: 0;
       padding: 8px 10px 10px;
       background: #fff;
       border: 1px solid var(--line);
-      border-radius: 10px;
-      box-shadow: var(--shadow);
+      border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(16, 24, 40, 0.18);
     }
 
     .palette-auto {
@@ -414,6 +419,9 @@
       padding: 8px 20px 32px;
     }
 
+    body.log-open .units-board { padding-top: 18px; }
+    body.log-open .profile-scroll { overflow-x: hidden; }
+
     .units-board-head h2 {
       margin: 0 0 4px;
       font-size: 1.7rem;
@@ -428,9 +436,11 @@
     }
 
     .unit-grid {
+      --card-w: 292px;
       --card-h: 292px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+      grid-template-columns: repeat(auto-fill, var(--card-w));
+      justify-content: start;
       gap: 14px;
       align-items: stretch;
     }
@@ -574,8 +584,6 @@
       border-top: 1px solid var(--line);
     }
 
-    .unit-tile .palette { margin: 0 10px 10px; }
-
     .unit-tile.is-editing { grid-column: 1 / -1; }
 
     .icon-btn.is-pen svg,
@@ -702,7 +710,11 @@
     body.units-home .sidebar { display: none; }
     body.units-home .profile-scroll { display: block; }
 
-    .unit-picker { --card-h: 292px; }
+    .unit-picker {
+      --card-w: 292px;
+      --card-h: 292px;
+      --card-zoom: 1.32;
+    }
 
     :is(.unit-grid, .unit-picker) > .unit-tile:not(.is-editing),
     .unit-grid > .unit-tile-add {
@@ -718,37 +730,9 @@
     }
 
     .unit-picker > .unit-tile:not(.is-editing) {
-      width: 100%;
+      width: var(--card-w);
       align-self: start;
-    }
-
-    .unit-picker .unit-tile-open .unit-tile-name {
-      height: auto;
-      font-size: 1.55rem;
-    }
-
-    .unit-picker .unit-tile-count { font-size: 2.35rem; }
-
-    .unit-picker .unit-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0;
-      background: transparent;
-      color: #3d434c;
-    }
-
-    .unit-picker .unit-chip-count {
-      min-width: 22px;
-      height: 22px;
-      padding: 0 5px;
-      border-radius: 999px;
-      background: #eceff3;
-      color: var(--ink);
-      font-size: 0.75rem;
-      font-weight: 800;
-      display: inline-grid;
-      place-items: center;
+      zoom: var(--card-zoom);
     }
 
     :is(.unit-grid, .unit-picker) .unit-tile-open {
@@ -913,11 +897,36 @@
       min-width: 0;
     }
 
+    .unit-commander-name-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      min-width: 0;
+      max-width: 100%;
+    }
+
     :is(.unit-grid, .unit-picker) .unit-commander-name {
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .unit-commander-line .unit-commander-copy {
+      width: 22px;
+      height: 22px;
+      align-self: center;
+      border-radius: 6px;
+      background: transparent;
+      box-shadow: none;
+      color: #7a818c;
+      cursor: pointer;
+    }
+
+    .unit-commander-line .unit-commander-copy:hover {
+      background: #e4e6eb;
+      color: var(--ink);
+      box-shadow: none;
     }
 
     :is(.unit-grid, .unit-picker) .unit-commander-phone { flex: none; }
@@ -1048,7 +1057,28 @@
       z-index: 30;
       margin: 0;
       pointer-events: none;
+      overflow: visible;
       animation: none !important;
+    }
+
+    .unit-flight > .unit-flight-host {
+      display: block;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: visible;
+    }
+
+    .unit-flight > .unit-flight-host > .unit-tile {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      margin: 0;
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
     }
 
     .unit-flight.is-falling { z-index: 24; }
@@ -1073,8 +1103,10 @@
     .roster-column.is-held { pointer-events: none; }
 
     .roster-column.is-leaving .finder,
-    .roster-column.is-leaving .roster-body {
-      animation: fade-away 200ms ease forwards;
+    .roster-column.is-leaving .roster-body,
+    .back-units.is-leaving,
+    .sidebar.is-leaving {
+      animation: fade-soft 160ms ease forwards;
     }
 
     .sidebar.is-emerging .back-units {
@@ -1099,23 +1131,24 @@
     }
 
     .units-board-head.is-arriving {
-      animation: rise-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: rise-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .unit-grid.is-arriving > .unit-tile,
     .unit-grid.is-arriving > .unit-tile-add {
-      animation: rise-in 440ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: rise-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(var(--enter, 0) * 32ms);
     }
-
-    .unit-grid.is-arriving > :nth-child(2) { animation-delay: 40ms; }
-    .unit-grid.is-arriving > :nth-child(3) { animation-delay: 80ms; }
-    .unit-grid.is-arriving > :nth-child(4) { animation-delay: 120ms; }
-    .unit-grid.is-arriving > :nth-child(5) { animation-delay: 160ms; }
-    .unit-grid.is-arriving > :nth-child(6) { animation-delay: 200ms; }
 
     .unit-grid.is-arriving > .unit-tile.is-landing,
     .unit-grid.is-arriving > .unit-tile.is-settled {
+      align-self: start;
+      height: auto;
       animation: none;
+    }
+
+    .units-board.is-returning .archive-board {
+      animation: rise-in 480ms 90ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .units-board-head.is-intro {
@@ -1151,7 +1184,7 @@
     }
 
     @keyframes rise-in {
-      from { opacity: 0; transform: translateY(18px); }
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: none; }
     }
 
@@ -1162,6 +1195,10 @@
 
     @keyframes fade-away {
       to { opacity: 0; transform: translateY(10px); }
+    }
+
+    @keyframes fade-soft {
+      to { opacity: 0; }
     }
 
     .shalishut.has-color { border-top: 4px solid var(--unit); }
@@ -1189,20 +1226,25 @@
 
     .workspace {
       flex: 1;
+      min-width: 0;
       min-height: 0;
       display: flex;
       flex-direction: row;
       align-items: stretch;
+      overflow: hidden;
     }
 
     .sidebar {
-      flex: 0 0 308px;
-      width: 308px;
-      min-width: 280px;
-      max-width: 308px;
+      --card-w: 292px;
+      --card-zoom: 1.32;
+      flex: 0 0 calc(var(--card-w) * var(--card-zoom) + 72px);
+      width: calc(var(--card-w) * var(--card-zoom) + 72px);
+      min-width: calc(var(--card-w) * var(--card-zoom) + 72px);
+      max-width: calc(var(--card-w) * var(--card-zoom) + 72px);
       min-height: 0;
       overflow: auto;
-      padding: 8px 12px 16px;
+      padding: 8px 12px 16px 12px;
+      padding-inline-start: 28px;
       background: var(--canvas);
       border-inline-end: 1px solid var(--line);
     }
@@ -1299,17 +1341,13 @@
 
     .roster-body {
       flex: 1;
+      min-width: 0;
       min-height: 0;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
     }
 
-    .roster-body.has-list { grid-template-columns: 252px minmax(0, 1fr); }
-
-    .roster-body .list {
-      background: var(--surface);
-      border-inline-end: 1px solid var(--line);
-    }
+    .roster-body > .list { display: none; }
 
     body.units-home .list { display: none; }
 
@@ -1745,6 +1783,12 @@
       color: #fff;
     }
 
+    .flag-study-due,
+    .person[aria-current="true"] .flag-study-due {
+      background: #fff4e5;
+      color: #9a3412;
+    }
+
     .group.is-released {
       margin-top: 8px;
       border-top: 1px dashed var(--line);
@@ -1791,6 +1835,663 @@
       overscroll-behavior: contain;
       scrollbar-width: thin;
       scrollbar-color: #c5cad3 transparent;
+    }
+
+    .profile-scroll:has(.directory) { padding: 14px 16px 28px; }
+
+    .directory {
+      --dir-cols: 28px minmax(220px, 272px) minmax(0, 1fr) 96px;
+      --dir-facts: minmax(72px, 0.82fr) minmax(96px, 0.95fr) minmax(108px, 1.05fr) minmax(80px, 0.85fr) minmax(78px, 0.95fr) minmax(44px, 0.42fr) minmax(88px, 0.9fr) minmax(88px, 0.9fr);
+      container: directory / inline-size;
+      min-width: 0;
+      max-width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .dir-columns,
+    .dir-row {
+      display: grid;
+      grid-template-columns: var(--dir-cols);
+      column-gap: 12px;
+      align-items: center;
+      padding-inline: 14px;
+    }
+
+    .dir-columns {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      height: 36px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      border-start-start-radius: 12px;
+      border-start-end-radius: 12px;
+      color: var(--secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .dir-sort {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+      min-width: 0;
+      height: 26px;
+      padding: 0 6px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: inherit;
+      text-align: start;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .dir-sort > span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dir-sort:hover,
+    .dir-sort:focus-visible {
+      background: #f0f2f5;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .dir-sort.is-sorted {
+      color: var(--blue);
+      background: #e7f3ff;
+    }
+
+    .dir-sort-mark {
+      flex: none;
+      margin-inline-start: auto;
+      opacity: 0;
+    }
+
+    .dir-sort:hover .dir-sort-mark,
+    .dir-sort:focus-visible .dir-sort-mark,
+    .dir-sort.is-sorted .dir-sort-mark { opacity: 1; }
+
+    .dir-sort.is-desc .dir-sort-mark { transform: scaleY(-1); }
+
+    .dir-columns .dir-facts,
+    .dir-facts {
+      display: grid;
+      grid-template-columns: var(--dir-facts);
+      gap: 8px 10px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .dir-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      position: sticky;
+      top: 36px;
+      z-index: 2;
+      margin: 0;
+      padding: 8px 16px;
+      background: #f7f8fa;
+      border-bottom: 1px solid #eef0f3;
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .directory > .dir-columns + .dir-group .dir-banner { border-top: none; }
+
+    .dir-group + .dir-group .dir-banner { border-top: 1px solid var(--line); }
+
+    .dir-group.is-released .dir-banner {
+      background: #f0f2f5;
+      color: #65676b;
+    }
+
+    .dir-row {
+      position: relative;
+      min-height: 64px;
+      padding-block: 10px;
+      scroll-margin-top: 84px;
+      background: #fff;
+      transition: background 140ms ease;
+    }
+
+    .dir-row + .dir-row { border-top: 1px solid #eef0f3; }
+
+    .dir-row:hover {
+      background: color-mix(in srgb, var(--row-accent, var(--blue)) 16%, #fff);
+    }
+
+    .dir-row:hover::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: 0;
+      top: 10px;
+      bottom: 10px;
+      width: 3px;
+      border-radius: 99px;
+      background: var(--row-accent, var(--blue));
+    }
+
+    .dir-index {
+      color: #98a2b3;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .dir-who {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .dir-who .avatar,
+    .dir-who .avatar-slot {
+      width: 40px;
+      height: 40px;
+    }
+
+    .dir-who .avatar { font-size: 0.82rem; }
+
+    .dir-id { min-width: 0; flex: 1; }
+
+    .dir-name-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .dir-name {
+      margin: 0;
+      max-width: 100%;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dir-name-row .copy-id {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: transparent;
+      box-shadow: none;
+      color: #65676b;
+    }
+
+    .dir-name-row .copy-id:hover {
+      background: #e4e6eb;
+      color: var(--ink);
+    }
+
+    .dir-name-row .released-badge,
+    .dir-name-row .flag-study-due { margin-inline: 2px 0; }
+
+    .identity-name-row .flag-study-due { margin-inline-start: 6px; }
+
+    .dir-k {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .dir-v {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      min-width: 0;
+      font-size: 0.84rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dir-v .num,
+    .dir-v bdi,
+    .dir-clip {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dir-empty { color: #c5cad3; font-weight: 600; }
+
+    .dir-prof {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+      height: 26px;
+      padding: 0 10px 0 8px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: #44474c;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .dir-prof i {
+      width: 7px;
+      height: 7px;
+      flex: none;
+      border-radius: 50%;
+      background: #98a2b3;
+    }
+
+    .dir-row.tone-edit .dir-prof { background: #e7f3ff; color: #0064e0; }
+    .dir-row.tone-edit .dir-prof i { background: #0064e0; }
+    .dir-row.tone-design .dir-prof { background: #f3e8ff; color: #6d28d9; }
+    .dir-row.tone-design .dir-prof i { background: #7c3aed; }
+    .dir-row.tone-photo .dir-prof { background: #ffe4e6; color: #be123c; }
+    .dir-row.tone-photo .dir-prof i { background: #e11d2e; }
+
+    .dir-study .dir-v {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .dir-study strong {
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .dir-when {
+      color: var(--blue);
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .dir-when.is-past { color: var(--secondary); }
+
+    .dir-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 2px;
+    }
+
+    .dir-icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: #65676b;
+    }
+
+    .dir-icon:hover { background: #e4e6eb; color: var(--ink); }
+
+    .dir-row:hover .dir-icon:hover { background: #fff; }
+
+    .dir-extra {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #f7f8fa;
+    }
+
+    .dir-row:hover .dir-extra { background: #fff; }
+
+    .dir-extra p {
+      margin: 0;
+      color: var(--ink);
+      font-size: 0.84rem;
+      font-weight: 500;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .dir-tag {
+      display: inline-block;
+      margin-inline-end: 8px;
+      color: var(--secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .dir-head-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .dir-routes-all {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 8px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--secondary);
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .dir-routes-all:hover,
+    .dir-routes-all:focus-visible {
+      background: #f0f2f5;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .dir-routes-all.is-on {
+      color: var(--blue);
+      background: #e7f3ff;
+    }
+
+    .dir-route-bar { display: none; }
+
+    .dir-route {
+      grid-column: 1 / -1;
+      margin-top: 8px;
+      border: 1px solid #e6e8ec;
+      border-radius: 10px;
+      background: #f7f8fa;
+      overflow: hidden;
+    }
+
+    .dir-extra + .dir-route { margin-top: 6px; }
+
+    .dir-row:hover .dir-route {
+      background: #fff;
+      border-color: #e4e6eb;
+    }
+
+    .dir-route-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 34px;
+      padding: 5px 10px;
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .dir-route-toggle:hover { background: rgba(0, 100, 224, 0.05); }
+
+    .dir-route-toggle .posting-chevron {
+      flex: none;
+      color: #98a2b3;
+    }
+
+    .dir-route-toggle[aria-expanded="true"] .posting-chevron { transform: rotate(0deg); }
+
+    .dir-route-count {
+      flex: none;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #e7eaee;
+      color: #5c6370;
+      font-size: 0.68rem;
+      font-weight: 800;
+      line-height: 18px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dir-route.is-open .dir-route-count {
+      background: var(--blue-soft);
+      color: #0546b6;
+    }
+
+    .dir-route-ends {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      margin-inline-start: auto;
+      color: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .dir-route-from,
+    .dir-route-now {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dir-route-from { max-width: 34%; }
+    .dir-route-now {
+      max-width: 46%;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .dir-route-arrow {
+      flex: none;
+      color: #98a2b3;
+      font-size: 0.72rem;
+    }
+
+    .dir-route-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .dir-route.is-open .dir-route-body { grid-template-rows: 1fr; }
+
+    .dir-route-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .dir-route.is-open .dir-route-inner { border-top: 1px solid #eef0f3; }
+
+    .dir-route-track {
+      list-style: none;
+      margin: 0;
+      padding: 8px 12px 6px;
+    }
+
+    .dir-route-track li {
+      position: relative;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 10px;
+      min-height: 28px;
+      padding: 4px 20px 8px 0;
+    }
+
+    .dir-route-track li::before {
+      content: "";
+      position: absolute;
+      inset-inline-start: 0;
+      top: 11px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #c5cad3;
+    }
+
+    .dir-route-track li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      inset-inline-start: 3px;
+      top: 21px;
+      bottom: -2px;
+      width: 2px;
+      background: #e4e6eb;
+    }
+
+    .dir-route-track li.is-current::before {
+      background: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-soft);
+    }
+
+    .dir-route-track li.is-out::before {
+      background: #b54708;
+      box-shadow: 0 0 0 3px #fff4e5;
+    }
+
+    .dir-step-kicker {
+      flex: none;
+      width: 104px;
+      color: var(--secondary);
+      font-size: 0.68rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .dir-route-track strong {
+      flex: 0 1 240px;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.84rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .dir-route-track li.is-current strong { color: var(--ink); }
+    .dir-route-track li.is-out strong { color: #9a3412; }
+
+    .dir-step-meta {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .dir-step-date {
+      color: var(--secondary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dir-step-reason {
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #fff4e5;
+      color: #9a3412;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .dir-group.is-released .dir-name { color: #65676b; }
+
+    body.released-open .dir-group.is-released .dir-name { color: var(--ink); }
+
+    @media (hover: hover) {
+      .dir-who .avatar-cam,
+      .dir-who .avatar-clear { opacity: 0; }
+      .dir-row:hover .dir-who .avatar-cam,
+      .dir-row:hover .dir-who .avatar-clear,
+      .dir-who .avatar-pick:focus-within .avatar-cam { opacity: 1; }
+    }
+
+    @container directory (max-width: 1100px) {
+      .dir-columns { display: none; }
+      .dir-banner { top: 0; }
+      .dir-row {
+        grid-template-columns: 22px minmax(0, 1fr) auto;
+        grid-template-areas:
+          "idx who actions"
+          "facts facts facts"
+          "extra extra extra"
+          "route route route";
+        align-items: start;
+        row-gap: 8px;
+        padding-block: 12px;
+        scroll-margin-top: 44px;
+      }
+      .dir-index { grid-area: idx; padding-top: 10px; }
+      .dir-who { grid-area: who; }
+      .dir-facts {
+        grid-area: facts;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+        align-items: center;
+      }
+      .dir-actions { grid-area: actions; align-self: center; }
+      .dir-extra { grid-area: extra; margin-top: 2px; }
+      .dir-route { grid-area: route; margin-top: 2px; }
+      .dir-route-bar {
+        display: flex;
+        justify-content: flex-end;
+        padding: 6px 12px;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+      .dir-route-ends { display: none; }
+      .dir-route-track li { flex-wrap: wrap; }
+      .dir-route-track strong { flex-basis: auto; white-space: normal; }
+      .dir-step-kicker { width: auto; }
+      .dir-cell { display: inline-flex; align-items: baseline; gap: 4px; width: auto; }
+      .dir-k {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        display: inline;
+        color: var(--secondary);
+        font-size: 0.68rem;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      .dir-v { font-size: 0.82rem; white-space: normal; }
+      .dir-clip { white-space: normal; }
+      .dir-study .dir-v { flex-direction: row; align-items: baseline; gap: 4px; }
     }
 
     .profile-frame, .empty-state { width: 100%; margin-inline: auto; }
@@ -2187,6 +2888,27 @@
       white-space: nowrap;
     }
 
+    #log-btn { position: relative; }
+
+    .notice-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e11d2e;
+      box-shadow: 0 0 0 2px #e4e6eb;
+      pointer-events: none;
+    }
+
+    #log-btn .notice-dot {
+      position: absolute;
+      top: 5px;
+      inset-inline-end: 6px;
+    }
+
+    #log-btn:hover .notice-dot { box-shadow: 0 0 0 2px #d8dadf; }
+
+    .notice-dot[hidden] { display: none; }
+
     .btn-primary { background: var(--blue); color: #fff; }
     .btn-primary:hover { background: var(--blue-hover); color: #fff; }
     .btn-secondary { background: #e4e6eb; color: var(--ink); }
@@ -2320,6 +3042,16 @@
     }
 
     .fact-study .fact-hint { color: #35527a; }
+
+    .fact-study.is-due,
+    .tone-design .fact-study.is-due,
+    .tone-photo .fact-study.is-due { background: #fff4e5; }
+
+    .fact-study.is-due strong,
+    .tone-design .fact-study.is-due strong,
+    .tone-photo .fact-study.is-due strong { color: #9a3412; }
+
+    .dossier:not(.dossier-print) .fact-study.is-due strong { color: #9a3412; }
 
     .fact-study.is-past,
     .tone-design .fact-study.is-past,
@@ -2660,41 +3392,44 @@
 
     .transfer-log {
       width: 100%;
-      min-width: 720px;
+      min-width: 640px;
       border-collapse: separate;
       border-spacing: 0;
       background: var(--surface);
-      border-radius: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: var(--shadow-card);
     }
 
     .transfer-log th {
-      background: #04285c;
-      color: #fff;
-      font-size: 0.82rem;
+      background: #f7f8fa;
+      color: var(--secondary);
+      font-size: 0.75rem;
       font-weight: 800;
       text-align: start;
-      padding: 11px 14px;
+      padding: 10px 14px;
       white-space: nowrap;
+      border-bottom: 1px solid var(--line);
     }
 
     .transfer-log td {
-      padding: 11px 14px;
-      border-top: 1px solid var(--line);
-      vertical-align: top;
+      padding: 12px 14px;
+      border-top: 1px solid #f0f2f5;
+      vertical-align: middle;
       font-size: 0.92rem;
       font-weight: 700;
     }
 
-    .transfer-log tbody tr:nth-child(even) td { background: #f7f8fa; }
+    .transfer-log tbody tr:first-child td { border-top: none; }
+
+    .transfer-log tbody tr:hover td { background: #f7f8fa; }
 
     .log-sub {
       display: block;
       margin-top: 2px;
       color: var(--secondary);
       font-size: 0.75rem;
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .log-jump {
@@ -2703,33 +3438,163 @@
       padding: 0;
       font: inherit;
       font-weight: 800;
-      color: var(--blue);
+      color: var(--ink);
       text-align: start;
     }
 
-    .log-jump:hover { text-decoration: underline; }
+    .log-jump:hover { color: var(--blue); }
 
-    .log-reason { color: #9a3412; }
+    .log-reason { color: #9a3412; font-weight: 700; }
 
     .log-head {
       display: flex;
       flex-wrap: wrap;
       align-items: flex-end;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 12px 16px;
+      margin-bottom: 6px;
     }
 
-    .log-head h2 { margin: 0 0 4px; font-size: 1.7rem; font-weight: 800; letter-spacing: -0.03em; }
-    .log-head p { margin: 0; color: var(--secondary); font-weight: 600; }
+    .log-head > div { min-width: 0; flex: 1 1 280px; }
+
+    .log-head h2 { margin: 0; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; }
+    .log-head p { margin: 6px 0 0; color: var(--secondary); font-size: 0.92rem; font-weight: 600; }
+
+    .log-cycles,
+    .log-cycle,
+    .log-people,
+    .log-person { min-width: 0; max-width: 100%; }
+
+    .log-tabs {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      margin: 16px 0 18px;
+      padding: 3px;
+      background: var(--chip);
+      border-radius: 12px;
+    }
+
+    .log-tab {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      border-radius: 9px;
+      background: transparent;
+      box-shadow: none;
+      padding: 7px 12px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+
+    .log-tab:hover { color: var(--ink); }
+
+    .log-tab.is-on,
+    .log-tab.is-on:hover {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: var(--shadow);
+    }
+
+    .log-tab .notice-dot {
+      flex: none;
+      width: 7px;
+      height: 7px;
+      box-shadow: none;
+    }
+
+    .log-tab-count {
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: #e4e6eb;
+      color: var(--ink);
+      display: inline-grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      opacity: 1;
+    }
+
+    .log-tab.is-on .log-tab-count {
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+    }
+
+    .log-cycles { display: flex; flex-direction: column; gap: 12px; }
+
+    .log-cycle {
+      margin: 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .log-cycle-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      padding: 12px 14px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+    }
+
+    .log-cycle-head strong {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .log-cycle-date {
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .log-cycle-head .flag { margin-inline-start: auto; }
+
+    .log-people { display: flex; flex-direction: column; }
+
+    .log-person {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 8px 16px;
+      align-items: center;
+      padding: 11px 14px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .log-person:first-child { border-top: none; }
+
+    .log-person:hover { background: #f7f8fa; }
+
+    .log-person-who { min-width: 0; }
+
+    .log-person-place,
+    .log-person-date {
+      min-width: 0;
+      color: var(--secondary);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
 
     .log-search {
       width: min(280px, 100%);
       height: 40px;
-      border: none;
+      border: 1px solid var(--line);
       border-radius: 10px;
-      background: var(--surface);
-      box-shadow: var(--shadow);
+      background: #fff;
+      box-shadow: none;
       padding: 0 12px;
       font: inherit;
       font-weight: 600;
@@ -2737,17 +3602,26 @@
 
     .log-search:focus-visible {
       outline: none;
+      border-color: transparent;
       box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
     }
 
     .log-empty {
-      padding: 28px 16px;
-      background: var(--surface);
-      border-radius: 16px;
-      box-shadow: var(--shadow-card);
+      padding: 36px 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: none;
       color: var(--secondary);
       font-weight: 700;
       text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      .log-tabs { display: flex; }
+      .log-tab { flex: 1; justify-content: center; }
+      .log-person { grid-template-columns: 1fr; gap: 2px; }
+      .log-cycle-head .flag { margin-inline-start: 0; }
     }
 
     .unassigned-board { margin-top: 28px; }
@@ -2980,12 +3854,17 @@
       font: inherit;
     }
 
+    .editor .cycle-custom { margin-top: 8px; }
+    .editor .cycle-custom[hidden] { display: none; }
+
     .date-field {
       position: relative;
       display: flex;
       flex-direction: column;
       min-width: 0;
     }
+
+    .date-field[hidden] { display: none; }
 
     .date-trigger {
       display: flex;
@@ -3098,21 +3977,35 @@
       margin-top: 6px;
     }
 
-    .mark-toggle {
+    .editor-grid .mark-toggle {
       flex-direction: row;
       align-items: center;
-      gap: 10px;
-      min-height: 44px;
-      padding: 8px 12px;
-      border-radius: 10px;
-      background: var(--chip);
+      align-self: end;
+      justify-self: start;
+      gap: 8px;
+      width: fit-content;
+      height: 36px;
+      min-height: 0;
+      margin-bottom: 4px;
+      padding: 0 14px;
+      border: 1.5px solid #d5d8de;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
       cursor: pointer;
-      font-weight: 800;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .editor-grid .mark-toggle:hover {
+      border-color: #e11d2e;
+      background: #fff5f6;
     }
 
     .editor .mark-toggle input {
-      width: 18px;
-      height: 18px;
+      width: 15px;
+      height: 15px;
       flex: none;
       margin: 0;
       padding: 0;
@@ -3123,11 +4016,17 @@
 
     .mark-toggle:has(input:checked) {
       background: #e11d2e;
+      border-color: #e11d2e;
       color: #fff;
     }
 
+    .mark-toggle:has(input:checked):hover {
+      background: #c81a28;
+      border-color: #c81a28;
+    }
+
     .mark-toggle:focus-within {
-      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
+      box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--blue);
     }
 
     .editor-actions {
@@ -3328,7 +4227,7 @@
       .roster-column { flex: 1; max-width: none; min-height: 0; }
       .profile-frame, .empty-state { max-width: none; }
       .roster-body { display: block; overflow: hidden; }
-      .profile-scroll { display: none; height: 100%; padding: 8px 8px 20px; }
+      .profile-scroll { display: block; height: 100%; padding: 8px 8px 20px; }
       body.profile-open .sidebar,
       body.profile-open .finder,
       body.profile-open .list { display: none; }
@@ -3359,7 +4258,7 @@
         height: auto;
         background: #fff;
       }
-      .skip, .appbar, .workspace, .hit-pop { display: none !important; }
+      .skip, .appbar, .workspace, .hit-pop, .palette { display: none !important; }
       .print-root { display: block; }
       .cycle-group { display: block; }
       .profile-frame.is-released .dossier,
@@ -3424,7 +4323,7 @@
       </div>
     </div>
     <div class="app-actions">
-    <button class="btn btn-secondary" id="log-btn" type="button">יומן מעברים</button>
+    <button class="btn btn-secondary" id="log-btn" type="button">יומן<span class="notice-dot" hidden aria-hidden="true"></span></button>
     <button class="btn btn-primary" id="add-btn" type="button">חייל חדש</button>
     </div>
   </header>
@@ -3498,98 +4397,14 @@
       detail       פרט            (רשות)
       residence    מקום מגורים
       grade        מדרג
-      studyDate    תאריך יום עיון
+      studyDate    תאריך יום עיון  (נמלא אוטומטית: 10 חודשים מתחילת ההכשרה)
+      trainStart   תחילת הכשרה    (רק כשאין סימון «ללא הכשרה»)
       notes        הערות          (רשות)
       photo        תמונה          (רשות, מוצגת במקום ראשי התיבות)
       transfers    מסלול          (רשימת מעברים: מאיפה, לאן, סיבה, תאריך)
       external     יצאה מהצבא או יצאה מהזרוע (רשות)
     */
-    var SOLDIERS = [
-      { profession: "עריכה", unit: "bislach", name: "ליה אדר אברמוב", personalId: "9434845", phone: "055-8960739", tatash: "2.11.26", cycle: "י״ו", residence: "מעלה אדומים" },
-      { profession: "גרפיקה", unit: "bislach", name: "אופיר אלטש", personalId: "9624047", phone: "054-9325272", tatash: "2.11.26", cycle: "י״ו", residence: "רמות מאיר" },
-      { profession: "צילום", unit: "bislach", name: "שיר הלל אלג", personalId: "9595306", phone: "052-7723718", tatash: "18.10.27", cycle: "י״ט", residence: "שדה נח, נוה עציון" },
-      { profession: "גרפיקה", unit: "bislach", name: "עילי ממן", personalId: "9871244", phone: "053-3504101", tatash: "21.8.28", cycle: "כ׳", residence: "אשקלון" },
-      { profession: "עריכה", unit: "bislach", name: "ארי מרדכי נאורי", personalId: "9531355", phone: "054-2236800", tatash: "21.8.28", cycle: "כ׳", residence: "חולון" },
-      { profession: "עריכה", unit: "shivta", name: "רוננה בן מיר", personalId: "9623474", phone: "058-7783059", tatash: "2.11.26", cycle: "י״ו", residence: "מודיעין" },
-      { profession: "גרפיקה", unit: "shivta", name: "איה ריבן", personalId: "9785280", phone: "050-6424363", tatash: "19.10.27", cycle: "י״ט", residence: "תל אביב" },
-      { profession: "צילום", unit: "shivta", name: "רעות עמר", personalId: "9830737", phone: "052-9656356", tatash: "18.10.27", cycle: "י״ט", residence: "מודיעין" },
-      { profession: "עריכה", unit: "shivta", name: "דנה עמר", personalId: "9707780", phone: "058-5363613", tatash: "9.2.28", cycle: "כ׳", residence: "ראשון לציון" },
-      { profession: "עריכה", unit: "shiryon", name: "ליאור משי משי", personalId: "9464190", phone: "054-3207552", tatash: "2.11.2026", cycle: "י״ו", residence: "רעננה" },
-      { profession: "צילום", unit: "shiryon", name: "דני רון", personalId: "9591756", phone: "058-6220606", tatash: "05.04.2027", cycle: "י״ח", residence: "גבעתיים" },
-      { profession: "צילום", unit: "shiryon", name: "אריאל דבי", personalId: "9886340", phone: "054-3931027", tatash: "18.10.27", cycle: "י״ט", residence: "הרצליה" },
-      { profession: "צילום", unit: "bahalag", name: "אימה שרה מראמון", personalId: "9586438", phone: "054-8741688", tatash: "2.11.26", cycle: "י״ו", residence: "חולון" },
-      { profession: "צילום", unit: "bahalag", name: "שרה לגיא", personalId: "9459386", phone: "058-6335308", tatash: "05.04.2027", cycle: "י״ח", residence: "אילת" },
-      { profession: "גרפיקה", unit: "bahalag", name: "אלה פלד", personalId: "9643792", phone: "054-7743090", tatash: "05.04.2027", cycle: "י״ח", residence: "באר יעקב" },
-      { profession: "עריכה", unit: "bahalag", name: "אלכס רוטברד", personalId: "9694077", phone: "058-6446029", tatash: "18.10.27", cycle: "י״ט", residence: "רמת שרון" },
-      { profession: "צילום", unit: "bahalatz", name: "אופירית אחמד", personalId: "9228130", phone: "052-6354117", tatash: "2.11.26", cycle: "י״ו", residence: "קריית אתא" },
-      { profession: "גרפיקה", unit: "bahalatz", name: "אביטל שליו", personalId: "9573461", phone: "050-5820558", tatash: "2.11.2026", cycle: "י״ו", residence: "קריית אתא" },
-      { profession: "גרפיקה", unit: "bahalatz", name: "נטליה הרשקוביץ", personalId: "9294894", phone: "050-7579320", tatash: "2.11.2026", cycle: "י״ו", residence: "שדה בוקר" },
-      { profession: "צילום", unit: "bahalatz", name: "נועה אילון", personalId: "9460586", phone: "050-9612804", tatash: "05.04.2027", cycle: "י״ח", residence: "אילת" },
-      { profession: "גרפיקה", unit: "bahalatz", name: "יובל אור", personalId: "9620327", phone: "052-4472821", tatash: "18.10.27", cycle: "י״ט", residence: "הרצליה" },
-      { profession: "גרפיקה", unit: "merkaz-mifkadot", name: "שירת לוי", personalId: "9300226", phone: "", tatash: "28.10.26", cycle: "", residence: "" },
-      { profession: "צילום", unit: "merkaz-mifkadot", name: "אלכסיי חסקוב", personalId: "9949974", phone: "053-9199996", tatash: "12.4.27", cycle: "י״ו", residence: "אשקלון" },
-      { profession: "עריכה", unit: "merkaz-mifkadot", name: "חיה בלומסקי", personalId: "9663953", phone: "053-3406910", tatash: "18.10.27", cycle: "י״ט", residence: "רמת גן" },
-      { profession: "גרפיקה", unit: "merkaz-mifkadot", name: "ניקולאי קטמיסקי", personalId: "9663334", phone: "051-5197383", tatash: "21.8.28", cycle: "כ׳", residence: "נשר" },
-      { profession: "גרפיקה", unit: "mali", name: "הדר גלילי", personalId: "9633120", phone: "054-9539050", tatash: "2.11.26", cycle: "י״ו", residence: "פתח תקווה" },
-      { profession: "עריכה", unit: "mali", name: "נועה אבנון", personalId: "9612479", phone: "053-5203527", tatash: "05.04.2027", cycle: "י״ח", residence: "כפר יונה" },
-      { profession: "צילום", unit: "mali", name: "קארינה שרביט", personalId: "9870954", phone: "054-2905323", tatash: "9.2.28", cycle: "כ׳", residence: "חיפה" },
-      { profession: "עריכה", unit: "dotz", name: "מיכאל חדד", personalId: "9389496", phone: "052-8012500", tatash: "4.1.27", cycle: "ט״ו", residence: "חולון" },
-      { profession: "", unit: "dotz", name: "יובל מופי", personalId: "9389091", phone: "050-2813070", tatash: "4.1.27", cycle: "ט״ו", residence: "פתח תקווה" },
-      { profession: "צילום", unit: "dotz", name: "עדי עובדת", personalId: "9510925", phone: "052-2278831", tatash: "05.04.2027", cycle: "י״ח", residence: "רמלה" },
-      { profession: "עריכה", unit: "dotz", name: "מתן וינטראוב", personalId: "9750902", phone: "054-9103370", tatash: "18.10.27", cycle: "י״ט", residence: "פתח תקווה", detail: "אלרגיה - חרק אפיפן" },
-      { profession: "עריכה", unit: "dotz", name: "נמרוד שייקין", personalId: "9698290", phone: "058-4131319", tatash: "28.7.28", cycle: "כ׳", residence: "רמת גן" },
-      { profession: "גרפיקה", unit: "amit", name: "בת אל אמזן", personalId: "9563343", phone: "053-4858549", tatash: "2.11.26", cycle: "י״ו", residence: "חיפה" },
-      { profession: "גרפיקה", unit: "amit", name: "אליה לוי", personalId: "9808352", phone: "054-7709156", tatash: "19.10.27", cycle: "י״ט", residence: "חיפה" },
-      { profession: "צילום", unit: "dotz-atal", name: "נועה שמש רוחאית", personalId: "9656760", phone: "053-5255399", tatash: "05.04.2027", cycle: "י״ח - קורס אט״ל", residence: "פתח תקווה" },
-      { profession: "עריכה", unit: "dotz-atal", name: "דאיה צ׳יפינה", personalId: "9619942", phone: "058-4180975", tatash: "05.04.2027", cycle: "י״ח - קורס אט״ל", residence: "ראש העין" },
-      { profession: "עריכה", unit: "dotz-atal", name: "בר לילינשטיין", personalId: "9562373", phone: "053-3352827", tatash: "2.11.2026", cycle: "י״ו", residence: "חיפה" },
-      { profession: "גרפיקה", unit: "dotz-atal", name: "שירה מרום", personalId: "9371155", phone: "052-6640629", tatash: "2.11.26", cycle: "י״ו", residence: "תל אביב" },
-      { profession: "צילום", unit: "dotz-atal", name: "נעמה דן עצמון", personalId: "9403285", phone: "054-9426233", tatash: "2.11.27", cycle: "י״ו", residence: "פרדס חנה כרכור" },
-      { profession: "גרפיקה", unit: "dotz-atal", name: "הדר זולב", personalId: "9902050", phone: "058-7447317", tatash: "21.8.28", cycle: "כ׳", residence: "פתח תקווה" },
-      { profession: "עריכה", unit: "dotz-atal", name: "יאיר נתן", personalId: "9815662", phone: "054-3258824", tatash: "21.8.28", cycle: "כ׳", residence: "חיפה", detail: "בת״ש 2" },
-      { profession: "צילום", unit: "dotz-atal", name: "הילה יובל גל", personalId: "9902095", phone: "058-4455414", tatash: "9.2.28", cycle: "כ׳", residence: "חולון" },
-      { profession: "", unit: "dotz-atal", name: "מילנה בניאשוילי", personalId: "9859370" },
-      { profession: "גרפיקה", unit: "ezrei-imun", name: "רונאל אבסלנדר", personalId: "9579744", phone: "052-3637789", tatash: "05.10.2027", cycle: "י״ח", residence: "אשדוד" },
-      { profession: "גרפיקה", unit: "ezrei-imun", name: "רומי גלוקבוים", personalId: "9530920", phone: "058-6630620", tatash: "05.04.2027", cycle: "י״ח", residence: "באר יעקב" },
-      { profession: "גרפיקה", unit: "okez", name: "פלג בן משה", personalId: "9345146", phone: "052-4220157", tatash: "4.1.27", cycle: "ט״ו", residence: "נתניה" },
-      { profession: "צילום", unit: "okez", name: "תומר לוין", personalId: "9481686", phone: "053-3350395", tatash: "05.04.2027", cycle: "י״ח", residence: "פתח תקווה" },
-      { profession: "צילום", unit: "bahad-1", name: "נועה רבקה לנדאו", personalId: "9200476", phone: "050-9120047", tatash: "2.11.26", cycle: "י״ו", residence: "כרמיאל" },
-      { profession: "צילום", unit: "bahad-1", name: "ליה קופיט", personalId: "9518286", phone: "058-4999800", tatash: "05.04.2027", cycle: "י״ח", residence: "רמת השרון" },
-      { profession: "עריכה", unit: "bahad-1", name: "איה מזרחי", personalId: "9633702", phone: "050-9191816", tatash: "05.04.2027", cycle: "י״ח", residence: "אלומות" },
-      { profession: "צילום", unit: "bahad-1", name: "ליהי עירון", personalId: "9522266", phone: "058-4888319", tatash: "18.10.27", cycle: "י״ט", residence: "מושב בית עוזיאל" },
-      { profession: "גרפיקה", unit: "bahad-1", name: "איילה נתן", personalId: "9858773", phone: "033-0924259", tatash: "9.2.28", cycle: "כ׳", residence: "ראשון לציון" },
-      { profession: "צילום", unit: "habat", name: "אדם נתן גינקו", personalId: "9359087", phone: "054-9385155", tatash: "12.6.27", cycle: "י״ו", residence: "בית חירות" },
-      { profession: "עריכה", unit: "habat", name: "טל וילנציק", personalId: "9581135", phone: "054-3756444", tatash: "2.11.26", cycle: "י״ו", residence: "הרצליה" },
-      { profession: "גרפיקה", unit: "habat", name: "שקד וטורי", personalId: "9506257", phone: "053-7289876", tatash: "2.11.26", cycle: "י״ו", residence: "פתח תקווה" },
-      { profession: "גרפיקה", unit: "habat", name: "ליאן אוקר", personalId: "9471729", phone: "052-2942642", tatash: "2.11.26", cycle: "י״ו", residence: "נתניה" },
-      { profession: "צילום", unit: "habat", name: "שירה כהן", personalId: "9637144", phone: "058-7658650", tatash: "05.04.2027", cycle: "י״ח", residence: "מודיעין" },
-      { profession: "עריכה", unit: "habat", name: "ליזה פריימן", personalId: "9440260", phone: "053-3257509", tatash: "05.04.2027", cycle: "י״ח", residence: "חולון", detail: "חיילת בודדה" },
-      { profession: "עריכה", unit: "habat", name: "שיר בוטנשטיין", personalId: "9645125", phone: "050-4737070", tatash: "05.04.2027", cycle: "י״ח", residence: "ראשון לציון", detail: "בת״ש 5" },
-      { profession: "גרפיקה", unit: "habat", name: "מעי בטקובץ", personalId: "9604778", phone: "054-5757058", tatash: "05.04.2027", cycle: "י״ח", residence: "חיפה" },
-      { profession: "גרפיקה", unit: "habat", name: "ליהיא גורן כץ", personalId: "9504152", phone: "054-8126828", tatash: "05.04.2027", cycle: "י״ח", residence: "מודיעין" },
-      { profession: "עריכה", unit: "habat", name: "רות לוי", personalId: "9485419", phone: "054-2889402", tatash: "05.04.2027", cycle: "י״ח", residence: "חיפה" },
-      { profession: "עריכה", unit: "habat", name: "בתאל טקלה", personalId: "9617131", phone: "058-4997119", tatash: "05.04.2027", cycle: "י״ח", residence: "אשקלון" },
-      { profession: "עריכה", unit: "habat", name: "נער שרגא", personalId: "9427931", phone: "052-8132632", tatash: "12.11.27", cycle: "י״ט", residence: "כפר ורדים" },
-      { profession: "צילום", unit: "habat", name: "אלכס שלי דליגמן", personalId: "9342406", phone: "053-2804197", tatash: "18.10.27", cycle: "י״ט", residence: "הוד השרון", detail: "פרופיל 45" },
-      { profession: "גרפיקה", unit: "habat", name: "היל אסתר מזר", personalId: "9833027", phone: "050-9898185", tatash: "18.10.27", cycle: "י״ט", residence: "באר יעקב" },
-      { profession: "צילום", unit: "habat", name: "איה טוב", personalId: "9494883", phone: "054-4367102", tatash: "18.10.27", cycle: "י״ט", residence: "ירושלים" },
-      { profession: "גרפיקה", unit: "habat", name: "דינגל", personalId: "9768064", phone: "054-9917107", tatash: "9.2.28", cycle: "כ׳", residence: "ראשון לציון" },
-      { profession: "עריכה", unit: "habat", name: "עילאי רח שפירא", personalId: "9904747", phone: "058-6336868", tatash: "21.8.28", cycle: "כ׳", residence: "אבן יהודה" },
-      { profession: "צילום", unit: "habat", name: "מאיה בן אהרון גלילי", personalId: "9740608", phone: "052-3308661", tatash: "9.2.28", cycle: "כ׳", residence: "הר אדר" },
-      { profession: "עריכה", unit: "habat", name: "יונתן מתן", personalId: "9545087", phone: "052-4254397", tatash: "21.8.26", cycle: "כ׳", residence: "רמת גן" },
-      { profession: "צילום", unit: "habat", name: "מריה סיאנוב", personalId: "1101496", phone: "", tatash: "28.12.2027", cycle: "", residence: "", detail: "חיילת בודדה" },
-      { profession: "עריכה", unit: "kampf", name: "ליאור שרמן", personalId: "9781080", phone: "054-4681611", tatash: "18.10.27", cycle: "י״ט", residence: "כפר סבא" },
-      { profession: "גרפיקה", unit: "kampf", name: "אופיר חדיה", personalId: "9877118", phone: "055-8864080", tatash: "18.10.27", cycle: "י״ט", residence: "ירושלים" },
-      { profession: "צילום", unit: "kampf", name: "אריאל רובינסה", personalId: "9339142", phone: "055-8872421", tatash: "18.10.27", cycle: "י״ט", residence: "יבנה" },
-      { profession: "עריכה", unit: "wingate", name: "נוי פרקש", personalId: "9518245", phone: "052-8761238", tatash: "05.04.2027", cycle: "י״ח", residence: "צור משה" },
-      { profession: "צילום", unit: "wingate", name: "לי גברי", personalId: "9519643", phone: "053-4308806", tatash: "05.04.2027", cycle: "י״ח", residence: "נתניה" },
-      { profession: "עריכה", unit: "wingate", name: "ניר מנדל", personalId: "9208303", phone: "050-6899895", tatash: "12.4.27", cycle: "י״ו", residence: "רמת הכובש", detail: "בת״ש 4" },
-      { profession: "צילום", unit: "marom", name: "יעל קרואני", personalId: "9615490", phone: "054-4799414", tatash: "05.04.2027", cycle: "י״ח", residence: "שלומי" },
-      { profession: "עריכה", unit: "marom", name: "ליאור גלעד", personalId: "9535352", phone: "058-7882996", tatash: "18.10.27", cycle: "י״ט", residence: "מודיעין" },
-      { profession: "גרפיקה", unit: "marom", name: "נוה גלב", personalId: "9361375", phone: "052-6231644", tatash: "18.10.27", cycle: "י״ט", residence: "תל אביב" },
-      { profession: "עריכה", unit: "merkaz-lafrat", name: "ליאור קראוס", personalId: "9531722", phone: "055-8825636", tatash: "2.11.2026", cycle: "י״ו", residence: "חולון" },
-      { profession: "גרפיקה", unit: "merkaz-lafrat", name: "אביב מור", personalId: "9695172", phone: "054-5914920", tatash: "18.10.27", cycle: "י״ט", residence: "תל אביב" }
-    ];
+    var SOLDIERS = [];
 
     var CONFIG = {
       title: "תקן מצבה זרועי",
@@ -3876,7 +4691,8 @@
       { label: "קצין", name: "officerName", phone: "officerPhone" },
       { label: "רמ״ד פל״א", name: "ramadName", phone: "ramadPhone" }
     ];
-    var STORAGE_KEY = "hebet-matrix-soldiers-v7";
+    var STORAGE_KEY = "hebet-matrix-soldiers-v8";
+    var STUDY_SEEN_KEY = "hebet-matrix-study-seen";
     var UNIT_KEY = "hebet-matrix-unit";
     var UNITS_KEY = "hebet-matrix-units-v2";
     var FIELDS = [
@@ -3886,11 +4702,12 @@
       { key: "personalId", label: "מ״א" },
       { key: "phone", label: "טלפון", type: "tel" },
       { key: "tatash", label: "תת״ש", date: true },
-      { key: "cycle", label: "מחזור קורס" },
+      { key: "cycle", label: "מחזור קורס", cycles: true },
       { key: "residence", label: "מקום מגורים" },
       { key: "grade", label: "מדרג" },
-      { key: "untrained", label: "ללא הכשרה", check: true, wide: true },
-      { key: "studyDate", label: "תאריך יום עיון", placeholder: "05.11.2026" },
+      { key: "untrained", label: "ללא הכשרה", check: true },
+      { key: "trainStart", label: "תחילת הכשרה", date: true, trainedOnly: true },
+      { key: "studyDate", label: "תאריך יום עיון", date: true, trainedOnly: true },
       { key: "detail", label: "פרט", wide: true },
       { key: "notes", label: "הערות", wide: true }
     ];
@@ -3919,8 +4736,13 @@
       transferDraft: null,
       logOpen: false,
       logQuery: "",
+      logTab: "transfers",
       outsideOpen: false,
-      releasedOpen: false
+      releasedOpen: false,
+      sortKey: "",
+      sortDir: "",
+      routesOpen: false,
+      routeKeys: {}
     };
     var TRANSFER_REASONS = ["פרופיל 21", "פסילת מקצוע — אי התאמה", "הת״ש 4", "אי התאמה ליחידה", "סבב ב׳", "יוהל״ם", "טופס 55"];
     var EXIT_REASONS = ["פרופיל 21", "פסילת מקצוע — אי התאמה", "הת״ש 4", "אי התאמה ליחידה", "טופס 55", "ועדה רפואית"];
@@ -4170,6 +4992,83 @@
       return flag === true || flag === 1 || clean(flag) === "1";
     }
 
+    function trainingDate(soldier) {
+      if (!soldier || isUntrained(soldier) || !present(soldier.trainStart)) return "";
+      return clean(soldier.trainStart);
+    }
+
+    function addMonths(date, count) {
+      var day = date.getDate();
+      var next = new Date(date.getFullYear(), date.getMonth() + count, 1);
+      var last = new Date(next.getFullYear(), next.getMonth() + 1, 0).getDate();
+      next.setDate(Math.min(day, last));
+      return startOfDay(next);
+    }
+
+    function studyDateFromTrain(stamp) {
+      var start = stampToDate(stamp);
+      if (!start) return "";
+      return stampFromDate(addMonths(start, 10));
+    }
+
+    function effectiveStudyStamp(soldier) {
+      if (!soldier || isUntrained(soldier)) return "";
+      if (present(soldier.studyDate)) return clean(soldier.studyDate);
+      return studyDateFromTrain(soldier.trainStart);
+    }
+
+    function needsStudyDay(soldier) {
+      var due = stampToDate(effectiveStudyStamp(soldier));
+      if (!due) return false;
+      return startOfDay(new Date()) >= due;
+    }
+
+    function studyNoticeId(soldier) {
+      return keyOf(soldier) + "|" + trainingDate(soldier);
+    }
+
+    function readStudySeen() {
+      try {
+        var raw = localStorage.getItem(STUDY_SEEN_KEY);
+        var parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function unseenStudyNotices() {
+      var seen = {};
+      readStudySeen().forEach(function (id) { seen[id] = true; });
+      return SOLDIERS.filter(function (soldier) {
+        return needsStudyDay(soldier) && !seen[studyNoticeId(soldier)];
+      });
+    }
+
+    function acknowledgeStudyNotices() {
+      var seen = {};
+      readStudySeen().forEach(function (id) { seen[id] = true; });
+      var changed = false;
+      SOLDIERS.forEach(function (soldier) {
+        if (!needsStudyDay(soldier)) return;
+        var id = studyNoticeId(soldier);
+        if (seen[id]) return;
+        seen[id] = true;
+        changed = true;
+      });
+      if (!changed) return;
+      try { localStorage.setItem(STUDY_SEEN_KEY, JSON.stringify(Object.keys(seen))); } catch (err) {}
+    }
+
+    function syncStudyNotice() {
+      var logBtn = document.getElementById("log-btn");
+      if (!logBtn) return;
+      var count = unseenStudyNotices().length;
+      var dot = logBtn.querySelector(".notice-dot");
+      if (dot) dot.hidden = count === 0;
+      logBtn.setAttribute("aria-label", count ? "יומן, יש הודעה חדשה" : "יומן");
+    }
+
     function fillReleaseSelect(select, soldiers) {
       var seen = {};
       var keys = [];
@@ -4225,11 +5124,13 @@
         "</div></div>";
     }
 
-    function copyButton(value, label, extraClass) {
-      var iconSize = extraClass ? 16 : 15;
-      return '<button class="copy-id' + (extraClass ? " " + extraClass : "") + '" type="button" data-action="copy" data-copy="' + esc(value) + '" data-idle-label="' + esc(label) + '" aria-label="' + esc(label) + '">' +
+    function copyButton(value, label, extraClass, tag) {
+      var iconSize = extraClass === "unit-commander-copy" ? 13 : (extraClass ? 16 : 15);
+      var el = tag || "button";
+      var attrs = el === "button" ? ' type="button"' : ' role="button" tabindex="-1"';
+      return "<" + el + ' class="copy-id' + (extraClass ? " " + extraClass : "") + '"' + attrs + ' data-action="copy" data-copy="' + esc(value) + '" data-idle-label="' + esc(label) + '" aria-label="' + esc(label) + '">' +
         '<span class="copy-idle">' + svg("copy", iconSize) + "</span>" +
-        '<span class="copy-done">' + svg("check", iconSize) + "</span></button>";
+        '<span class="copy-done">' + svg("check", iconSize) + "</span></" + el + ">";
     }
 
     function factCell(label, valueHtml) {
@@ -4282,7 +5183,7 @@
       var tone = professionTone(profession);
       var id = present(soldier.personalId) ? clean(soldier.personalId) : "";
       var phone = clean(soldier.phone);
-      var parts = dateParts(soldier.studyDate);
+      var parts = dateParts(effectiveStudyStamp(soldier));
 
       var idHtml = "";
       if (id) {
@@ -4304,11 +5205,12 @@
       facts += factCell("תת״ש", present(soldier.tatash) ? esc(clean(soldier.tatash)) : "");
       facts += factCell("מגורים", present(soldier.residence) ? esc(clean(soldier.residence)) : "");
       facts += factCell("מדרג", present(soldier.grade) ? esc(clean(soldier.grade)) : "");
+      facts += factCell("תחילת הכשרה", trainingDate(soldier) ? esc(trainingDate(soldier)) : "");
 
+      var studyDue = needsStudyDay(soldier);
       var study = "";
-      if (present(soldier.studyDate)) {
-        var past = parts.diff !== null && parts.diff < 0;
-        study = '<div class="fact fact-study' + (past ? " is-past" : "") + '"><div class="study-main"><span class="fact-label">יום עיון</span><strong>' + esc(parts.pretty || parts.raw) + "</strong>" + (parts.raw && parts.pretty !== parts.raw ? '<span class="fact-hint">' + esc(parts.raw) + "</span>" : "") + "</div>" + (parts.relative ? '<span class="when">' + esc(parts.relative) + "</span>" : "") + "</div>";
+      if (present(effectiveStudyStamp(soldier))) {
+        study = '<div class="fact fact-study' + (studyDue ? " is-due" : "") + '"><div class="study-main"><span class="fact-label">יום עיון</span><strong>' + esc(parts.pretty || parts.raw) + "</strong>" + (parts.raw && parts.pretty !== parts.raw ? '<span class="fact-hint">' + esc(parts.raw) + "</span>" : "") + "</div>" + (parts.relative ? '<span class="when">' + esc(parts.relative) + "</span>" : "") + "</div>";
       }
 
       var back = opts.back
@@ -4318,7 +5220,9 @@
       var soldierKey = keyOf(soldier);
       var released = isReleased(soldier);
       var releasedBadge = released ? '<span class="released-badge">משוחרר</span>' : "";
+      var studyDueBadge = studyDue ? '<span class="flag flag-study-due">צריך יום עיון</span>' : "";
       var untrainedBadge = isUntrained(soldier) ? '<span class="untrained-badge">ללא הכשרה</span>' : "";
+      var studyDueBadge = needsStudyDay(soldier) ? '<span class="flag flag-study-due">צריך יום עיון</span>' : "";
 
       return '<div class="profile-frame' + (released ? " is-released" : "") + '"' + (opts.compact ? "" : ' data-soldier="' + esc(soldierKey) + '"') + ">" + back +
         '<article class="dossier' + (tone ? " " + tone : "") + (released ? " is-released" : "") + (opts.selected ? " is-selected" : "") + (opts.compact ? " dossier-print" : "") + '">' +
@@ -4337,6 +5241,7 @@
                   "<h2 class=\"identity-name\"" + nameId + ">" + esc(name) + "</h2>" +
                   secondPostingMark(soldier) +
                   releasedBadge +
+                  studyDueBadge +
                   nameCopy +
                 "</div>" +
               "</div>" +
@@ -4353,7 +5258,7 @@
       var parts = [];
       if (clean(soldier.external)) parts.push(clean(soldier.external));
       if (present(soldier.profession)) parts.push(clean(soldier.profession));
-      var date = shortDate(soldier.studyDate);
+      var date = shortDate(effectiveStudyStamp(soldier));
       if (date) parts.push(date);
       if (present(soldier.residence)) parts.push(clean(soldier.residence));
       if (parts.length < 2 && hasPhone(soldier)) parts.push(clean(soldier.phone));
@@ -4364,6 +5269,7 @@
       var html = "";
       if (isReleased(soldier)) html += '<span class="flag flag-released">משוחרר</span>';
       if (isUntrained(soldier)) html += '<span class="flag flag-untrained">ללא הכשרה</span>';
+      if (needsStudyDay(soldier)) html += '<span class="flag flag-study-due">צריך יום עיון</span>';
       if (present(soldier.detail)) html += '<span class="flag">פרט</span>';
       if (present(soldier.notes)) html += '<span class="flag">הערה</span>';
       if (soldier.transfers && soldier.transfers.length && isUnassigned(soldier)) html += '<span class="flag">מעבר</span>';
@@ -4373,6 +5279,62 @@
     function cycleLabel(key) {
       if (key === "משוחררים" || key === "ללא מחזור") return key;
       return "מחזור " + key;
+    }
+
+    function directorySortRank(soldier, key) {
+      if (key === "personalId" || key === "phone") {
+        var raw = digits(soldier[key]);
+        return { empty: !raw, num: raw ? Number(raw) : 0 };
+      }
+      if (key === "tatash" || key === "studyDate" || key === "trainStart") {
+        var dateKey = releaseKey(key === "studyDate" ? effectiveStudyStamp(soldier) : soldier[key]);
+        var dated = /^\d{4}-\d{2}-\d{2}$/.test(dateKey);
+        return { empty: !dated, text: dated ? dateKey : "" };
+      }
+      var text = clean(soldier[key]);
+      return { empty: !text, text: text };
+    }
+
+    function compareDirectorySort(a, b, key, dir) {
+      var av = directorySortRank(a, key);
+      var bv = directorySortRank(b, key);
+      if (av.empty !== bv.empty) return av.empty ? 1 : -1;
+      var cmp = 0;
+      if (!av.empty) {
+        cmp = av.num != null || bv.num != null ? (av.num || 0) - (bv.num || 0) : compareHe(av.text, bv.text);
+        if (dir === "desc") cmp = -cmp;
+      }
+      if (cmp) return cmp;
+      var byName = compareHe(a.name || "", b.name || "");
+      if (byName) return byName;
+      return compareHe(a.personalId || "", b.personalId || "");
+    }
+
+    function toggleDirectorySort(key) {
+      if (!key) return;
+      if (state.sortKey !== key) {
+        state.sortKey = key;
+        state.sortDir = "asc";
+        return;
+      }
+      if (state.sortDir === "asc") {
+        state.sortDir = "desc";
+        return;
+      }
+      state.sortKey = "";
+      state.sortDir = "";
+    }
+
+    function directoryGroups(list) {
+      if (!state.sortKey) return groupSoldiers(list);
+      return [{
+        key: "",
+        flat: true,
+        released: false,
+        items: list.slice().sort(function (a, b) {
+          return compareDirectorySort(a, b, state.sortKey, state.sortDir === "desc" ? "desc" : "asc");
+        })
+      }];
     }
 
     function sortSoldiers(items) {
@@ -4418,9 +5380,187 @@
       return groups;
     }
 
+    function dirCell(label, valueHtml, extraClass) {
+      return '<div class="dir-cell' + (extraClass ? " " + extraClass : "") + '"><span class="dir-k">' + esc(label) + '</span><span class="dir-v">' + (valueHtml || '<span class="dir-empty">—</span>') + "</span></div>";
+    }
+
+    function routeOpen(key) {
+      if (state.routeKeys && Object.prototype.hasOwnProperty.call(state.routeKeys, key)) return !!state.routeKeys[key];
+      return !!state.routesOpen;
+    }
+
+    function setRouteOpen(key, open) {
+      if (!state.routeKeys) state.routeKeys = {};
+      if (!key || open === !!state.routesOpen) delete state.routeKeys[key];
+      else state.routeKeys[key] = open;
+    }
+
+    function routesToggleButton() {
+      var on = !!state.routesOpen;
+      var label = on ? "הסתר מסלולים" : "הצג מסלולים";
+      return '<button class="dir-routes-all' + (on ? " is-on" : "") + '" type="button" data-action="toggle-routes" aria-pressed="' + (on ? "true" : "false") + '" title="' + label + '" aria-label="' + label + '"><span>מסלולים</span></button>';
+    }
+
+    function directoryRoute(soldier) {
+      var transfers = soldier.transfers || [];
+      if (!transfers.length) return "";
+      var outside = Boolean(clean(soldier.external));
+      var chain = postingChain(soldier);
+      var key = keyOf(soldier);
+      var open = routeOpen(key);
+      var first = chain[0];
+      var current = chain[chain.length - 1];
+      var steps = chain.map(function (item, index) {
+        var last = index === chain.length - 1;
+        var cls = last ? (outside ? "is-out" : "is-current") : "";
+        var kicker = postingOrdinal(index);
+        if (last && index > 0) kicker = outside ? "מחוץ ליחידות" : "נוכחי";
+        var meta = "";
+        if (item.date) meta += '<span class="dir-step-date">' + esc(item.date) + "</span>";
+        if (item.reason) meta += '<span class="dir-step-reason">' + esc(item.reason) + "</span>";
+        return '<li class="' + cls + '"><span class="dir-step-kicker">' + esc(kicker) + "</span><strong>" + esc(item.label) + "</strong>" +
+          (meta ? '<span class="dir-step-meta">' + meta + "</span>" : "") + "</li>";
+      }).join("");
+      var ends = first.label === current.label
+        ? '<span class="dir-route-now">' + esc(current.label) + "</span>"
+        : '<span class="dir-route-from">' + esc(first.label) + '</span><span class="dir-route-arrow" aria-hidden="true">←</span><span class="dir-route-now">' + esc(current.label) + "</span>";
+      return '<div class="dir-route' + (open ? " is-open" : "") + '" data-key="' + esc(key) + '">' +
+        '<button class="dir-route-toggle" type="button" data-action="toggle-route" aria-expanded="' + (open ? "true" : "false") + '">' +
+          "<span>מסלול</span>" +
+          '<span class="dir-route-count">' + chain.length + "</span>" +
+          '<span class="dir-route-ends">' + ends + "</span>" +
+          '<span class="posting-chevron">' + svg("chevronDown", 14) + "</span>" +
+        "</button>" +
+        '<div class="dir-route-body"' + (open ? "" : ' aria-hidden="true"') + '>' +
+          '<div class="dir-route-inner"><ol class="dir-route-track">' + steps + "</ol></div>" +
+        "</div></div>";
+    }
+
+    function renderDirectoryRow(soldier, index, opts) {
+      var query = opts.query || "";
+      var name = clean(soldier.name) || "ללא שם";
+      var profession = clean(soldier.profession) || "ללא מקצוע";
+      var tone = professionTone(clean(soldier.profession));
+      var key = keyOf(soldier);
+      var selected = !!opts.interactive && key === state.selectedKey;
+      var id = present(soldier.personalId) ? clean(soldier.personalId) : "";
+      var phone = clean(soldier.phone);
+      var released = isReleased(soldier);
+      var idHtml = "";
+      if (id) {
+        idHtml = '<bdi dir="ltr" class="num">' + highlight(id, query) + "</bdi>";
+        if (opts.interactive) idHtml += copyButton(id, "העתק מ״א");
+      }
+      var phoneHtml = "";
+      if (present(phone)) {
+        var shown = '<bdi dir="ltr">' + highlight(phone, query) + "</bdi>";
+        phoneHtml = hasPhone(soldier)
+          ? '<a class="phone" href="tel:' + esc(digits(phone)) + '">' + shown + "</a>"
+          : shown;
+      }
+      var studyStamp = effectiveStudyStamp(soldier);
+      var parts = dateParts(studyStamp);
+      var studyDueRow = needsStudyDay(soldier);
+      var studyHtml = "";
+      if (present(studyStamp)) {
+        studyHtml = "<strong>" + esc(parts.pretty || parts.raw) + "</strong>" +
+          (parts.relative ? '<span class="dir-when">' + esc(parts.relative) + "</span>" : "") +
+          (studyDueRow ? '<span class="flag flag-study-due">צריך יום עיון</span>' : "");
+      }
+      var grade = clean(soldier.grade);
+      var residence = clean(soldier.residence);
+      var facts = '<div class="dir-facts">' +
+        '<div class="dir-cell"><span class="dir-k">מקצוע</span><span class="dir-v"><span class="dir-prof"><i></i>' + highlight(profession, query) + "</span></span></div>" +
+        dirCell("מ״א", idHtml) +
+        dirCell("טלפון", phoneHtml) +
+        dirCell("תת״ש", present(soldier.tatash) ? highlight(clean(soldier.tatash), query) : "") +
+        dirCell("מגורים", residence ? '<span class="dir-clip" title="' + esc(residence) + '">' + highlight(residence, query) + "</span>" : "") +
+        dirCell("מדרג", grade ? '<span class="grade-pill">' + highlight(grade, query) + "</span>" : "") +
+        dirCell("הכשרה", trainingDate(soldier) ? highlight(trainingDate(soldier), query) : (isUntrained(soldier) ? '<span class="dir-empty">ללא</span>' : "")) +
+        dirCell("יום עיון", studyHtml, "dir-study") +
+        "</div>";
+      var extraBits = [];
+      if (present(soldier.detail)) extraBits.push('<p><span class="dir-tag">פרט</span>' + esc(clean(soldier.detail)) + "</p>");
+      if (present(soldier.notes)) extraBits.push('<p><span class="dir-tag">הערות</span>' + esc(clean(soldier.notes)) + "</p>");
+      if (clean(soldier.external)) extraBits.push('<p><span class="dir-tag">יציאה</span>' + esc(clean(soldier.external)) + "</p>");
+      var extra = extraBits.length ? '<div class="dir-extra">' + extraBits.join("") + "</div>" : "";
+      var route = directoryRoute(soldier);
+      var badges = "";
+      if (released) badges += '<span class="released-badge">משוחרר</span>';
+      if (isUntrained(soldier)) badges += '<span class="flag flag-untrained">ללא הכשרה</span>';
+      if (needsStudyDay(soldier)) badges += '<span class="flag flag-study-due">צריך יום עיון</span>';
+      var nameCopy = opts.interactive && present(soldier.name) ? copyButton(clean(soldier.name), "העתק שם", "copy-name") : "";
+      var actions = opts.interactive
+        ? '<div class="dir-actions">' +
+            '<button class="dir-icon" type="button" data-action="open-transfer" data-key="' + esc(key) + '" title="סבב ב׳" aria-label="סבב ב׳ ל' + esc(name) + '">' + svg("route", 16) + "</button>" +
+            '<button class="dir-icon" type="button" data-action="edit-soldier" data-key="' + esc(key) + '" title="עריכה" aria-label="עריכת ' + esc(name) + '">' + svg("pencil", 16) + "</button>" +
+          "</div>"
+        : "";
+      return '<article class="dir-row' + (tone ? " " + tone : "") + (released ? " is-released" : "") + '" data-soldier="' + esc(key) + '" tabindex="-1"' + (selected ? ' aria-current="true"' : "") + ">" +
+        '<span class="dir-index">' + (index + 1) + "</span>" +
+        '<div class="dir-who">' +
+          avatarMarkup(name, soldier.photo, { large: false, interactive: !!opts.interactive, key: key }) +
+          '<div class="dir-id"><div class="dir-name-row"><h3 class="dir-name" title="' + esc(name) + '">' + highlight(name, query) + "</h3>" +
+            secondPostingMark(soldier) + badges + nameCopy +
+          "</div></div>" +
+        "</div>" +
+        facts + actions + extra + route +
+      "</article>";
+    }
+
+    function sortMark() {
+      return '<svg class="dir-sort-mark" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.2 7.6 6 3.8l3.8 3.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+    }
+
+    function sortButton(key, label) {
+      var active = state.sortKey === key;
+      var dir = active ? state.sortDir : "";
+      var hint = !active
+        ? "מיון לפי " + label
+        : dir === "desc"
+          ? label + ", סדר יורד"
+          : label + ", סדר עולה";
+      return '<button class="dir-sort' + (active ? " is-sorted" + (dir === "desc" ? " is-desc" : " is-asc") : "") + '" type="button" data-action="sort-dir" data-sort="' + esc(key) + '" aria-sort="' + (active ? (dir === "desc" ? "descending" : "ascending") : "none") + '" title="' + esc(hint) + '" aria-label="' + esc(hint) + '"><span>' + esc(label) + "</span>" + sortMark() + "</button>";
+    }
+
+    function renderDirectoryColumns(hasRoutes) {
+      var facts = [
+        ["profession", "מקצוע"],
+        ["personalId", "מ״א"],
+        ["phone", "טלפון"],
+        ["tatash", "תת״ש"],
+        ["residence", "מגורים"],
+        ["grade", "מדרג"],
+        ["trainStart", "הכשרה"],
+        ["studyDate", "יום עיון"]
+      ].map(function (col) { return sortButton(col[0], col[1]); }).join("");
+      var routeControl = hasRoutes ? routesToggleButton() : "";
+      return '<div class="dir-columns"><span></span>' + sortButton("name", "חייל") + '<span class="dir-facts">' + facts + '</span><span class="dir-head-actions">' + routeControl + "</span></div>";
+    }
+
+    function renderDirectory(list, opts) {
+      opts = opts || {};
+      var groups = directoryGroups(list);
+      if (!groups.length) return "";
+      var hasRoutes = list.some(function (soldier) { return soldier.transfers && soldier.transfers.length; });
+      var columns = renderDirectoryColumns(hasRoutes);
+      var routeBar = hasRoutes ? '<div class="dir-route-bar">' + routesToggleButton() + "</div>" : "";
+      var body = groups.map(function (group) {
+        var rows = group.items.map(function (soldier, index) {
+          return renderDirectoryRow(soldier, index, opts);
+        }).join("");
+        var banner = group.flat
+          ? ""
+          : '<h2 class="dir-banner"><span>' + esc(cycleLabel(group.key)) + '</span><span class="pill-count">' + group.items.length + "</span></h2>";
+        return '<section class="dir-group' + (group.released ? " is-released" : "") + '">' + banner + rows + "</section>";
+      }).join("");
+      var accent = state.outsideOpen ? "" : unitAccent(currentUnit());
+      return '<div class="directory"' + (accent ? ' style="--row-accent:' + accent + '"' : "") + ">" + columns + routeBar + body + "</div>";
+    }
+
     function renderRoster(list, opts) {
       opts = opts || {};
-      return groupSoldiers(list).map(function (group) {
+      return directoryGroups(list).map(function (group) {
         var cards = group.items.map(function (soldier, index) {
           var selected = !!opts.interactive && keyOf(soldier) === state.selectedKey;
           var card = renderDossier(soldier, {
@@ -4431,6 +5571,7 @@
           if (opts.compact) return card;
           return '<div class="roster-card">' + card + '<span class="roster-index">' + (index + 1) + "</span></div>";
         }).join("");
+        if (group.flat) return '<section class="cycle-group">' + cards + "</section>";
         var heading = opts.compact
           ? '<h2 class="cycle-heading">' + esc(cycleLabel(group.key) + " · " + group.items.length) + "</h2>"
           : '<h2 class="cycle-heading"><span>' + esc(cycleLabel(group.key)) + '</span><span class="pill-count">' + group.items.length + "</span></h2>";
@@ -4461,7 +5602,7 @@
 
     function emptyProfile(kind) {
       if (kind === "nodata") {
-        return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>הרשימה ממתינה לנתונים</h2><p>לחצו על «חייל חדש» כדי להוסיף את החייל הראשון. כל חייל יופיע ככרטיס מלא: זהות, קשר, מקצוע, מחזור, תת״ש, מקום מגורים, מדרג ויום עיון.</p></div>";
+        return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>הרשימה ממתינה לנתונים</h2><p>לחצו על «חייל חדש» כדי להוסיף את החייל הראשון. כל חייל יופיע בשורה אחת: זהות, קשר, מקצוע, מחזור, תת״ש, מקום מגורים, מדרג, תחילת הכשרה ויום עיון.</p></div>";
       }
       if (kind === "unit" && state.outsideOpen) {
         return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>אין חיילים ללא יחידה</h2><p>חייל שיוצא משיבוץ, מכל סיבה, יופיע כאן עם השיבוץ הקודם וסיבת המעבר.</p></div>";
@@ -4496,12 +5637,12 @@
       if (filters.profession && clean(soldier.profession) !== filters.profession) return false;
       if (filters.cycle && clean(soldier.cycle) !== filters.cycle) return false;
       if (filters.grade && clean(soldier.grade) !== filters.grade) return false;
-      if (filters.date && clean(soldier.studyDate) !== filters.date) return false;
+      if (filters.date && effectiveStudyStamp(soldier) !== filters.date) return false;
       if (filters.tatash && releaseKey(soldier.tatash) !== filters.tatash) return false;
       if (!query) return true;
       var blob = [
         soldier.profession, soldier.name, soldier.personalId, soldier.phone, soldier.tatash,
-        soldier.cycle, soldier.detail, soldier.residence, soldier.grade, soldier.studyDate, soldier.notes,
+        soldier.cycle, soldier.detail, soldier.residence, soldier.grade, effectiveStudyStamp(soldier), soldier.trainStart, soldier.notes,
         soldier.external
       ].concat((soldier.transfers || []).reduce(function (parts, move) {
         parts.push(move.fromName, move.toName, move.reason, move.date);
@@ -4545,7 +5686,7 @@
       if (!profile) return "";
       var frames = profile.querySelectorAll("[data-soldier]");
       if (!frames.length) return "";
-      var edge = profile.getBoundingClientRect().top + 56;
+      var edge = profile.getBoundingClientRect().top + (profile.querySelector(".directory") ? 92 : 56);
       var current = frames[0];
       for (var i = 0; i < frames.length; i++) {
         if (frames[i].getBoundingClientRect().top <= edge) current = frames[i];
@@ -4577,10 +5718,15 @@
           activeBtn = buttons[i];
         } else buttons[i].removeAttribute("aria-current");
       }
-      var frames = document.getElementById("profile").querySelectorAll("[data-soldier]");
+      var frames = document.getElementById("profile").querySelectorAll(".dir-row[data-soldier], [data-soldier]");
       for (var j = 0; j < frames.length; j++) {
+        var frameKey = frames[j].getAttribute("data-soldier") === key;
+        if (frames[j].classList.contains("dir-row")) {
+          if (frameKey) frames[j].setAttribute("aria-current", "true");
+          else frames[j].removeAttribute("aria-current");
+        }
         var dossier = frames[j].querySelector(".dossier");
-        if (dossier) dossier.classList.toggle("is-selected", frames[j].getAttribute("data-soldier") === key);
+        if (dossier) dossier.classList.toggle("is-selected", frameKey);
       }
       if (activeBtn) revealListSoldier(activeBtn);
       var soldier = findSoldier(SOLDIERS, key);
@@ -4603,6 +5749,7 @@
       document.body.classList.toggle("profile-open", Boolean(!state.unitsHome && !state.logOpen && narrow && state.profileOpen && (state.selectedKey || state.creating || state.editingIndex >= 0 || state.transferring || state.shalishutOpen)));
       var logBtn = document.getElementById("log-btn");
       if (logBtn) logBtn.hidden = Boolean(state.logOpen || state.creating || state.editingIndex >= 0 || state.transferring);
+      syncStudyNotice();
     }
 
     function blankDraft() {
@@ -4618,12 +5765,24 @@
       return input ? input.value : "";
     }
 
+    function cycleChoices() {
+      return Array.from(new Set(valuesOf(SOLDIERS, "cycle"))).filter(Boolean).sort(compareHe);
+    }
+
+    function cycleStored(form) {
+      var select = form && form.elements.cycle;
+      if (!select) return "";
+      if (select.value !== "__new__") return clean(select.value);
+      var custom = form.elements.cycleCustom;
+      return clean(custom ? custom.value : "");
+    }
+
     function captureDraft() {
       var form = document.querySelector(".editor-form");
       if (!form) return;
       var data = {};
       FIELDS.forEach(function (field) {
-        data[field.key] = fieldStored(field, form.elements[field.key]);
+        data[field.key] = field.cycles ? cycleStored(form) : fieldStored(field, form.elements[field.key]);
       });
       var photoInput = form.elements.photo;
       data.photo = safePhoto(photoInput ? photoInput.value : "");
@@ -4634,10 +5793,16 @@
       var soldier = {};
       FIELDS.forEach(function (field) {
         var input = form.elements[field.key];
-        soldier[field.key] = field.check ? fieldStored(field, input) : clean(input ? input.value : "");
+        soldier[field.key] = field.cycles ? cycleStored(form) : (field.check ? fieldStored(field, input) : clean(input ? input.value : ""));
       });
       var photoInput = form.elements.photo;
       soldier.photo = safePhoto(photoInput ? photoInput.value : "");
+      if (isUntrained(soldier)) {
+        soldier.trainStart = "";
+        soldier.studyDate = "";
+      } else if (present(soldier.trainStart) && !present(soldier.studyDate)) {
+        soldier.studyDate = studyDateFromTrain(soldier.trainStart);
+      }
       return soldier;
     }
 
@@ -4651,6 +5816,10 @@
         soldier[field.key] = clean(item && item[field.key]);
       });
       soldier.photo = safePhoto(item && item.photo);
+      if (isUntrained(soldier)) {
+        soldier.trainStart = "";
+        soldier.studyDate = "";
+      }
       soldier.external = clean(item && item.external);
       soldier.transfers = normalizeTransfers(item && item.transfers);
       if (soldier.external) soldier.unit = "";
@@ -4892,6 +6061,114 @@
       unit.color = paletteColor(color);
       saveUnits();
       state.colorUnit = "";
+    }
+
+    function colorButtonFor(id) {
+      var buttons = document.querySelectorAll("[data-action='pick-color']");
+      var fallback = null;
+      for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].getAttribute("data-unit") !== id) continue;
+        if (!fallback) fallback = buttons[i];
+        var rect = buttons[i].getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) return buttons[i];
+      }
+      return fallback;
+    }
+
+    function dismissColorPalette() {
+      if (!state.colorUnit) return;
+      var id = state.colorUnit;
+      state.colorUnit = "";
+      var palette = document.getElementById("color-palette");
+      if (palette) palette.remove();
+      var buttons = document.querySelectorAll("[data-action='pick-color']");
+      for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].getAttribute("data-unit") === id) buttons[i].setAttribute("aria-expanded", "false");
+      }
+    }
+
+    function usedZoom(el) {
+      var zoom = 1;
+      var node = el;
+      while (node && node.nodeType === 1) {
+        var z = parseFloat(window.getComputedStyle(node).zoom);
+        if (z && isFinite(z) && z > 0) zoom *= z;
+        node = node.parentElement;
+      }
+      return zoom;
+    }
+
+    function popupRect(el) {
+      var rect = el.getBoundingClientRect();
+      var zoom = usedZoom(el);
+      var layoutW = el.offsetWidth || rect.width;
+      var includesZoom = Math.abs(zoom - 1) < 0.02 || Math.abs(rect.width - layoutW * zoom) <= Math.abs(rect.width - layoutW);
+      if (includesZoom) {
+        return { left: rect.left, top: rect.top, width: rect.width, height: rect.height, right: rect.right, bottom: rect.bottom };
+      }
+      return {
+        left: rect.left * zoom,
+        top: rect.top * zoom,
+        width: rect.width * zoom,
+        height: rect.height * zoom,
+        right: rect.right * zoom,
+        bottom: rect.bottom * zoom
+      };
+    }
+
+    function placeColorPalette() {
+      var palette = document.getElementById("color-palette");
+      if (!palette) return;
+      var btn = colorButtonFor(state.colorUnit);
+      if (!btn) {
+        palette.remove();
+        return;
+      }
+      var rect = popupRect(btn);
+      var scroller = btn.closest(".profile-scroll, .sidebar");
+      var visible = rect.width > 0 && rect.height > 0;
+      if (visible && scroller) {
+        var box = popupRect(scroller);
+        if (rect.bottom < box.top || rect.top > box.bottom || rect.right < box.left || rect.left > box.right) visible = false;
+      }
+      if (!visible) {
+        palette.style.visibility = "hidden";
+        return;
+      }
+      palette.style.visibility = "visible";
+      var margin = 8;
+      var gap = 8;
+      var width = palette.offsetWidth;
+      var height = palette.offsetHeight;
+      var left = rect.right - width;
+      if (left < margin) left = margin;
+      if (left + width > window.innerWidth - margin) left = Math.max(margin, window.innerWidth - margin - width);
+      var top = rect.top - height - gap;
+      if (top < margin) {
+        var below = rect.bottom + gap;
+        top = below + height <= window.innerHeight - margin ? below : Math.max(margin, window.innerHeight - margin - height);
+      }
+      palette.style.left = Math.round(left) + "px";
+      palette.style.top = Math.round(top) + "px";
+    }
+
+    function mountColorPalette(opts) {
+      var existing = document.getElementById("color-palette");
+      if (existing) existing.remove();
+      if (!state.colorUnit) return;
+      var unit = findUnit(state.colorUnit);
+      if (!unit || !colorButtonFor(state.colorUnit)) return;
+      var holder = document.createElement("div");
+      holder.innerHTML = renderPalette(unit);
+      var palette = holder.firstChild;
+      if (!palette) return;
+      palette.id = "color-palette";
+      document.body.appendChild(palette);
+      placeColorPalette();
+      if (opts && opts.focusPalette) {
+        var selected = palette.querySelector("[aria-pressed='true']") || palette.querySelector("button");
+        if (selected) selected.focus();
+      }
     }
 
     function currentUnit() {
@@ -5306,6 +6583,7 @@
       { key: "cycle", label: "מחזור" },
       { key: "grade", label: "מדרג" },
       { key: "tatash", label: "תת״ש" },
+      { key: "trainStart", label: "הכשרה" },
       { key: "studyDate", label: "יום עיון" },
       { key: "detail", label: "פרט" },
       { key: "notes", label: "הערות" },
@@ -5688,10 +6966,7 @@
         document.getElementById("live").textContent = announce;
       }
       if (!opts.focusPalette && !opts.focusUnit && !opts.openEditor) profile.scrollTop = scrollTop;
-      if (opts.focusPalette) {
-        var palette = profile.querySelector(".palette");
-        if (palette) palette.scrollIntoView({ block: "nearest" });
-      }
+      mountColorPalette(opts);
       if (opts.openEditor) {
         var opening = profile.querySelector(".unit-tile.is-editing");
         if (opening) opening.classList.add("is-opening");
@@ -5739,7 +7014,7 @@
       var roster = document.querySelector(".roster-column");
       var sidebar = document.querySelector(".sidebar");
       if (roster) roster.classList.remove("is-held", "is-arriving", "is-leaving");
-      if (sidebar) sidebar.classList.remove("is-arriving");
+      if (sidebar) sidebar.classList.remove("is-arriving", "is-leaving");
       var parked = document.querySelectorAll("#unit-picker .is-landing, #unit-picker .is-held");
       for (var i = 0; i < parked.length; i++) {
         parked[i].classList.remove("is-landing");
@@ -5788,25 +7063,20 @@
         finish();
         return;
       }
-      var scale = Math.min(from.width / to.width, from.height / to.height);
-      var dx = (from.left + from.width / 2) - (to.left + to.width / 2);
-      var dy = (from.top + from.height / 2) - (to.top + to.height / 2);
-      clone.style.top = to.top + "px";
-      clone.style.left = to.left + "px";
-      clone.style.width = to.width + "px";
-      clone.style.height = to.height + "px";
+      var scale = Math.min(to.width / from.width, to.height / from.height);
+      var dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+      var dy = (to.top + to.height / 2) - (from.top + from.height / 2);
       clone.style.transformOrigin = "center center";
-      var start = "translate(" + dx + "px," + dy + "px) scale(" + scale + ")";
-      var frames = [{ transform: start, boxShadow: "0 8px 22px rgba(16, 24, 40, 0.08)", offset: 0 }];
+      var end = "translate(" + dx + "px," + dy + "px) scale(" + scale + ")";
+      var frames = [{ transform: "none", boxShadow: "0 8px 22px rgba(16, 24, 40, 0.08)", offset: 0 }];
       if (opts.approach) {
         frames.push({
-          transform: "translate(" + (dx * 0.36) + "px," + (dy * 0.2 - 12) + "px) scale(" + (scale * 1.065) + ")",
+          transform: "translate(" + (dx * 0.42) + "px," + (dy * 0.24 - 8) + "px) scale(" + (scale * 1.05) + ")",
           boxShadow: "0 28px 60px rgba(16, 24, 40, 0.18)",
-          offset: 0.42
+          offset: 0.46
         });
       }
-      frames.push({ transform: "none", boxShadow: "0 8px 22px rgba(16, 24, 40, 0.06)", offset: 1 });
-      clone.style.transform = start;
+      frames.push({ transform: end, boxShadow: "0 8px 22px rgba(16, 24, 40, 0.06)", offset: 1 });
       var anim = clone.animate(frames, {
         duration: opts.approach ? 880 : 640,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
@@ -5914,7 +7184,7 @@
             clone.remove();
             return;
           }
-          var to = dest.getBoundingClientRect();
+          var to = visualRect(dest);
           flyClone(clone, from, to, function () {
             if (token !== motionToken) {
               clone.remove();
@@ -5927,6 +7197,109 @@
       });
     }
 
+    function visualRect(el) {
+      var rect = el.getBoundingClientRect();
+      var zoom = parseFloat(window.getComputedStyle(el).zoom);
+      if (!zoom || !isFinite(zoom) || zoom <= 0) zoom = 1;
+      var layoutW = el.offsetWidth || rect.width;
+      var includesZoom = Math.abs(zoom - 1) < 0.02 || Math.abs(rect.width - layoutW * zoom) <= Math.abs(rect.width - layoutW);
+      if (includesZoom) return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+      return {
+        left: rect.left * zoom,
+        top: rect.top * zoom,
+        width: rect.width * zoom,
+        height: rect.height * zoom
+      };
+    }
+
+    function cardFlightBox(article) {
+      var visual = visualRect(article);
+      var layoutW = article.offsetWidth;
+      var layoutH = article.offsetHeight;
+      var palette = article.querySelector(".palette");
+      if (palette) {
+        var paletteStyle = getComputedStyle(palette);
+        var extra = palette.offsetHeight + (parseFloat(paletteStyle.marginTop) || 0) + (parseFloat(paletteStyle.marginBottom) || 0);
+        var zoom = layoutW ? visual.width / layoutW : 1;
+        layoutH -= extra;
+        visual = { left: visual.left, top: visual.top, width: visual.width, height: visual.height - extra * zoom };
+      }
+      if (!visual.width || !visual.height || !layoutW || layoutH < 1) return null;
+      return {
+        left: visual.left,
+        top: visual.top,
+        width: layoutW,
+        height: layoutH,
+        scale: visual.width / layoutW
+      };
+    }
+
+    function spawnHomeFlight(article) {
+      var origin = cardFlightBox(article);
+      if (!origin) return null;
+      var clone = article.cloneNode(true);
+      clone.classList.remove("is-landing", "is-chosen", "is-held", "is-leaving");
+      var palette = clone.querySelector(".palette");
+      if (palette) palette.remove();
+      var host = document.createElement("div");
+      host.className = "unit-grid unit-flight-host";
+      host.appendChild(clone);
+      var shell = document.createElement("div");
+      shell.className = "unit-flight";
+      shell.setAttribute("aria-hidden", "true");
+      shell.style.left = origin.left + "px";
+      shell.style.top = origin.top + "px";
+      shell.style.width = origin.width + "px";
+      shell.style.height = origin.height + "px";
+      shell.style.transformOrigin = "0 0";
+      shell.style.transform = "scale(" + origin.scale + ")";
+      shell.appendChild(host);
+      document.body.appendChild(shell);
+      article.classList.add("is-landing");
+      origin.shell = shell;
+      return origin;
+    }
+
+    function placeReturningTile(tile) {
+      var scroller = document.querySelector(".profile-scroll");
+      if (!tile || !scroller) return;
+      var tileRect = tile.getBoundingClientRect();
+      var box = scroller.getBoundingClientRect();
+      var pad = 20;
+      if (tileRect.top >= box.top + pad && tileRect.bottom <= box.bottom - pad) return;
+      var next = scroller.scrollTop + (tileRect.top - box.top) - Math.max(12, (box.height - tileRect.height) / 2);
+      var max = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+      if (next < 0) next = 0;
+      if (next > max) next = max;
+      scroller.scrollTop = next;
+    }
+
+    function flyHome(shell, origin, to, done) {
+      var finished = false;
+      function finish() {
+        if (finished) return;
+        finished = true;
+        if (done) done();
+      }
+      if (!shell || !to.width || !origin.width) {
+        finish();
+        return;
+      }
+      var dx = to.left - origin.left;
+      var dy = to.top - origin.top;
+      var endScale = to.width / origin.width;
+      var anim = shell.animate([
+        { transform: "translate(0px, 0px) scale(" + origin.scale + ")" },
+        { transform: "translate(" + dx + "px, " + dy + "px) scale(" + endScale + ")" }
+      ], {
+        duration: 580,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        fill: "both"
+      });
+      anim.onfinish = finish;
+      anim.oncancel = finish;
+    }
+
     function beginShowUnitsHome() {
       if (state.unitsHome || state.outsideOpen || state.releasedOpen || !motionOk()) {
         showUnitsHome();
@@ -5936,70 +7309,76 @@
       clearFlights();
       var article = document.querySelector("#unit-picker .unit-tile");
       var visual = article && article.querySelector(".unit-tile-static");
-      var from = visual ? article.getBoundingClientRect() : null;
       var returningId = state.unit;
+      var flight = visual ? spawnHomeFlight(article) : null;
       var roster = document.querySelector(".roster-column");
-      var clone = null;
-      if (visual && from && from.width) {
-        clone = article.cloneNode(true);
-        clone.classList.add("unit-flight");
-        clone.setAttribute("aria-hidden", "true");
-        document.body.appendChild(clone);
-        placeFlight(clone, from);
-        article.classList.add("is-landing");
-      }
-      if (roster) roster.classList.add("is-leaving");
       var back = document.querySelector(".back-units");
-      if (back) back.classList.add("is-held");
+      var sidebar = document.querySelector(".sidebar");
+      if (roster) roster.classList.add("is-leaving");
+      if (back) back.classList.add("is-leaving");
+      if (sidebar) sidebar.classList.add("is-leaving");
       window.setTimeout(function () {
         if (token !== motionToken) {
-          if (clone) clone.remove();
+          if (flight) flight.shell.remove();
           return;
         }
         showUnitsHome();
         if (token !== motionToken) {
-          if (clone) clone.remove();
+          if (flight) flight.shell.remove();
           return;
         }
-        var grid = document.querySelector(".unit-grid");
-        var head = document.querySelector(".units-board-head");
+        var board = document.getElementById("units-board");
+        var grid = board ? board.querySelector(".unit-grid") : null;
+        var head = board ? board.querySelector(".units-board-head") : null;
+        if (board) board.classList.add("is-returning");
         if (grid) grid.classList.add("is-arriving");
         if (head) head.classList.add("is-arriving");
         var landed = document.querySelector(unitTileSelector(returningId));
         var tile = landed && landed.closest(".unit-tile");
         if (tile) tile.classList.add("is-landing");
+        if (grid) {
+          var cards = grid.children;
+          for (var cardIndex = 0; cardIndex < cards.length; cardIndex++) {
+            cards[cardIndex].style.setProperty("--enter", String(cardIndex));
+          }
+        }
+        placeReturningTile(tile);
+        var cardCount = grid ? grid.children.length : 0;
         window.setTimeout(function () {
-          if (grid) grid.classList.remove("is-arriving");
-          if (head) head.classList.remove("is-arriving");
-          if (tile) {
+          if (token !== motionToken) return;
+          if (board && board.isConnected) board.classList.remove("is-returning");
+          if (grid && grid.isConnected) grid.classList.remove("is-arriving");
+          if (head && head.isConnected) head.classList.remove("is-arriving");
+          if (tile && tile.isConnected) {
             tile.classList.remove("is-landing");
             tile.classList.remove("is-settled");
           }
-        }, 780);
-        if (!clone || !tile || !from) {
-          if (clone) clone.remove();
+        }, Math.max(640, 460 + Math.max(0, cardCount - 1) * 32) + 80);
+        if (!flight || !tile) {
+          if (flight) flight.shell.remove();
           if (tile) tile.classList.remove("is-landing");
           return;
         }
         window.requestAnimationFrame(function () {
           window.requestAnimationFrame(function () {
-            if (token !== motionToken) {
-              clone.remove();
+            if (token !== motionToken || !flight.shell.isConnected) return;
+            if (!tile.isConnected) {
+              flight.shell.remove();
               return;
             }
-            var to = tile.getBoundingClientRect();
-            flyClone(clone, from, to, function () {
-              if (token !== motionToken) {
-                clone.remove();
-                return;
+            flyHome(flight.shell, flight, visualRect(tile), function () {
+              if (!flight.shell.isConnected) return;
+              if (tile.isConnected) {
+                tile.classList.add("is-settled");
+                tile.classList.remove("is-landing");
+                var openBtn = tile.querySelector("[data-action='open-unit']");
+                if (openBtn) openBtn.focus({ preventScroll: true });
               }
-              tile.classList.add("is-settled");
-              tile.classList.remove("is-landing");
-              fadeFlight(clone);
+              flight.shell.remove();
             });
           });
         });
-      }, 200);
+      }, 160);
     }
 
     function showUnitsHome() {
@@ -6081,6 +7460,11 @@
       var nameHtml = hasName
         ? '<span class="unit-commander-name" title="' + esc(name) + '">' + esc(name) + "</span>"
         : (hasPhone ? "" : '<span class="unit-commander-name">לא הוגדר</span>');
+      if (hasName) {
+        nameHtml = '<span class="unit-commander-name-wrap">' + nameHtml +
+          copyButton(name, "העתק שם " + role.label, "unit-commander-copy", linkPhone ? "button" : "span") +
+          "</span>";
+      }
       return '<span class="unit-commander' + (!hasName && !hasPhone ? " is-missing" : "") + '">' +
         '<span class="unit-commander-role">' + esc(role.label) + "</span>" +
         '<span class="unit-commander-line">' + nameHtml + phoneHtml + "</span></span>";
@@ -6149,10 +7533,9 @@
           '<button class="unit-color-btn" type="button" data-action="pick-color" data-unit="' + esc(unit.id) + '" title="צבע היחידה" aria-label="צבע של ' + esc(unit.name) + '" aria-expanded="' + (state.colorUnit === unit.id ? "true" : "false") + '">' + colorFill(unitColor(unit)) + "</button>" +
           '<button class="icon-btn" type="button" data-action="edit-unit" data-unit="' + esc(unit.id) + '" title="עריכת היחידה" aria-label="עריכת ' + esc(unit.name) + '">' + svg("pencil", 16) + "</button>" +
         "</div>";
-      var palette = state.colorUnit === unit.id ? renderPalette(unit) : "";
       var searchState = !editing && interactive && narrowed ? (count ? " is-hit" : " is-quiet") : "";
       return '<article class="unit-tile' + (editing ? " is-editing" : "") + searchState + (accent ? " has-color" : "") + '"' + (accent ? ' style="--unit:' + accent + '"' : "") + ">" +
-        body + tools + palette +
+        body + tools +
       "</article>";
     }
 
@@ -6349,7 +7732,8 @@
       var normalized = normalizeStamp(raw);
       var shown = normalized || raw;
       var empty = !shown;
-      return '<div class="date-field" data-date-key="' + esc(field.key) + '">' +
+      var off = field.trainedOnly && isUntrained(draft);
+      return '<div class="date-field" data-date-key="' + esc(field.key) + '"' + (off ? " hidden" : "") + ">" +
         '<span class="field-label" id="date-label-' + esc(field.key) + '">' + esc(field.label) + "</span>" +
         '<button class="date-trigger' + (empty ? " is-empty" : "") + '" type="button" data-action="toggle-date" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="date-label-' + esc(field.key) + '">' +
           '<span class="date-value">' + (empty ? "בחירת תאריך" : esc(shown)) + "</span>" +
@@ -6358,6 +7742,28 @@
         '<input type="hidden" name="' + esc(field.key) + '" value="' + esc(normalized || raw) + '">' +
         '<div class="date-pop" hidden role="dialog" aria-label="בחירת ' + esc(field.label) + '"></div>' +
       "</div>";
+    }
+
+    function syncTrainingDateField(form) {
+      var box = form && form.elements.untrained;
+      if (!form || !box) return;
+      ["trainStart", "studyDate"].forEach(function (key) {
+        var field = form.querySelector('[data-date-key="' + key + '"]');
+        if (!field) return;
+        if (box.checked) closeDateField(field);
+        field.hidden = !!box.checked;
+      });
+      syncStudyDateFromTrain(form);
+    }
+
+    function syncStudyDateFromTrain(form) {
+      if (!form) return;
+      var study = form.querySelector('[data-date-key="studyDate"]');
+      if (!study) return;
+      var box = form.elements.untrained;
+      var trainInput = form.querySelector('[data-date-key="trainStart"] input');
+      var stamp = box && box.checked ? "" : studyDateFromTrain(trainInput ? trainInput.value : "");
+      setDateFieldValue(study, stamp, { silent: true });
     }
 
     function closeDateField(field) {
@@ -6476,7 +7882,8 @@
       if (active) active.focus();
     }
 
-    function setDateFieldValue(field, stamp) {
+    function setDateFieldValue(field, stamp, opts) {
+      opts = opts || {};
       var input = field.querySelector("input");
       var valueEl = field.querySelector(".date-value");
       var trigger = field.querySelector(".date-trigger");
@@ -6486,9 +7893,12 @@
       if (trigger) {
         trigger.classList.toggle("is-empty", !normalized);
         trigger.setAttribute("aria-expanded", "false");
-        trigger.focus();
+        if (!opts.silent) trigger.focus();
       }
       closeDateField(field);
+      if (!opts.silent && field.getAttribute("data-date-key") === "trainStart") {
+        syncStudyDateFromTrain(field.closest("form"));
+      }
     }
 
     function moveDateFocus(dayBtn, delta) {
@@ -6543,6 +7953,22 @@
               return '<option value="' + esc(option) + '"' + (option === raw ? " selected" : "") + ">" + esc(option) + "</option>";
             }).join("") +
           "</select>";
+      } else if (field.cycles) {
+        var choices = cycleChoices();
+        var known = !raw || choices.indexOf(raw) !== -1;
+        control =
+          '<select name="cycle">' +
+            '<option value="">בחירה</option>' +
+            (choices.length
+              ? '<optgroup label="מחזורים קיימים">' +
+                  choices.map(function (option) {
+                    return '<option value="' + esc(option) + '"' + (option === raw ? " selected" : "") + ">" + esc(option) + "</option>";
+                  }).join("") +
+                "</optgroup>"
+              : "") +
+            '<option value="__new__"' + (known ? "" : " selected") + ">מחזור חדש</option>" +
+          "</select>" +
+          '<input class="cycle-custom" name="cycleCustom" value="' + esc(known ? "" : raw) + '" placeholder="למשל כ״א" aria-label="מחזור חדש"' + (known ? " hidden" : "") + ">";
       } else if (field.wide) {
         control = '<textarea name="' + field.key + '" rows="2">' + value + "</textarea>";
       } else {
@@ -6826,9 +8252,110 @@
       return rows;
     }
 
+    function studyDueSoldiers() {
+      return SOLDIERS.filter(needsStudyDay).sort(function (a, b) {
+        var byCycle = compareHe(clean(a.cycle) || "ללא מחזור", clean(b.cycle) || "ללא מחזור");
+        if (byCycle) return byCycle;
+        var da = stampToDate(a.trainStart);
+        var db = stampToDate(b.trainStart);
+        var ta = da ? da.getTime() : 0;
+        var tb = db ? db.getTime() : 0;
+        if (ta !== tb) return ta - tb;
+        return compareHe(a.name || "", b.name || "");
+      });
+    }
+
+    function studyCycleGroups(list) {
+      var map = new Map();
+      list.forEach(function (soldier) {
+        var key = clean(soldier.cycle) || "ללא מחזור";
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(soldier);
+      });
+      return Array.from(map.keys()).sort(function (a, b) {
+        if (a === "ללא מחזור") return 1;
+        if (b === "ללא מחזור") return -1;
+        return compareHe(a, b);
+      }).map(function (key) {
+        var items = map.get(key).slice().sort(function (a, b) {
+          var da = stampToDate(a.trainStart);
+          var db = stampToDate(b.trainStart);
+          var ta = da ? da.getTime() : 0;
+          var tb = db ? db.getTime() : 0;
+          if (ta !== tb) return ta - tb;
+          return compareHe(a.name || "", b.name || "");
+        });
+        var dates = [];
+        items.forEach(function (soldier) {
+          var date = trainingDate(soldier);
+          if (date && dates.indexOf(date) === -1) dates.push(date);
+        });
+        return { key: key, items: items, dates: dates };
+      });
+    }
+
+    function renderStudyCycleLog(list) {
+      return '<div class="log-cycles">' + studyCycleGroups(list).map(function (group) {
+        var shared = group.dates.length === 1 ? group.dates[0] : "";
+        var dateNote = shared
+          ? "הכשרה " + shared
+          : group.dates.length > 1
+            ? "תאריכי הכשרה שונים"
+            : "";
+        var people = group.items.map(function (soldier) {
+          return '<div class="log-person">' +
+            '<div class="log-person-who">' + logWho(soldier) + "</div>" +
+            '<div class="log-person-place">' + esc(logPlace(soldier)) + "</div>" +
+            (shared ? "" : '<div class="log-person-date">' + esc(trainingDate(soldier)) + "</div>") +
+          "</div>";
+        }).join("");
+        return '<section class="log-cycle">' +
+          '<header class="log-cycle-head">' +
+            "<strong>" + esc(cycleLabel(group.key)) + "</strong>" +
+            '<span class="pill-count">' + group.items.length + "</span>" +
+            (dateNote ? '<span class="log-cycle-date">' + esc(dateNote) + "</span>" : "") +
+            '<span class="flag flag-study-due">צריך יום עיון</span>' +
+          "</header>" +
+          '<div class="log-people">' + people + "</div>" +
+        "</section>";
+      }).join("") + "</div>";
+    }
+
+    function releasedLogSoldiers() {
+      return SOLDIERS.filter(isReleased).sort(function (a, b) {
+        var aKey = releaseKey(a.tatash);
+        var bKey = releaseKey(b.tatash);
+        if (aKey !== bKey) return aKey < bKey ? 1 : -1;
+        return compareHe(a.name || "", b.name || "");
+      });
+    }
+
+    function logQueryHit(parts, query) {
+      if (!query) return true;
+      return parts.map(function (value) { return clean(value).toLowerCase(); }).join(" ").indexOf(query) !== -1;
+    }
+
+    function logPlace(soldier) {
+      if (clean(soldier.external)) return clean(soldier.external);
+      if (!unitId(soldier.unit)) return "ללא יחידה";
+      return unitName(soldier.unit);
+    }
+
+    function logWho(soldier) {
+      var outside = Boolean(clean(soldier.external)) || !unitId(soldier.unit);
+      var name = esc(clean(soldier.name) || "ללא שם");
+      var who = outside
+        ? "<span>" + name + "</span>"
+        : '<button class="log-jump" type="button" data-action="open-posted" data-key="' + esc(keyOf(soldier)) + '">' + name + "</button>";
+      var sub = [clean(soldier.profession), clean(soldier.personalId)].filter(Boolean).join(" · ");
+      if (clean(soldier.external)) sub = (sub ? sub + " · " : "") + "מחוץ ליחידות";
+      return who + (sub ? '<span class="log-sub">' + esc(sub) + "</span>" : "");
+    }
+
     function openLog() {
       state.logOpen = true;
       state.logQuery = "";
+      state.logTab = "transfers";
       state.creating = false;
       state.editingIndex = -1;
       state.transferring = false;
@@ -6845,6 +8372,7 @@
       state.transferError = "";
       state.transferDraft = null;
       state.logQuery = "";
+      state.logTab = "transfers";
       render();
     }
 
@@ -6853,6 +8381,7 @@
       if (!soldier || clean(soldier.external) || !unitId(soldier.unit)) return;
       state.logOpen = false;
       state.outsideOpen = false;
+      state.releasedOpen = isReleased(soldier);
       state.transferring = false;
       state.transferError = "";
       state.transferDraft = null;
@@ -6878,7 +8407,7 @@
       if (state.transferring) captureTransfer();
       document.body.classList.remove("home-query");
       document.getElementById("add-btn").hidden = true;
-      document.getElementById("profile").setAttribute("aria-label", "יומן מעברים");
+      document.getElementById("profile").setAttribute("aria-label", "יומן");
       var profile = document.getElementById("profile");
       if (state.transferring) {
         var editingSoldier = findSoldier(SOLDIERS, state.selectedKey);
@@ -6893,44 +8422,100 @@
         }
         return;
       }
+      var tabs = [
+        { id: "transfers", label: "מעברים" },
+        { id: "study", label: "ימי עיון" },
+        { id: "releases", label: "שחרורים" }
+      ];
+      var tab = state.logTab;
+      if (!tabs.some(function (item) { return item.id === tab; })) tab = "transfers";
+      state.logTab = tab;
+      var unseenStudy = tab === "study" ? 0 : unseenStudyNotices().length;
+      if (tab === "study") acknowledgeStudyNotices();
       var query = clean(state.logQuery).toLowerCase();
-      var rows = transferRows().filter(function (row) {
-        if (!query) return true;
-        var blob = [
-          row.soldier.name, row.soldier.personalId, row.soldier.profession,
-          row.move.fromName, row.move.toName, row.move.reason, row.move.date
-        ].map(function (value) { return clean(value).toLowerCase(); }).join(" ");
-        return blob.indexOf(query) !== -1;
-      });
-      var total = transferRows().length;
-      var summary = total
-        ? (query ? "מוצגים " + rows.length + " מתוך " + total : total + " " + countWord(total, "מעבר", "מעברים"))
-        : "עדיין אין מעברים";
-      var body = rows.map(function (row) {
-        var soldier = row.soldier;
-        var outside = Boolean(clean(soldier.external));
-        var key = keyOf(soldier);
-        var who = outside
-          ? '<span>' + esc(clean(soldier.name) || "ללא שם") + "</span>"
-          : '<button class="log-jump" type="button" data-action="open-posted" data-key="' + esc(key) + '">' + esc(clean(soldier.name) || "ללא שם") + "</button>";
-        var sub = [clean(soldier.profession), clean(soldier.personalId)].filter(Boolean).join(" · ");
-        if (outside) sub = (sub ? sub + " · " : "") + "מחוץ ליחידות";
-        var again = outside
-          ? '<button class="text-btn" type="button" data-action="open-transfer" data-key="' + esc(key) + '">סבב ב׳</button>'
+      var moves = transferRows();
+      var studyAll = studyDueSoldiers();
+      var releasedAll = releasedLogSoldiers();
+      var counts = {
+        transfers: moves.length,
+        study: studyCycleGroups(studyAll).length,
+        releases: releasedAll.length
+      };
+      var summary = "";
+      var note = "";
+      var placeholder = "חייל, יחידה או מקצוע";
+      var table = "";
+      if (tab === "study") {
+        var studyRows = studyAll.filter(function (soldier) {
+          return logQueryHit([soldier.name, soldier.personalId, soldier.profession, soldier.cycle, logPlace(soldier), soldier.trainStart], query);
+        });
+        var studyGroups = studyCycleGroups(studyRows);
+        summary = studyGroups.length
+          ? (query ? "מוצגים " + studyGroups.length + " מחזורים מתוך " + counts.study : studyGroups.length + " " + countWord(studyGroups.length, "מחזור צריך יום עיון", "מחזורים צריכים יום עיון") + " · " + studyRows.length + " " + countWord(studyRows.length, "חייל", "חיילים"))
+          : "אין מחזורים שצריכים יום עיון";
+        note = "יום עיון משותף למחזור, 10 חודשים אחרי תחילת ההכשרה.";
+        placeholder = "מחזור, חייל או יחידה";
+        table = studyGroups.length
+          ? renderStudyCycleLog(studyRows)
+          : '<div class="log-empty">' + (counts.study ? "אין מחזורים תואמים" : "כשמגיע תאריך יום העיון, 10 חודשים אחרי תחילת ההכשרה, המחזור מופיע כאן.") + "</div>";
+      } else if (tab === "releases") {
+        var releaseRows = releasedAll.filter(function (soldier) {
+          return logQueryHit([soldier.name, soldier.personalId, soldier.profession, logPlace(soldier), soldier.tatash], query);
+        });
+        summary = counts.releases
+          ? (query ? "מוצגים " + releaseRows.length + " מתוך " + counts.releases : counts.releases + " " + countWord(counts.releases, "משוחרר", "משוחררים"))
+          : "אין משוחררים";
+        note = "חייל שתאריך התת״ש שלו עבר מסומן כאן.";
+        placeholder = "חייל, יחידה או תת״ש";
+        table = releaseRows.length
+          ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>יחידה</th><th>תת״ש</th><th>סטטוס</th></tr></thead><tbody>' +
+            releaseRows.map(function (soldier) {
+              return "<tr><td>" + logWho(soldier) + "</td><td>" + esc(logPlace(soldier)) + "</td><td>" + esc(clean(soldier.tatash)) + '</td><td><span class="flag flag-released">משוחרר</span></td></tr>';
+            }).join("") +
+            "</tbody></table></div>"
+          : '<div class="log-empty">' + (counts.releases ? "אין משוחררים תואמים" : "חייל שתאריך התת״ש שלו עבר מופיע כאן.") + "</div>";
+      } else {
+        var rows = moves.filter(function (row) {
+          return logQueryHit([
+            row.soldier.name, row.soldier.personalId, row.soldier.profession,
+            row.move.fromName, row.move.toName, row.move.reason, row.move.date
+          ], query);
+        });
+        summary = counts.transfers
+          ? (query ? "מוצגים " + rows.length + " מתוך " + counts.transfers : counts.transfers + " " + countWord(counts.transfers, "מעבר", "מעברים"))
+          : "עדיין אין מעברים";
+        note = "כל מעבר נשמר כסבב ב׳, והשיבוץ הקודם נשאר.";
+        placeholder = "חייל, יחידה או סיבה";
+        var body = rows.map(function (row) {
+          var soldier = row.soldier;
+          var outside = Boolean(clean(soldier.external));
+          var again = outside
+            ? '<button class="text-btn" type="button" data-action="open-transfer" data-key="' + esc(keyOf(soldier)) + '">סבב ב׳</button>'
+            : "";
+          return "<tr><td>" + logWho(soldier) + again + "</td><td>" + esc(row.move.fromName) + "</td><td>" + esc(row.move.toName) + "</td><td class=\"log-reason\">" + esc(row.move.reason) + "</td><td>" + esc(row.move.date) + "</td></tr>";
+        }).join("");
+        table = rows.length
+          ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>שיבוץ קודם</th><th>סבב ב׳</th><th>סיבה</th><th>תאריך</th></tr></thead><tbody>' + body + "</tbody></table></div>"
+          : '<div class="log-empty">' + (counts.transfers ? "אין מעברים תואמים" : "סבב ב׳ נרשם מכרטיס החייל. השיבוץ הקודם נשאר במסלול, עם סיבת המעבר.") + "</div>";
+      }
+      var tabButtons = tabs.map(function (item) {
+        var on = item.id === tab;
+        var dot = item.id === "study" && unseenStudy
+          ? '<span class="notice-dot" aria-hidden="true"></span>'
           : "";
-        return "<tr><td>" + who + (sub ? '<span class="log-sub">' + esc(sub) + "</span>" : "") + again + "</td><td>" + esc(row.move.fromName) + "</td><td>" + esc(row.move.toName) + "</td><td class=\"log-reason\">" + esc(row.move.reason) + "</td><td>" + esc(row.move.date) + "</td></tr>";
+        return '<button class="log-tab' + (on ? " is-on" : "") + '" type="button" role="tab" id="log-tab-' + item.id + '" data-action="log-tab" data-tab="' + item.id + '" aria-selected="' + (on ? "true" : "false") + '" aria-controls="log-panel">' +
+          dot + esc(item.label) + '<span class="log-tab-count">' + counts[item.id] + "</span></button>";
       }).join("");
-      var table = rows.length
-        ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>שיבוץ קודם</th><th>סבב ב׳</th><th>סיבה</th><th>תאריך</th></tr></thead><tbody>' + body + "</tbody></table></div>"
-        : '<div class="log-empty">' + (total ? "אין מעברים תואמים" : "סבב ב׳ נרשם מכרטיס החייל. השיבוץ הקודם נשאר במסלול, עם סיבת המעבר.") + "</div>";
       profile.innerHTML =
         '<div class="units-board">' +
-          '<div class="log-head"><div><button class="text-btn" type="button" data-action="close-log">חזרה</button><h2>יומן מעברים</h2><p>' + esc(summary) + ". כל מעבר נשמר כסבב ב׳, והשיבוץ הקודם נשאר.</p></div>" +
-          '<input class="log-search" id="log-search" type="search" value="' + esc(state.logQuery) + '" placeholder="חייל, יחידה או סיבה" aria-label="חיפוש ביומן">' +
-          "</div>" + table +
+          '<div class="log-head"><div><button class="text-btn" type="button" data-action="close-log">חזרה</button><h2>יומן</h2><p>' + esc(summary) + ". " + esc(note) + "</p></div>" +
+          '<input class="log-search" id="log-search" type="search" value="' + esc(state.logQuery) + '" placeholder="' + esc(placeholder) + '" aria-label="חיפוש ביומן">' +
+          "</div>" +
+          '<div class="log-tabs" role="tablist" aria-label="מדורי היומן">' + tabButtons + "</div>" +
+          '<div id="log-panel" role="tabpanel" aria-labelledby="log-tab-' + tab + '">' + table + "</div>" +
         "</div>";
       document.getElementById("print-root").innerHTML = "";
-      document.title = "יומן מעברים · " + CONFIG.title;
+      document.title = "יומן · " + CONFIG.title;
       syncHash("");
       var search = document.getElementById("log-search");
       if (search && opts.focusLogSearch) {
@@ -6938,7 +8523,7 @@
         var pos = search.value.length;
         if (search.setSelectionRange) search.setSelectionRange(pos, pos);
       }
-      var announce = "יומן מעברים. " + summary;
+      var announce = "יומן. " + summary;
       if (state.announced !== announce) {
         state.announced = announce;
         document.getElementById("live").textContent = announce;
@@ -6952,6 +8537,9 @@
       });
       draft.unit = unitId(soldier.unit) || state.unit;
       draft.photo = safePhoto(soldier.photo);
+      if (!isUntrained(draft) && present(draft.trainStart) && !present(draft.studyDate)) {
+        draft.studyDate = studyDateFromTrain(draft.trainStart);
+      }
       return draft;
     }
 
@@ -7021,6 +8609,8 @@
     function render(opts) {
       opts = opts || {};
       hideHitPop();
+      var openPalette = document.getElementById("color-palette");
+      if (openPalette) openPalette.remove();
       syncShell();
       if (state.logOpen) {
         renderTransferLog(opts);
@@ -7032,7 +8622,7 @@
       }
       document.body.classList.remove("home-query");
       document.getElementById("add-btn").hidden = state.transferring;
-      document.getElementById("profile").setAttribute("aria-label", "כרטיס חייל");
+      document.getElementById("profile").setAttribute("aria-label", "רשימת חיילים");
       if (!unitId(state.unit)) state.unit = UNITS[0].id;
       renderUnitSide();
       var editing = state.editingIndex >= 0;
@@ -7052,7 +8642,7 @@
       fillSelect(document.getElementById("filter-profession"), valuesOf(view, "profession"), "כל המקצועות");
       fillSelect(document.getElementById("filter-cycle"), valuesOf(view, "cycle"), "כל המחזורים");
       fillSelect(document.getElementById("filter-grade"), valuesOf(view, "grade"), "כל המדרגים");
-      fillSelect(document.getElementById("filter-date"), valuesOf(view, "studyDate"), "כל התאריכים");
+      fillSelect(document.getElementById("filter-date"), view.map(effectiveStudyStamp), "כל התאריכים");
       ["filter-profession", "filter-cycle", "filter-grade", "filter-date", "filter-tatash"].forEach(function (id) {
         var el = document.getElementById(id);
         el.classList.toggle("is-active", el.value !== "");
@@ -7095,15 +8685,10 @@
       var selectionChanged = state.selectedKey !== state.prevKey;
 
       var listEl = document.getElementById("list");
-      var prevScroll = listEl.scrollTop;
-      listEl.hidden = !visibleTotal;
+      listEl.hidden = true;
+      listEl.innerHTML = "";
       var rosterBody = document.querySelector(".roster-body");
-      if (rosterBody) rosterBody.classList.toggle("has-list", visibleTotal > 0);
-      listEl.innerHTML = renderList(groupSoldiers(filtered), queryRaw, visibleTotal);
-      var selectedBtn = listEl.querySelector('[aria-current="true"]');
-      if ((selectionChanged || opts.scroll) && selectedBtn) selectedBtn.scrollIntoView({ block: "nearest" });
-      else listEl.scrollTop = prevScroll;
-      if (opts.focusList && selectedBtn) selectedBtn.focus();
+      if (rosterBody) rosterBody.classList.remove("has-list");
 
       var profile = document.getElementById("profile");
       var soldier = findSoldier(filtered, state.selectedKey);
@@ -7121,13 +8706,25 @@
       } else if (!soldier) {
         mainHtml = emptyProfile("none");
       } else {
-        mainHtml = '<button class="back-btn" type="button" data-action="back">' + svg("chevron", 18) + "<span>כל החיילים</span></button>" + renderRoster(filtered, { interactive: true });
+        mainHtml = renderDirectory(filtered, { interactive: true, query: queryRaw });
       }
       var profileScroll = opts.keepProfileScroll ? profile.scrollTop : 0;
       profile.innerHTML = mainHtml;
       if (opts.keepProfileScroll) {
         holdProfileSpy();
         profile.scrollTop = profileScroll;
+      }
+      if (opts.focusList) {
+        var currentRow = profile.querySelector(".dir-row[aria-current='true']");
+        if (currentRow) currentRow.focus({ preventScroll: true });
+      }
+      if (opts.focusSort) {
+        var sortFocus = profile.querySelector('.dir-sort[data-sort="' + opts.focusSort + '"]');
+        if (sortFocus) sortFocus.focus({ preventScroll: true });
+      }
+      if (opts.focusRoutes) {
+        var routesFocus = profile.querySelector(".dir-columns [data-action='toggle-routes']") || profile.querySelector("[data-action='toggle-routes']");
+        if (routesFocus) routesFocus.focus({ preventScroll: true });
       }
       if ((state.creating || editing) && opts.focusEditor) {
         var focusField = profile.querySelector('[name="' + (editing ? "name" : "profession") + '"]');
@@ -7175,16 +8772,13 @@
             ? "עריכת " + (clean(state.draft && state.draft.name) || "חייל")
             : state.creating
             ? "טופס חייל חדש"
-            : !SOLDIERS.length ? "הרשימה ממתינה לנתונים" : !visibleTotal ? "אין חיילים ב" + placeLabel : !soldier ? "אין חיילים תואמים" : "כרטיס של " + clean(soldier.name) + (present(soldier.profession) ? ", " + clean(soldier.profession) : "");
+            : !SOLDIERS.length ? "הרשימה ממתינה לנתונים" : !visibleTotal ? "אין חיילים ב" + placeLabel : !soldier ? "אין חיילים תואמים" : clean(soldier.name) + " ברשימה" + (present(soldier.profession) ? ", " + clean(soldier.profession) : "");
       if (state.announced !== announce) {
         state.announced = announce;
         document.getElementById("live").textContent = announce;
       }
       state.prevKey = state.selectedKey;
-      if (opts.focusPalette) {
-        var palette = document.querySelector("#unit-picker .palette");
-        if (palette) palette.scrollIntoView({ block: "nearest" });
-      }
+      mountColorPalette(opts);
       if (opts.openEditor) {
         var openingSide = document.querySelector("#unit-picker .unit-tile.is-editing");
         if (openingSide) openingSide.classList.add("is-opening");
@@ -7216,6 +8810,28 @@
       render();
     }
 
+    function activateCopy(copyBtn) {
+      var label = copyBtn.querySelector(".btn-label");
+      var idleLabel = copyBtn.getAttribute("data-idle-label") || copyBtn.getAttribute("aria-label") || "העתק";
+      copyText(copyBtn.getAttribute("data-copy") || "").then(function () {
+        copyBtn.classList.add("is-copied");
+        copyBtn.setAttribute("aria-label", "הועתק");
+        if (label) label.textContent = "הועתק";
+        window.setTimeout(function () {
+          copyBtn.classList.remove("is-copied");
+          copyBtn.setAttribute("aria-label", idleLabel);
+          if (label) label.textContent = idleLabel;
+        }, 1500);
+      }, function () {
+        copyBtn.setAttribute("aria-label", "לא הועתק");
+        if (label) label.textContent = "לא הועתק";
+        window.setTimeout(function () {
+          copyBtn.setAttribute("aria-label", idleLabel);
+          if (label) label.textContent = idleLabel;
+        }, 1500);
+      });
+    }
+
     function copyText(text) {
       if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
       return new Promise(function (resolve, reject) {
@@ -7239,19 +8855,19 @@
     }
 
     function moveSelection(delta) {
-      var buttons = Array.prototype.slice.call(document.querySelectorAll("#list .person"));
-      if (!buttons.length) return;
+      var rows = Array.prototype.slice.call(document.querySelectorAll("#profile .dir-row"));
+      if (!rows.length) return;
       var idx = -1;
-      buttons.forEach(function (btn, i) {
-        if (btn.getAttribute("aria-current") === "true") idx = i;
+      rows.forEach(function (row, i) {
+        if (row.getAttribute("aria-current") === "true") idx = i;
       });
       var nextIndex = idx + delta;
       if (nextIndex < 0) nextIndex = 0;
-      if (nextIndex > buttons.length - 1) nextIndex = buttons.length - 1;
-      var next = buttons[nextIndex];
-      if (!next || next.getAttribute("data-key") === state.selectedKey) return;
-      state.selectedKey = next.getAttribute("data-key");
-      state.profileOpen = true;
+      if (nextIndex > rows.length - 1) nextIndex = rows.length - 1;
+      var next = rows[nextIndex];
+      var nextKey = next ? next.getAttribute("data-soldier") : "";
+      if (!next || nextKey === state.selectedKey) return;
+      state.selectedKey = nextKey;
       render({ scroll: true, focusList: true });
     }
 
@@ -7287,6 +8903,13 @@
       saveUnit();
       var unitPicker = document.getElementById("unit-picker");
       unitPicker.addEventListener("click", function (event) {
+        var sideCopy = event.target.closest("[data-action='copy']");
+        if (sideCopy) {
+          event.preventDefault();
+          event.stopPropagation();
+          activateCopy(sideCopy);
+          return;
+        }
         if (event.target.closest("[data-action='units-home']")) {
           beginShowUnitsHome();
           return;
@@ -7432,6 +9055,19 @@
           syncTransferExit(target.form);
           return;
         }
+        if (target && target.name === "untrained" && target.form && target.form.classList.contains("editor-form")) {
+          syncTrainingDateField(target.form);
+          return;
+        }
+        if (target && target.name === "cycle" && target.form && target.form.classList.contains("editor-form")) {
+          var customCycle = target.form.elements.cycleCustom;
+          if (customCycle) {
+            var addingCycle = target.value === "__new__";
+            customCycle.hidden = !addingCycle;
+            if (addingCycle) customCycle.focus();
+          }
+          return;
+        }
         if (target && target.getAttribute && target.getAttribute("data-action") === "pick-photo") {
           var file = target.files && target.files[0];
           var photoKey = target.getAttribute("data-key") || "";
@@ -7512,6 +9148,20 @@
         render({ scroll: true });
       });
       document.getElementById("profile").addEventListener("click", function (event) {
+        var copyBtn = event.target.closest("[data-action='copy']");
+        if (copyBtn) {
+          event.preventDefault();
+          event.stopPropagation();
+          activateCopy(copyBtn);
+          return;
+        }
+        var sortBtn = event.target.closest("[data-action='sort-dir']");
+        if (sortBtn) {
+          var sortKey = sortBtn.getAttribute("data-sort") || "";
+          toggleDirectorySort(sortKey);
+          render({ keepProfileScroll: true, focusSort: sortKey });
+          return;
+        }
         var dateAction = event.target.closest("[data-action='toggle-date'], [data-action='date-prev'], [data-action='date-next'], [data-action='pick-date'], [data-action='date-today'], [data-action='clear-date']");
         if (dateAction) {
           event.stopPropagation();
@@ -7567,6 +9217,12 @@
         }
         if (event.target.closest("[data-action='close-log']")) {
           closeLog();
+          return;
+        }
+        var logTabBtn = event.target.closest("[data-action='log-tab']");
+        if (logTabBtn && state.logOpen) {
+          state.logTab = logTabBtn.getAttribute("data-tab") || "transfers";
+          render();
           return;
         }
         if (event.target.closest("[data-action='cancel-transfer']")) {
@@ -7729,28 +9385,44 @@
           if (current) current.focus();
           return;
         }
-        var copyBtn = event.target.closest("[data-action='copy']");
-        if (!copyBtn) return;
-        var label = copyBtn.querySelector(".btn-label");
-        var idleLabel = copyBtn.getAttribute("data-idle-label") || copyBtn.getAttribute("aria-label") || "העתק";
-        copyText(copyBtn.getAttribute("data-copy") || "").then(function () {
-          copyBtn.classList.add("is-copied");
-          copyBtn.setAttribute("aria-label", "הועתק");
-          if (label) label.textContent = "הועתק";
-          window.setTimeout(function () {
-            copyBtn.classList.remove("is-copied");
-            copyBtn.setAttribute("aria-label", idleLabel);
-            if (label) label.textContent = idleLabel;
-          }, 1500);
-        }, function () {
-          copyBtn.setAttribute("aria-label", "לא הועתק");
-          if (label) label.textContent = "לא הועתק";
-          window.setTimeout(function () {
-            copyBtn.setAttribute("aria-label", idleLabel);
-            if (label) label.textContent = idleLabel;
-          }, 1500);
-        });
+        var routeToggle = event.target.closest("[data-action='toggle-route']");
+        if (routeToggle) {
+          var routeEl = routeToggle.closest(".dir-route");
+          if (!routeEl) return;
+          var nextOpen = routeToggle.getAttribute("aria-expanded") !== "true";
+          setRouteOpen(routeEl.getAttribute("data-key") || "", nextOpen);
+          routeEl.classList.toggle("is-open", nextOpen);
+          routeToggle.setAttribute("aria-expanded", nextOpen ? "true" : "false");
+          var routeBody = routeEl.querySelector(".dir-route-body");
+          if (routeBody) routeBody.setAttribute("aria-hidden", nextOpen ? "false" : "true");
+          return;
+        }
+        var routesAll = event.target.closest("[data-action='toggle-routes']");
+        if (routesAll) {
+          state.routesOpen = !state.routesOpen;
+          state.routeKeys = {};
+          render({ keepProfileScroll: true, focusRoutes: true });
+          return;
+        }
+        var plainRow = event.target.closest(".dir-row");
+        if (plainRow && !event.target.closest("button, a, input, label, textarea, select")) {
+          followProfileSoldier(plainRow.getAttribute("data-soldier") || "");
+        }
       });
+      document.addEventListener("click", function (event) {
+        if (!event.target.closest) return;
+        var setColorBtn = event.target.closest("[data-action='set-color']");
+        if (setColorBtn) {
+          event.preventDefault();
+          event.stopPropagation();
+          setUnitColor(setColorBtn.getAttribute("data-unit"), setColorBtn.getAttribute("data-color") || "");
+          render();
+          return;
+        }
+        if (!state.colorUnit) return;
+        if (event.target.closest("#color-palette") || event.target.closest("[data-action='pick-color']")) return;
+        dismissColorPalette();
+      }, true);
       document.addEventListener("click", function (event) {
         if (event.target.closest && event.target.closest(".date-field")) return;
         closeDateFields();
@@ -7758,10 +9430,15 @@
       document.getElementById("profile").addEventListener("scroll", function () {
         var openDate = document.querySelector(".date-field.is-open");
         if (openDate) placeDatePop(openDate);
+        if (document.getElementById("color-palette")) placeColorPalette();
       });
+      document.addEventListener("scroll", function () {
+        if (document.getElementById("color-palette")) placeColorPalette();
+      }, true);
       window.addEventListener("resize", function () {
         var openDate = document.querySelector(".date-field.is-open");
         if (openDate) placeDatePop(openDate);
+        if (document.getElementById("color-palette")) placeColorPalette();
       });
       document.addEventListener("keydown", function (event) {
         var dateDay = event.target.closest && event.target.closest(".date-day");
