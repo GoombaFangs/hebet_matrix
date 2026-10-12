@@ -1,2 +1,2 @@
 @echo off
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0hebet-server.ps1"
+wscript.exe //nologo "%~dp0hebet-launch.vbs"

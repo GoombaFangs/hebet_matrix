@@ -42,7 +42,33 @@ function Read-HttpText([string]$url) {
   }
 }
 
+function Get-ChromePath {
+  $candidates = @(
+    "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+    "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe",
+    "$env:LocalAppData\Google\Chrome\Application\chrome.exe"
+  )
+  foreach ($path in $candidates) {
+    if ($path -and (Test-Path -LiteralPath $path)) { return $path }
+  }
+  foreach ($key in @(
+    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe",
+    "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"
+  )) {
+    try {
+      $found = (Get-ItemProperty -LiteralPath $key -ErrorAction Stop)."(default)"
+      if ($found -and (Test-Path -LiteralPath $found)) { return [string]$found }
+    } catch {}
+  }
+  return ""
+}
+
 function Open-Browser([string]$url) {
+  $chrome = Get-ChromePath
+  if ($chrome) {
+    Start-Process -FilePath $chrome -ArgumentList $url
+    return
+  }
   Start-Process $url
 }
 
@@ -165,30 +191,46 @@ function Read-HebetData {
   throw "read failed"
 }
 
+function Write-Log([string]$msg) {
+  try {
+    $line = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") + " " + $msg + "`r`n"
+    [System.IO.File]::AppendAllText((Join-Path $root "hebet-server.log"), $line, $utf8)
+  } catch {}
+}
+
 function Test-HebetJson([string]$text) {
   $trim = $text.Trim()
   if ($trim.Length -lt 2 -or -not $trim.StartsWith("{") -or -not $trim.EndsWith("}")) { return $false }
-  try { $obj = $trim | ConvertFrom-Json } catch { return $false }
-  if ($null -eq $obj) { return $false }
-  $names = @($obj.PSObject.Properties.Name)
-  return ($names -contains "soldiers" -or $names -contains "units" -or $names -contains "fresh" -or $names -contains "version")
+  return ($trim.Contains('"soldiers"') -or $trim.Contains('"units"') -or $trim.Contains('"fresh"') -or $trim.Contains('"version"'))
 }
 
 function Write-HebetData([string]$text) {
+  if (Test-Path -LiteralPath $dataFile) {
+    try { (Get-Item -LiteralPath $dataFile -Force).IsReadOnly = $false } catch {}
+  }
   $tmp = $dataFile + ".tmp"
-  [System.IO.File]::WriteAllText($tmp, $text, $utf8)
+  $bytes = $utf8.GetBytes($text)
+  $out = [System.IO.File]::Open($tmp, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+  try {
+    $out.Write($bytes, 0, $bytes.Length)
+    $out.Flush()
+  } finally {
+    $out.Close()
+  }
   $ok = $false
-  for ($i = 0; $i -lt 10; $i++) {
+  $reason = "save failed"
+  for ($i = 0; $i -lt 12; $i++) {
     try {
       [System.IO.File]::Copy($tmp, $dataFile, $true)
       $ok = $true
       break
     } catch {
-      Start-Sleep -Milliseconds 120
+      $reason = $_.Exception.Message
+      Start-Sleep -Milliseconds 150
     }
   }
   try { [System.IO.File]::Delete($tmp) } catch {}
-  if (-not $ok) { throw "save failed" }
+  if (-not $ok) { throw $reason }
 }
 
 function Read-RequestText([System.Net.HttpListenerRequest]$req) {
@@ -211,7 +253,14 @@ function Read-RequestText([System.Net.HttpListenerRequest]$req) {
 
 try {
   while ($listener.IsListening) {
-    $ctx = $listener.GetContext()
+    $ctx = $null
+    try {
+      $ctx = $listener.GetContext()
+    } catch {
+      if (-not $listener.IsListening) { break }
+      Start-Sleep -Milliseconds 50
+      continue
+    }
     try {
       $req = $ctx.Request
       $res = $ctx.Response
@@ -233,13 +282,31 @@ try {
       }
 
       if ($path -eq "/api/data" -and $req.HttpMethod -eq "PUT") {
-        $text = (Read-RequestText $req).Trim()
-        if (-not (Test-HebetJson $text)) {
-          Send-Text $res 400 "text/plain; charset=utf-8" "invalid"
-          continue
+        try {
+          $text = (Read-RequestText $req).Trim()
+          if (-not (Test-HebetJson $text)) {
+            Send-Text $res 400 "text/plain; charset=utf-8" "invalid"
+            continue
+          }
+          $currentRev = -1
+          $baseRev = -1
+          if (Test-Path -LiteralPath $dataFile) {
+            $currentText = Read-HebetData
+            $currentMatch = [regex]::Match($currentText, '"revision"\s*:\s*(\d+)')
+            if ($currentMatch.Success) { $currentRev = [int]$currentMatch.Groups[1].Value }
+          }
+          $baseMatch = [regex]::Match($text, '"baseRevision"\s*:\s*(\d+)')
+          if ($baseMatch.Success) { $baseRev = [int]$baseMatch.Groups[1].Value }
+          if ($currentRev -ge 0 -and $baseRev -lt $currentRev) {
+            Send-Text $res 409 "text/plain; charset=utf-8" "stale"
+            continue
+          }
+          Write-HebetData $text
+          Send-Bytes $res 204 "" $null
+        } catch {
+          Write-Log $_.Exception.Message
+          try { Send-Text $res 500 "text/plain; charset=utf-8" "save failed" } catch {}
         }
-        Write-HebetData $text
-        Send-Bytes $res 204 "" $null
         continue
       }
 
@@ -269,8 +336,8 @@ try {
       if ($req.HttpMethod -eq "HEAD") { $fileBytes = New-Object byte[] 0 }
       Send-Bytes $res 200 $type $fileBytes
     } catch {
-      try { Write-Host $_.Exception.Message } catch {}
-      try { $ctx.Response.Abort() } catch {}
+      try { Write-Log $_.Exception.Message } catch {}
+      try { if ($ctx) { $ctx.Response.Abort() } } catch {}
     }
   }
 } finally {

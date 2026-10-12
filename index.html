@@ -5118,7 +5118,7 @@
       <h2 class="boot-title">תקן מצבה זרועי</h2>
       <p class="boot-status" id="boot-status">טוען את נתוני החיילים והיחידות</p>
       <button class="boot-connect" id="boot-connect" type="button" hidden>בחירת הקובץ hebet-data.txt</button>
-      <p class="boot-hint" id="boot-hint" hidden>הנתונים נשמרים בקובץ hebet-data.txt שבתיקייה, בלי אינטרנט. פתחו את הקיצור «תקן מצבה זרועי» שבאותה תיקייה, והוא טוען את הקובץ לבד.</p>
+      <p class="boot-hint" id="boot-hint" hidden>השמירה והטעינה נעשות לקובץ hebet-data.txt שבתיקייה, בלי אינטרנט. פתחו את «תקן מצבה זרועי».</p>
       <div class="boot-bar" id="boot-bar" aria-hidden="true"><span></span></div>
     </div>
   </div>
@@ -5528,6 +5528,8 @@
     var bootstrapping = true;
     var savePending = false;
     var saveRunning = false;
+    var saveTimer = 0;
+    var fileRevision = 0;
     var fileBroken = false;
     var sawCorrupt = false;
     var FIELDS = [
@@ -7056,6 +7058,8 @@
         soldiers: SOLDIERS,
         units: UNITS,
         unit: state.unit || "",
+        revision: (fileRevision || 0) + 1,
+        baseRevision: fileRevision || 0,
         studySeen: readList(STUDY_SEEN_KEY),
         releaseSoonSeen: readList(RELEASE_SOON_SEEN_KEY),
         noticeDismissed: readList(NOTICE_DISMISS_KEY)
@@ -7111,7 +7115,7 @@
       pill.hidden = !projectFileActive;
       pill.classList.toggle("is-error", kind === "error");
       if (kind === "saving") pill.textContent = "שומר לקובץ…";
-      else if (kind === "error") pill.textContent = "שמירה נכשלה";
+      else if (kind === "error") pill.textContent = "שמירה נכשלה, מנסה שוב";
       else pill.textContent = "נשמר בקובץ";
     }
 
@@ -7144,20 +7148,43 @@
       pumpSave();
     }
 
+    function scheduleSaveRetry() {
+      if (saveTimer) return;
+      saveTimer = window.setTimeout(function () {
+        saveTimer = 0;
+        if (!projectFileActive || fileBroken) return;
+        savePending = true;
+        pumpSave();
+      }, 1500);
+    }
+
     function pumpSave() {
       if (saveRunning || !savePending) return;
       savePending = false;
       saveRunning = true;
       setSaveStatus("saving");
-      var body = JSON.stringify(projectSnapshot());
+      var body;
+      try { body = JSON.stringify(projectSnapshot()); }
+      catch (err) {
+        saveRunning = false;
+        setSaveStatus("error");
+        savePending = true;
+        scheduleSaveRetry();
+        return;
+      }
       writeBody(body).then(function () {
         saveRunning = false;
         if (savePending) pumpSave();
         else setSaveStatus("saved");
-      }, function () {
+      }, function (err) {
         saveRunning = false;
+        if (err && err.message === "stale") {
+          refreshFromServer();
+          return;
+        }
         setSaveStatus("error");
-        if (savePending) pumpSave();
+        savePending = true;
+        scheduleSaveRetry();
       });
     }
 
@@ -7169,14 +7196,52 @@
             headers: { "Content-Type": "application/json; charset=utf-8" },
             body: body
           }).then(function (res) {
+            if (res.status === 409) throw new Error("stale");
             if (!res.ok) throw new Error("save");
           });
         }
         if (fileMode === "file" && fileHandle) return writeFileHandle(fileHandle, body);
         return Promise.reject(new Error("mode"));
       }
-      return once().catch(function () {
-        return new Promise(function (resolve) { setTimeout(resolve, 250); }).then(once);
+      function attempt(left) {
+        return once().catch(function (err) {
+          if (err && err.message === "stale") throw err;
+          if (left <= 1) throw new Error("save");
+          return new Promise(function (resolve) { setTimeout(resolve, 400); }).then(function () {
+            return attempt(left - 1);
+          });
+        });
+      }
+      return attempt(4);
+    }
+
+    function refreshFromServer() {
+      if (fileMode !== "server" || !dataUrl) return;
+      fetch(dataUrl, { cache: "no-store" }).then(function (res) {
+        if (!res.ok) throw new Error("load");
+        return res.text();
+      }).then(function (text) {
+        var data = normalizeRecord(JSON.parse(text));
+        fileRecord = data;
+        fileRevision = data && data.revision ? data.revision : 0;
+        if (data && Array.isArray(data.soldiers)) SOLDIERS = data.soldiers.map(blankSoldier);
+        if (data && Array.isArray(data.units) && data.units.length) {
+          var next = [];
+          data.units.forEach(function (item) {
+            var unit = normalizeUnit(item);
+            if (!unit.id || !unit.name) return;
+            if (next.some(function (existing) { return existing.id === unit.id; })) return;
+            next.push(unit);
+          });
+          if (next.length) UNITS = next;
+        }
+        savePending = false;
+        setSaveStatus("saved");
+        if (appStarted) render();
+      }).catch(function () {
+        setSaveStatus("error");
+        savePending = true;
+        scheduleSaveRetry();
       });
     }
 
@@ -7215,6 +7280,7 @@
         fileMode = "server";
         projectFileActive = true;
         fileRecord = normalizeRecord(data);
+        fileRevision = fileRecord && fileRecord.revision ? fileRecord.revision : 0;
         return true;
       }).catch(function () {
         clearTimeout(timer);
@@ -7411,9 +7477,6 @@
       sawCorrupt = false;
       fileBroken = false;
       return tryServer().then(function (found) {
-        if (found) return true;
-        return tryStoredHandle();
-      }).then(function (found) {
         if (!found && sawCorrupt) fileBroken = true;
         return !!found;
       }).catch(function () {
@@ -12040,8 +12103,13 @@
     }
 
     var appStarted = false;
+    var serverWatch = 0;
 
     function beginApp() {
+      if (serverWatch) {
+        window.clearInterval(serverWatch);
+        serverWatch = 0;
+      }
       if (!appStarted) {
         appStarted = true;
         try { startApp(); } catch (err) {}
@@ -12075,30 +12143,30 @@
       });
     }
 
+    function watchServer() {
+      if (serverWatch || appStarted) return;
+      serverWatch = window.setInterval(function () {
+        if (appStarted) {
+          window.clearInterval(serverWatch);
+          serverWatch = 0;
+          return;
+        }
+        openProjectFile().then(function (ok) {
+          if (ok && !appStarted) beginApp();
+        });
+      }, 1000);
+    }
+
     function showFolderPrompt(message) {
       var status = document.getElementById("boot-status");
       var bar = document.getElementById("boot-bar");
       var btn = document.getElementById("boot-connect");
       var hint = document.getElementById("boot-hint");
-      if (status) status.textContent = message || "כדי לטעון את הנתונים, פתחו את הקיצור «תקן מצבה זרועי»";
+      if (status) status.textContent = message || "פתחו את «תקן מצבה זרועי» שבתיקייה";
       if (bar) bar.hidden = true;
       if (hint) hint.hidden = false;
-      bindBootDrop();
-      if (!btn) return;
-      btn.hidden = false;
-      btn.disabled = false;
-      btn.onclick = function () {
-        btn.disabled = true;
-        if (status) status.textContent = "טוען את hebet-data.txt";
-        connectProjectFolder().then(function (ok) {
-          if (!ok) {
-            btn.disabled = false;
-            if (status) status.textContent = "בחרו את הקובץ hebet-data.txt, או פתחו את הקיצור «תקן מצבה זרועי».";
-            return;
-          }
-          beginApp();
-        });
-      };
+      if (btn) btn.hidden = true;
+      watchServer();
     }
 
     function init() {
