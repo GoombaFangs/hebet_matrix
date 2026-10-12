@@ -8,9 +8,6 @@
   <meta name="description" content="רשימת חיילים לפי מקצוע, מחזור קורס ויום עיון">
   <title>תקן מצבה זרועי</title>
   <link rel="icon" href="hebet-logo.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <style>
     :root {
       --canvas: #f4f6f8;
@@ -26,6 +23,87 @@
       --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
       --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 10px 28px rgba(16, 24, 40, 0.06);
       --radius: 16px;
+    }
+
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/hebrew-400-normal.woff2") format("woff2");
+      unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url("fonts/hebrew-500-normal.woff2") format("woff2");
+      unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url("fonts/hebrew-600-normal.woff2") format("woff2");
+      unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url("fonts/hebrew-700-normal.woff2") format("woff2");
+      unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 800;
+      font-display: swap;
+      src: url("fonts/hebrew-800-normal.woff2") format("woff2");
+      unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("fonts/latin-400-normal.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url("fonts/latin-500-normal.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url("fonts/latin-600-normal.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url("fonts/latin-700-normal.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: "Heebo";
+      font-style: normal;
+      font-weight: 800;
+      font-display: swap;
+      src: url("fonts/latin-800-normal.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
 
     * { box-sizing: border-box; }
@@ -133,6 +211,151 @@
       align-items: center;
       gap: 8px;
       flex: none;
+    }
+
+    .save-pill {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--secondary);
+      white-space: nowrap;
+    }
+
+    .save-pill.is-error { color: #b42318; }
+
+    .file-note {
+      flex: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0;
+      padding: 8px 20px;
+      background: #fff6e8;
+      border-bottom: 1px solid #f0d7b0;
+      color: #7a4b08;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .file-note p { margin: 0; }
+
+    .file-note .btn {
+      height: 34px;
+      background: #fff;
+      color: #7a4b08;
+      border: 1px solid #e6c48a;
+    }
+
+    .boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      background-color: #07111f;
+      background-image:
+        radial-gradient(ellipse 560px 460px at 50% 42%, rgba(0, 100, 224, 0.34), transparent 68%),
+        linear-gradient(180deg, #10284a 0%, #07111f 52%, #04101c 100%);
+      transition: opacity 0.35s ease;
+    }
+
+    .boot-screen.is-done {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .boot-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .boot-loader {
+      display: block;
+      width: min(220px, 52vw);
+      height: auto;
+      border-radius: 28px;
+      background: #000;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .boot-kicker {
+      margin: 22px 0 0;
+      color: #9ec9ff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+
+    .boot-title {
+      margin: 6px 0 0;
+      color: #fff;
+      font-size: clamp(1.45rem, 3vw, 1.85rem);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .boot-status {
+      margin: 8px 0 0;
+      max-width: 420px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    .boot-connect {
+      margin-top: 22px;
+      height: 46px;
+      padding: 0 22px;
+      border: none;
+      border-radius: 10px;
+      background: #0064e0;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .boot-connect:hover { background: #0054c6; }
+
+    .boot-connect:disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    .boot-hint {
+      margin: 14px 0 0;
+      max-width: 420px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.86rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .boot-bar {
+      width: 148px;
+      height: 3px;
+      margin-top: 22px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .boot-bar span {
+      display: block;
+      width: 42%;
+      height: 100%;
+      border-radius: inherit;
+      background: #4da3ff;
+      animation: boot-slide 1.15s ease-in-out infinite;
+    }
+
+    @keyframes boot-slide {
+      0% { transform: translateX(140%); }
+      100% { transform: translateX(-240%); }
     }
 
     .unit-picker {
@@ -422,17 +645,271 @@
     body.log-open .units-board { padding-top: 18px; }
     body.log-open .profile-scroll { overflow-x: hidden; }
 
-    .units-board-head h2 {
+    .units-board-head h2,
+    .home-lead h2 {
       margin: 0 0 4px;
       font-size: 1.7rem;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
 
-    .units-board-head p {
+    .units-board-head p,
+    .home-lead p {
       margin: 0 0 18px;
       color: var(--secondary);
       font-weight: 600;
+    }
+
+    .intake-board { margin: 0 0 22px; }
+
+    .intake-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px dashed #c9d0da;
+      border-radius: 16px;
+      background: #f7f9fc;
+      text-align: start;
+    }
+
+    .intake-toggle:hover { background: #eef3f9; border-color: #b7c3d4; }
+
+    .intake-board.is-open .intake-toggle {
+      border-style: solid;
+      border-color: var(--line);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      background: #fff;
+    }
+
+    .intake-plus {
+      flex: none;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 1.45rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .intake-copy { min-width: 0; flex: 1; }
+
+    .intake-title {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .intake-sub {
+      display: block;
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .intake-chevron {
+      flex: none;
+      color: var(--secondary);
+      transition: transform 180ms ease;
+    }
+
+    .intake-chevron.is-open { transform: rotate(180deg); color: var(--blue); }
+
+    .intake-panel {
+      border: 1px solid var(--line);
+      border-top: none;
+      border-radius: 0 0 16px 16px;
+      background: #fff;
+      padding: 4px 16px 16px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .intake-panel.is-opening {
+      animation: intake-open 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .intake-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr 1fr 0.8fr 0.9fr;
+      gap: 10px 12px;
+    }
+
+    .intake-grid label {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .intake-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-top: 14px;
+    }
+
+    .intake-hint {
+      margin: 0;
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .intake-note {
+      margin: 10px 0 0;
+      color: #087443;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .fresh-board { margin: 0 0 28px; }
+
+    .fresh-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 8px;
+    }
+
+    .fresh-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 58px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      text-align: start;
+      box-shadow: var(--shadow);
+    }
+
+    .fresh-row { cursor: grab; }
+    .fresh-row:hover { background: #f7f9fc; }
+    .fresh-row:active { cursor: grabbing; }
+    .fresh-row.is-dragging { opacity: 0.4; }
+
+    .fresh-drag-note {
+      margin: 0 0 10px;
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .unit-tile.is-drop {
+      transform: translateY(-3px);
+      box-shadow: 0 0 0 3px rgba(0, 100, 224, 0.35), 0 16px 34px rgba(16, 24, 40, 0.12);
+    }
+
+    .fresh-copy {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .fresh-name {
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .fresh-meta {
+      color: var(--secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .fresh-empty {
+      margin: 0;
+      padding: 14px 16px;
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .fresh-row.is-just-added {
+      animation: fresh-in 560ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .unit-tile.is-received {
+      animation: tile-receive 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .unit-tile-count.is-bump {
+      display: inline-block;
+      transform-origin: center;
+      animation: count-bump 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .intake-flight {
+      position: fixed;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 36px;
+      max-width: 240px;
+      padding: 0 12px 0 4px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 0.88rem;
+      box-shadow: 0 12px 28px rgba(16, 24, 40, 0.16);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .intake-flight-mark {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .intake-flight span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes intake-open {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @keyframes fresh-in {
+      from { opacity: 0; transform: translateY(-8px); background: #e8f2ff; }
+      to { opacity: 1; transform: none; background: #fff; }
+    }
+
+    @keyframes tile-receive {
+      0% { box-shadow: 0 0 0 0 rgba(0, 100, 224, 0); }
+      40% { box-shadow: 0 0 0 4px rgba(0, 100, 224, 0.16); }
+      100% { box-shadow: var(--shadow-card); }
+    }
+
+    @keyframes count-bump {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.16); color: var(--blue); }
+      100% { transform: scale(1); }
+    }
+
+    @media (max-width: 980px) {
+      .intake-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .intake-grid { grid-template-columns: 1fr; }
     }
 
     .unit-grid {
@@ -853,6 +1330,105 @@
       font-weight: 800;
       line-height: 1.35;
       white-space: nowrap;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-quota.is-split {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+      max-width: 100%;
+      margin-top: 6px;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      white-space: normal;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-quota-kicker {
+      flex: none;
+      margin-inline-end: 2px;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-quota-kicker::after { content: ":"; }
+
+    :is(.unit-grid, .unit-picker) .unit-quota-part {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 3px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: var(--chip);
+      font-weight: 800;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-quota-part b {
+      font-variant-numeric: tabular-nums;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-gap {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-gap-meter {
+      height: 4px;
+      border-radius: 99px;
+      background: #f0e4d4;
+      overflow: hidden;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-gap-meter > span {
+      display: block;
+      height: 100%;
+      width: var(--fill);
+      border-radius: inherit;
+      background: #e09a3e;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-gap.is-full .unit-gap-meter { background: #d9f0e3; }
+    :is(.unit-grid, .unit-picker) .unit-gap.is-full .unit-gap-meter > span { background: #1f9d55; }
+    :is(.unit-grid, .unit-picker) .unit-gap.is-over .unit-gap-meter { background: #e4dcfa; }
+    :is(.unit-grid, .unit-picker) .unit-gap.is-over .unit-gap-meter > span { background: #7a5af8; }
+
+    :is(.unit-grid, .unit-picker) .unit-gap-body {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+      color: #9a5b12;
+      font-size: 0.72rem;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-gap.is-full .unit-gap-body { color: #087443; }
+    :is(.unit-grid, .unit-picker) .unit-gap.is-over .unit-gap-body { color: #6941c6; }
+
+    :is(.unit-grid, .unit-picker) .unit-gap-kicker { flex: none; }
+
+    :is(.unit-grid, .unit-picker) .unit-gap-bit {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 3px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: #fff1df;
+    }
+
+    :is(.unit-grid, .unit-picker) .unit-gap.is-over .unit-gap-bit { background: #f3eeff; }
+
+    :is(.unit-grid, .unit-picker) .unit-gap b { font-variant-numeric: tabular-nums; }
+
+    :is(.unit-grid, .unit-picker) .unit-gap-extra {
+      flex: none;
+      color: #6941c6;
+      font-weight: 800;
     }
 
     :is(.unit-grid, .unit-picker) .unit-tile-released {
@@ -1615,6 +2191,10 @@
 
     .text-btn:hover { background: var(--blue-soft); }
 
+    .text-btn-danger { color: #b42318; }
+
+    .text-btn-danger:hover { background: #fdecec; }
+
     .list {
       height: 100%;
       min-height: 0;
@@ -1784,9 +2364,47 @@
     }
 
     .flag-study-due,
-    .person[aria-current="true"] .flag-study-due {
+    .person[aria-current="true"] .flag-study-due,
+    .flag-release-soon {
       background: #fff4e5;
       color: #9a3412;
+    }
+
+    .study-done {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      width: fit-content;
+      margin: 0;
+      padding: 2px 8px 2px 6px;
+      border: 1px solid #f5c6ac;
+      border-radius: 999px;
+      background: #fff;
+      color: #9a3412;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 800;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .study-done input {
+      width: 14px;
+      height: 14px;
+      flex: none;
+      margin: 0;
+      accent-color: #087443;
+      cursor: pointer;
+    }
+
+    .study-done.is-done {
+      border-color: #b7e4c7;
+      background: #e7f6ee;
+      color: #087443;
+    }
+
+    .study-done:focus-within {
+      box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--blue);
     }
 
     .group.is-released {
@@ -3561,13 +4179,18 @@
       font-weight: 700;
     }
 
-    .log-cycle-head .flag { margin-inline-start: auto; }
+    .log-cycle-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-inline-start: auto;
+    }
 
     .log-people { display: flex; flex-direction: column; }
 
     .log-person {
       display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) auto;
       gap: 8px 16px;
       align-items: center;
       padding: 11px 14px;
@@ -3586,6 +4209,13 @@
       color: var(--secondary);
       font-size: 0.88rem;
       font-weight: 700;
+    }
+
+    .log-person-done {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
     }
 
     .log-search {
@@ -3620,8 +4250,10 @@
     @media (max-width: 720px) {
       .log-tabs { display: flex; }
       .log-tab { flex: 1; justify-content: center; }
-      .log-person { grid-template-columns: 1fr; gap: 2px; }
-      .log-cycle-head .flag { margin-inline-start: 0; }
+      .log-person { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; }
+      .log-person-place,
+      .log-person-date { grid-column: 1 / -1; }
+      .log-cycle-actions { margin-inline-start: 0; }
     }
 
     .unassigned-board { margin-top: 28px; }
@@ -3916,6 +4548,80 @@
       font-weight: 800;
     }
 
+    .date-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .date-month {
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .date-year-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: var(--chip);
+      padding: 0 8px 0 6px;
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .date-year-btn svg {
+      color: var(--secondary);
+      transform: rotate(90deg);
+    }
+
+    .date-year-btn:hover {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .date-year-btn:hover svg { color: var(--blue); }
+
+    .date-years {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      max-height: 220px;
+      overflow: auto;
+      padding: 2px;
+    }
+
+    .date-year {
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .date-year:hover { background: var(--chip); }
+
+    .date-year.is-today { box-shadow: inset 0 0 0 1.5px var(--blue); }
+
+    .date-year.is-selected,
+    .date-year.is-selected:hover {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .date-nav-gap {
+      width: 58px;
+      flex: none;
+    }
+
     .date-nav-btn {
       width: 32px;
       height: 32px;
@@ -3966,6 +4672,8 @@
     }
 
     .date-day:focus-visible,
+    .date-year:focus-visible,
+    .date-year-btn:focus-visible,
     .date-nav-btn:focus-visible {
       outline: none;
       box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--blue);
@@ -4151,6 +4859,95 @@
       font-weight: 800;
     }
 
+    .quota-mode {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .editor .quota-choice {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      width: auto;
+      min-height: 34px;
+      margin: 0;
+      padding: 0 12px;
+      border: 1.5px solid #d5d8de;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .editor .quota-choice:has(input:checked) {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+    }
+
+    .editor .quota-choice input {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      margin: 0;
+      padding: 0;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: none;
+      accent-color: var(--blue);
+    }
+
+    .editor .quota-choice input:focus-visible {
+      background: transparent;
+      box-shadow: 0 0 0 2px var(--blue);
+    }
+
+    .quota-box:has(input[value="profession"]:checked) .quota-general,
+    .quota-box:not(:has(input[value="profession"]:checked)) .quota-parts { display: none; }
+
+    .quota-note {
+      margin: 0 0 10px;
+      color: var(--secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .field-hint {
+      display: block;
+      margin-top: 4px;
+      color: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .editor input.is-invalid {
+      background: #fff5f6;
+      box-shadow: 0 0 0 2px #b42318;
+    }
+
+    .quota-parts .editor-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .sidebar .quota-parts .editor-grid { grid-template-columns: 1fr; }
+
+    .metric-grid:has(.is-wide) { grid-template-columns: 1fr; }
+
+    .shalishut-metric.is-wide {
+      grid-column: 1 / -1;
+      border-inline-start: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .shalishut-metric.is-wide .fact-value {
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
     .form-error {
       margin: 8px 0 0;
       color: #b42318;
@@ -4173,7 +4970,8 @@
 
     @media (max-width: 520px) {
       .editor-grid,
-      .metric-fields { grid-template-columns: 1fr; }
+      .metric-fields,
+      .quota-parts .editor-grid { grid-template-columns: 1fr; }
     }
 
     .print-root { display: none; }
@@ -4209,6 +5007,7 @@
 
     @media (max-width: 860px) {
       .appbar { padding: 0 14px; height: 68px; }
+      .file-note { flex-wrap: wrap; padding: 8px 14px; }
       .brand-mark { height: 48px; }
       .brand-mark-idf { height: 42px; width: 42px; }
       .brand p { display: none; }
@@ -4258,7 +5057,7 @@
         height: auto;
         background: #fff;
       }
-      .skip, .appbar, .workspace, .hit-pop, .palette { display: none !important; }
+      .skip, .appbar, .file-note, .save-pill, .boot-screen, .workspace, .hit-pop, .palette { display: none !important; }
       .print-root { display: block; }
       .cycle-group { display: block; }
       .profile-frame.is-released .dossier,
@@ -4312,6 +5111,17 @@
   </style>
 </head>
 <body>
+  <div class="boot-screen" id="boot-screen" role="status" aria-live="polite" aria-label="טוען את תקן מצבה זרועי">
+    <div class="boot-card">
+      <img class="boot-loader" src="Heber_Loader.gif" alt="">
+      <p class="boot-kicker">הבט</p>
+      <h2 class="boot-title">תקן מצבה זרועי</h2>
+      <p class="boot-status" id="boot-status">טוען את נתוני החיילים והיחידות</p>
+      <button class="boot-connect" id="boot-connect" type="button" hidden>בחירת הקובץ hebet-data.txt</button>
+      <p class="boot-hint" id="boot-hint" hidden>הנתונים נשמרים בקובץ hebet-data.txt שבתיקייה, בלי אינטרנט. פתחו את הקיצור «תקן מצבה זרועי» שבאותה תיקייה, והוא טוען את הקובץ לבד.</p>
+      <div class="boot-bar" id="boot-bar" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
   <a class="skip" href="#search">דילוג לחיפוש</a>
   <p class="sr-only" id="live" aria-live="polite"></p>
   <header class="appbar">
@@ -4323,10 +5133,15 @@
       </div>
     </div>
     <div class="app-actions">
+    <span class="save-pill" id="save-pill" hidden>נשמר בקובץ</span>
     <button class="btn btn-secondary" id="log-btn" type="button">יומן<span class="notice-dot" hidden aria-hidden="true"></span></button>
     <button class="btn btn-primary" id="add-btn" type="button">חייל חדש</button>
     </div>
   </header>
+  <div class="file-note" id="file-note" hidden>
+    <p id="file-note-text">המחשב הזה עוד לא קורא את hebet-data.txt. פתחו את הקיצור «תקן מצבה זרועי» שבתיקייה.</p>
+    <button class="btn" id="save-connect" type="button">בחירת הקובץ</button>
+  </div>
 
   <div class="workspace">
     <aside class="sidebar" aria-label="כרטיס יחידה">
@@ -4398,6 +5213,7 @@
       residence    מקום מגורים
       grade        מדרג
       studyDate    תאריך יום עיון  (נמלא אוטומטית: 10 חודשים מתחילת ההכשרה)
+      studyDone    יום העיון בוצע  (חותמת התאריך שסומנה, מורידה את ההתראה)
       trainStart   תחילת הכשרה    (רק כשאין סימון «ללא הכשרה»)
       notes        הערות          (רשות)
       photo        תמונה          (רשות, מוצגת במקום ראשי התיבות)
@@ -4447,6 +5263,11 @@
     };
 
     var PROFESSIONS = ["עריכה", "צילום", "גרפיקה"];
+    var QUOTA_PARTS = [
+      { profession: "עריכה", field: "quotaEdit" },
+      { profession: "צילום", field: "quotaPhoto" },
+      { profession: "גרפיקה", field: "quotaDesign" }
+    ];
     var UNITS = [
       {
         id: "bislach",
@@ -4688,13 +5509,27 @@
     var UNIT_PARAMS = ["quota", "shalishutName", "organ", "gepahName", "gepahPhone", "officerName", "officerPhone", "ramadName", "ramadPhone"];
     var SHALISHUT_ROLES = [
       { label: "מפקד גפ״ה", name: "gepahName", phone: "gepahPhone" },
-      { label: "קצין", name: "officerName", phone: "officerPhone" },
+      { label: "קצין צפ״ה", name: "officerName", phone: "officerPhone" },
       { label: "רמ״ד פל״א", name: "ramadName", phone: "ramadPhone" }
     ];
     var STORAGE_KEY = "hebet-matrix-soldiers-v8";
     var STUDY_SEEN_KEY = "hebet-matrix-study-seen";
+    var RELEASE_SOON_SEEN_KEY = "hebet-matrix-release-soon-seen";
+    var NOTICE_DISMISS_KEY = "hebet-matrix-notice-dismissed";
     var UNIT_KEY = "hebet-matrix-unit";
     var UNITS_KEY = "hebet-matrix-units-v2";
+    var DATA_NAME = "hebet-data.txt";
+    var projectFileActive = false;
+    var fileMode = "";
+    var fileRecord = null;
+    var fileHandle = null;
+    var savedFileHandle = null;
+    var dataUrl = "";
+    var bootstrapping = true;
+    var savePending = false;
+    var saveRunning = false;
+    var fileBroken = false;
+    var sawCorrupt = false;
     var FIELDS = [
       { key: "profession", label: "מקצוע", required: true, options: PROFESSIONS },
       { key: "unit", label: "יחידה", required: true, unit: true },
@@ -4738,6 +5573,12 @@
       logQuery: "",
       logTab: "transfers",
       outsideOpen: false,
+      outsideKind: "departed",
+      intakeOpen: false,
+      intake: { name: "", profession: "", unit: "", personalId: "", phone: "" },
+      intakeError: "",
+      intakeNote: "",
+      intakeLand: null,
       releasedOpen: false,
       sortKey: "",
       sortDir: "",
@@ -4770,6 +5611,73 @@
 
     function digits(value) {
       return String(value == null ? "" : value).replace(/\D/g, "");
+    }
+
+    function digitsInvalid(value) {
+      var text = clean(value);
+      return Boolean(text) && text !== digits(text);
+    }
+
+    function digitsFieldMessage(form) {
+      if (!form) return "";
+      var inputs = form.querySelectorAll("input[data-digits]");
+      var message = "";
+      for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (!digitsInvalid(input.value)) {
+          input.classList.remove("is-invalid");
+          continue;
+        }
+        input.classList.add("is-invalid");
+        if (message) continue;
+        var label = input.parentNode && input.parentNode.querySelector(".field-label");
+        var name = label ? clean(label.textContent) : "השדה";
+        message = "ב" + name + " חייב להיות מספר. יש תו לא חוקי, אי אפשר לשמור.";
+      }
+      return message;
+    }
+
+    function showDigitsError(form, message) {
+      var existing = form.querySelector(".form-error[data-digits-error]");
+      if (!existing) {
+        existing = document.createElement("p");
+        existing.className = "form-error";
+        existing.setAttribute("data-digits-error", "1");
+        var actions = form.querySelector(".editor-actions");
+        if (actions) form.insertBefore(existing, actions);
+        else form.appendChild(existing);
+      }
+      existing.textContent = message;
+    }
+
+    function keepDigits(input) {
+      if (!input || input.getAttribute("data-digits") == null) return;
+      var next = digits(input.value);
+      if (next === input.value) {
+        if (!digitsInvalid(input.value)) input.classList.remove("is-invalid");
+        return;
+      }
+      var end = input.selectionStart == null ? input.value.length : input.selectionStart;
+      var kept = digits(input.value.slice(0, end)).length;
+      input.value = next;
+      if (input.setSelectionRange) input.setSelectionRange(kept, kept);
+      input.classList.remove("is-invalid");
+    }
+
+    function guardDigits(event) {
+      var input = event.target;
+      if (!input || !input.getAttribute || input.getAttribute("data-digits") == null) return;
+      if (event.type === "beforeinput") {
+        if (!event.data) return;
+        if (event.inputType === "insertFromPaste" || event.inputType === "insertFromDrop") return;
+        if (/\D/.test(event.data)) event.preventDefault();
+        return;
+      }
+      keepDigits(input);
+      var form = input.form;
+      if (!form || digitsFieldMessage(form)) return;
+      var error = form.querySelector(".form-error[data-digits-error]");
+      if (error) error.remove();
     }
 
     function countWord(n, one, many) {
@@ -4984,7 +5892,7 @@
     function isReleased(soldier) {
       var key = releaseKey(soldier && soldier.tatash);
       if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) return false;
-      return key < todayKey();
+      return key <= todayKey();
     }
 
     function isUntrained(soldier) {
@@ -5017,10 +5925,71 @@
       return studyDateFromTrain(soldier.trainStart);
     }
 
-    function needsStudyDay(soldier) {
+    function studyReached(soldier) {
       var due = stampToDate(effectiveStudyStamp(soldier));
       if (!due) return false;
       return startOfDay(new Date()) >= due;
+    }
+
+    function studyIsDone(soldier) {
+      var stamp = effectiveStudyStamp(soldier);
+      return !!stamp && clean(soldier && soldier.studyDone) === stamp;
+    }
+
+    function needsStudyDay(soldier) {
+      return studyReached(soldier) && !studyIsDone(soldier);
+    }
+
+    function studyDoneBox(soldier) {
+      if (!studyReached(soldier)) return "";
+      var done = studyIsDone(soldier);
+      var name = clean(soldier.name) || "החייל";
+      return '<label class="study-done' + (done ? " is-done" : "") + '">' +
+        '<input type="checkbox" data-action="study-done" data-key="' + esc(keyOf(soldier)) + '"' + (done ? " checked" : "") + ' aria-label="' + esc("יום העיון של " + name + " בוצע") + '">' +
+        "<span>בוצע</span></label>";
+    }
+
+    function writeStudySeen(map) {
+      try { localStorage.setItem(STUDY_SEEN_KEY, JSON.stringify(Object.keys(map))); } catch (err) {}
+      queueProjectSave();
+    }
+
+    function setStudySeen(soldiers, seen) {
+      var map = {};
+      readStudySeen().forEach(function (id) { map[id] = true; });
+      soldiers.forEach(function (soldier) {
+        var id = studyNoticeId(soldier);
+        if (seen) map[id] = true;
+        else delete map[id];
+      });
+      writeStudySeen(map);
+    }
+
+    function setStudyDone(keys, done) {
+      var changed = [];
+      keys.forEach(function (key) {
+        if (!key) return;
+        var soldier = findSoldier(SOLDIERS, key);
+        if (!soldier || !studyReached(soldier)) return;
+        var next = done ? effectiveStudyStamp(soldier) : "";
+        if (clean(soldier.studyDone) === next) return;
+        soldier.studyDone = next;
+        changed.push(soldier);
+      });
+      if (!changed.length) return;
+      setStudySeen(changed, done);
+      persist();
+      render({ keepProfileScroll: true, focusStudy: keys[0] || "" });
+    }
+
+    function focusStudyBox(key) {
+      if (!key) return;
+      var boxes = document.querySelectorAll("[data-action='study-done']");
+      for (var i = 0; i < boxes.length; i++) {
+        if (boxes[i].getAttribute("data-key") !== key) continue;
+        boxes[i].focus({ preventScroll: true });
+        return;
+      }
     }
 
     function studyNoticeId(soldier) {
@@ -5041,7 +6010,7 @@
       var seen = {};
       readStudySeen().forEach(function (id) { seen[id] = true; });
       return SOLDIERS.filter(function (soldier) {
-        return needsStudyDay(soldier) && !seen[studyNoticeId(soldier)];
+        return needsStudyDay(soldier) && !noticeDismissed(studyAlertId(soldier)) && !seen[studyNoticeId(soldier)];
       });
     }
 
@@ -5058,12 +6027,118 @@
       });
       if (!changed) return;
       try { localStorage.setItem(STUDY_SEEN_KEY, JSON.stringify(Object.keys(seen))); } catch (err) {}
+      queueProjectSave();
+    }
+
+    function releaseDue(soldier) {
+      var key = releaseKey(soldier && soldier.tatash);
+      var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(key);
+      if (!match) return null;
+      return startOfDay(new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+    }
+
+    function releaseDayCount(soldier) {
+      var due = releaseDue(soldier);
+      if (!due) return null;
+      return Math.round((due.getTime() - startOfDay(new Date()).getTime()) / 86400000);
+    }
+
+    function releaseSoon(soldier) {
+      var due = releaseDue(soldier);
+      if (!due) return false;
+      var today = startOfDay(new Date());
+      if (due.getTime() <= today.getTime()) return false;
+      return due.getTime() <= addMonths(today, 1).getTime();
+    }
+
+    function releaseSoonId(soldier) {
+      return keyOf(soldier) + "|" + releaseKey(soldier.tatash);
+    }
+
+    function readReleaseSoonSeen() {
+      try {
+        var raw = localStorage.getItem(RELEASE_SOON_SEEN_KEY);
+        var parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function unseenReleaseSoon() {
+      var seen = {};
+      readReleaseSoonSeen().forEach(function (id) { seen[id] = true; });
+      return SOLDIERS.filter(function (soldier) {
+        return releaseSoon(soldier) && !noticeDismissed(soonAlertId(soldier)) && !seen[releaseSoonId(soldier)];
+      });
+    }
+
+    function acknowledgeReleaseSoon() {
+      var seen = {};
+      readReleaseSoonSeen().forEach(function (id) { seen[id] = true; });
+      var changed = false;
+      SOLDIERS.forEach(function (soldier) {
+        if (!releaseSoon(soldier)) return;
+        var id = releaseSoonId(soldier);
+        if (seen[id]) return;
+        seen[id] = true;
+        changed = true;
+      });
+      if (!changed) return;
+      try { localStorage.setItem(RELEASE_SOON_SEEN_KEY, JSON.stringify(Object.keys(seen))); } catch (err) {}
+      queueProjectSave();
+    }
+
+    function studyAlertId(soldier) {
+      return "study|" + studyNoticeId(soldier);
+    }
+
+    function soonAlertId(soldier) {
+      return "soon|" + releaseSoonId(soldier);
+    }
+
+    function releaseAlertId(soldier) {
+      return "release|" + keyOf(soldier) + "|" + releaseKey(soldier.tatash);
+    }
+
+    function readDismissedNotices() {
+      try {
+        var raw = localStorage.getItem(NOTICE_DISMISS_KEY);
+        var parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function noticeDismissed(id) {
+      return readDismissedNotices().indexOf(id) !== -1;
+    }
+
+    function dismissNotices(ids) {
+      var map = {};
+      readDismissedNotices().forEach(function (id) { map[id] = true; });
+      var changed = false;
+      ids.forEach(function (id) {
+        if (!id || map[id]) return;
+        map[id] = true;
+        changed = true;
+      });
+      if (!changed) return;
+      try { localStorage.setItem(NOTICE_DISMISS_KEY, JSON.stringify(Object.keys(map))); } catch (err) {}
+      queueProjectSave();
+      render();
+    }
+
+    function dismissNoticeButton(id, name) {
+      var who = clean(name) || "ההתראה";
+      return '<button class="text-btn text-btn-danger" type="button" data-action="dismiss-notice" data-notice="' + esc(id) + '" aria-label="' + esc("מחיקת ההתראה של " + who) + '">מחיקה</button>';
     }
 
     function syncStudyNotice() {
       var logBtn = document.getElementById("log-btn");
       if (!logBtn) return;
-      var count = unseenStudyNotices().length;
+      var count = unseenStudyNotices().length + unseenReleaseSoon().length;
       var dot = logBtn.querySelector(".notice-dot");
       if (dot) dot.hidden = count === 0;
       logBtn.setAttribute("aria-label", count ? "יומן, יש הודעה חדשה" : "יומן");
@@ -5153,7 +6228,7 @@
         return '<li class="' + cls + '"><span class="posting-kicker">' + esc(kicker) + "</span><strong>" + esc(item.label) + "</strong>" + meta + "</li>";
       }).join("");
       var action = opts.interactive
-        ? '<button class="btn btn-secondary posting-new" type="button" data-action="open-transfer" data-key="' + esc(keyOf(soldier)) + '">סבב ב׳</button>'
+        ? '<div class="posting-actions"><button class="btn btn-secondary posting-new" type="button" data-action="open-transfer" data-key="' + esc(keyOf(soldier)) + '">סבב ב׳</button><button class="btn btn-danger posting-undo" type="button" data-action="undo-transfer" data-key="' + esc(keyOf(soldier)) + '">מחיקת השינוי</button></div>'
         : "";
       var open = !!opts.compact;
       return {
@@ -5210,7 +6285,8 @@
       var studyDue = needsStudyDay(soldier);
       var study = "";
       if (present(effectiveStudyStamp(soldier))) {
-        study = '<div class="fact fact-study' + (studyDue ? " is-due" : "") + '"><div class="study-main"><span class="fact-label">יום עיון</span><strong>' + esc(parts.pretty || parts.raw) + "</strong>" + (parts.raw && parts.pretty !== parts.raw ? '<span class="fact-hint">' + esc(parts.raw) + "</span>" : "") + "</div>" + (parts.relative ? '<span class="when">' + esc(parts.relative) + "</span>" : "") + "</div>";
+        var studyTone = studyDue ? " is-due" : (studyIsDone(soldier) ? " is-past" : "");
+        study = '<div class="fact fact-study' + studyTone + '"><div class="study-main"><span class="fact-label">יום עיון</span><strong>' + esc(parts.pretty || parts.raw) + "</strong>" + (parts.raw && parts.pretty !== parts.raw ? '<span class="fact-hint">' + esc(parts.raw) + "</span>" : "") + "</div>" + (parts.relative ? '<span class="when' + (studyIsDone(soldier) ? " is-past" : "") + '">' + esc(parts.relative) + "</span>" : "") + (opts.interactive ? studyDoneBox(soldier) : "") + "</div>";
       }
 
       var back = opts.back
@@ -5432,7 +6508,7 @@
           '<span class="posting-chevron">' + svg("chevronDown", 14) + "</span>" +
         "</button>" +
         '<div class="dir-route-body"' + (open ? "" : ' aria-hidden="true"') + '>' +
-          '<div class="dir-route-inner"><ol class="dir-route-track">' + steps + "</ol></div>" +
+          '<div class="dir-route-inner"><ol class="dir-route-track">' + steps + '</ol><button class="text-btn text-btn-danger dir-route-undo" type="button" data-action="undo-transfer" data-key="' + esc(key) + '">מחיקת השינוי האחרון</button></div>' +
         "</div></div>";
     }
 
@@ -5464,8 +6540,9 @@
       var studyHtml = "";
       if (present(studyStamp)) {
         studyHtml = "<strong>" + esc(parts.pretty || parts.raw) + "</strong>" +
-          (parts.relative ? '<span class="dir-when">' + esc(parts.relative) + "</span>" : "") +
-          (studyDueRow ? '<span class="flag flag-study-due">צריך יום עיון</span>' : "");
+          (parts.relative ? '<span class="dir-when' + (studyIsDone(soldier) ? " is-past" : "") + '">' + esc(parts.relative) + "</span>" : "") +
+          (studyDueRow ? '<span class="flag flag-study-due">צריך יום עיון</span>' : "") +
+          (opts.interactive ? studyDoneBox(soldier) : "");
       }
       var grade = clean(soldier.grade);
       var residence = clean(soldier.residence);
@@ -5490,9 +6567,13 @@
       if (isUntrained(soldier)) badges += '<span class="flag flag-untrained">ללא הכשרה</span>';
       if (needsStudyDay(soldier)) badges += '<span class="flag flag-study-due">צריך יום עיון</span>';
       var nameCopy = opts.interactive && present(soldier.name) ? copyButton(clean(soldier.name), "העתק שם", "copy-name") : "";
+      var undoAction = opts.interactive && soldier.transfers && soldier.transfers.length
+        ? '<button class="dir-icon dir-icon-danger" type="button" data-action="undo-transfer" data-key="' + esc(key) + '" title="מחיקת שינוי השיבוץ" aria-label="מחיקת שינוי השיבוץ של ' + esc(name) + '">' + svg("trash", 16) + "</button>"
+        : "";
       var actions = opts.interactive
         ? '<div class="dir-actions">' +
             '<button class="dir-icon" type="button" data-action="open-transfer" data-key="' + esc(key) + '" title="סבב ב׳" aria-label="סבב ב׳ ל' + esc(name) + '">' + svg("route", 16) + "</button>" +
+            undoAction +
             '<button class="dir-icon" type="button" data-action="edit-soldier" data-key="' + esc(key) + '" title="עריכה" aria-label="עריכת ' + esc(name) + '">' + svg("pencil", 16) + "</button>" +
           "</div>"
         : "";
@@ -5608,7 +6689,7 @@
         return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>אין חיילים ללא יחידה</h2><p>חייל שיוצא משיבוץ, מכל סיבה, יופיע כאן עם השיבוץ הקודם וסיבת המעבר.</p></div>";
       }
       if (kind === "unit" && state.releasedOpen) {
-        return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>אין משוחררים ב" + esc(unitName(state.unit)) + "</h2><p>חייל שתאריך התת״ש שלו עבר מופיע בכרטיס האפור של היחידה.</p></div>";
+        return '<div class="empty-state"><div class="empty-mark">' + svg("users", 26) + "</div><h2>אין משוחררים ב" + esc(unitName(state.unit)) + "</h2><p>חייל שתאריך התת״ש שלו הגיע מופיע בכרטיס האפור של היחידה.</p></div>";
       }
       if (kind === "unit") {
         var others = UNITS.filter(function (unit) { return unit.id !== state.unit; });
@@ -5816,9 +6897,11 @@
         soldier[field.key] = clean(item && item[field.key]);
       });
       soldier.photo = safePhoto(item && item.photo);
+      soldier.studyDone = clean(item && item.studyDone);
       if (isUntrained(soldier)) {
         soldier.trainStart = "";
         soldier.studyDate = "";
+        soldier.studyDone = "";
       }
       soldier.external = clean(item && item.external);
       soldier.transfers = normalizeTransfers(item && item.transfers);
@@ -5888,6 +6971,10 @@
       return !unitId(soldier && soldier.unit);
     }
 
+    function freshUnassigned(soldier) {
+      return isUnassigned(soldier) && !clean(soldier && soldier.external);
+    }
+
     function secondPostingMark(soldier) {
       if (!soldier || isUnassigned(soldier) || !(soldier.transfers && soldier.transfers.length)) return "";
       var label = postingOrdinal(soldier.transfers.length);
@@ -5901,7 +6988,10 @@
 
     function soldierInView(soldier, unit) {
       if (!soldier) return false;
-      if (state.outsideOpen) return isUnassigned(soldier);
+      if (state.outsideOpen) {
+        if (!isUnassigned(soldier)) return false;
+        return state.outsideKind === "fresh" ? freshUnassigned(soldier) : !freshUnassigned(soldier);
+      }
       if (unitId(soldier.unit) !== (unit || state.unit)) return false;
       return state.releasedOpen ? isReleased(soldier) : !isReleased(soldier);
     }
@@ -5916,6 +7006,13 @@
 
     function setSoldierPhoto(key, url) {
       url = safePhoto(url);
+      if (key === "intake") {
+        captureIntake();
+        state.intake.photo = url;
+        state.intakeOpen = true;
+        render({ keepProfileScroll: true });
+        return;
+      }
       if (state.creating || state.editingIndex >= 0) {
         captureDraft();
         state.draft.photo = url;
@@ -5942,11 +7039,394 @@
       return "לא הצלחנו לקרוא את התמונה. נסו קובץ אחר.";
     }
 
+    function readList(key) {
+      try {
+        var raw = localStorage.getItem(key);
+        var parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function projectSnapshot() {
+      return {
+        version: 1,
+        savedAt: new Date().toISOString(),
+        soldiers: SOLDIERS,
+        units: UNITS,
+        unit: state.unit || "",
+        studySeen: readList(STUDY_SEEN_KEY),
+        releaseSoonSeen: readList(RELEASE_SOON_SEEN_KEY),
+        noticeDismissed: readList(NOTICE_DISMISS_KEY)
+      };
+    }
+
+    function normalizeRecord(data) {
+      if (!data || typeof data !== "object" || Array.isArray(data)) return { fresh: true };
+      if (data.fresh === true) return { fresh: true };
+      if (!Array.isArray(data.soldiers) && !Array.isArray(data.units)) return { fresh: true };
+      return data;
+    }
+
+    function storedRaw(fileKey, storageKey) {
+      if (projectFileActive && fileRecord && !fileRecord.fresh && Array.isArray(fileRecord[fileKey])) {
+        return JSON.stringify(fileRecord[fileKey]);
+      }
+      try { return localStorage.getItem(storageKey); } catch (err) { return null; }
+    }
+
+    function adoptLocalIfFileHasNoSoldiers() {
+      if (!projectFileActive || !fileRecord || fileRecord.fresh) return;
+      if (Array.isArray(fileRecord.soldiers) && fileRecord.soldiers.length) return;
+      var localSoldiers = readList(STORAGE_KEY);
+      if (!localSoldiers.length) return;
+      fileRecord.soldiers = localSoldiers;
+      try {
+        var rawUnits = localStorage.getItem(UNITS_KEY);
+        var localUnits = rawUnits ? JSON.parse(rawUnits) : null;
+        if (Array.isArray(localUnits) && localUnits.length) fileRecord.units = localUnits;
+      } catch (err) {}
+      try {
+        var unit = localStorage.getItem(UNIT_KEY);
+        if (unit) fileRecord.unit = unit;
+      } catch (err) {}
+    }
+
+    function seedStudySeenFromFile() {
+      if (!(projectFileActive && fileRecord && !fileRecord.fresh)) return;
+      [
+        ["studySeen", STUDY_SEEN_KEY],
+        ["releaseSoonSeen", RELEASE_SOON_SEEN_KEY],
+        ["noticeDismissed", NOTICE_DISMISS_KEY]
+      ].forEach(function (pair) {
+        if (!Array.isArray(fileRecord[pair[0]])) return;
+        try { localStorage.setItem(pair[1], JSON.stringify(fileRecord[pair[0]])); } catch (err) {}
+      });
+    }
+
+    function setSaveStatus(kind) {
+      var pill = document.getElementById("save-pill");
+      if (!pill) return;
+      pill.hidden = !projectFileActive;
+      pill.classList.toggle("is-error", kind === "error");
+      if (kind === "saving") pill.textContent = "שומר לקובץ…";
+      else if (kind === "error") pill.textContent = "שמירה נכשלה";
+      else pill.textContent = "נשמר בקובץ";
+    }
+
+    function renderSaveChrome() {
+      var note = document.getElementById("file-note");
+      var noteText = document.getElementById("file-note-text");
+      var connect = document.getElementById("save-connect");
+      var pill = document.getElementById("save-pill");
+      if (!note || !pill) return;
+      if (projectFileActive) {
+        note.hidden = true;
+        pill.hidden = false;
+        return;
+      }
+      pill.hidden = true;
+      note.hidden = false;
+      if (fileBroken) {
+        if (noteText) noteText.textContent = "קובץ הנתונים בתיקייה פגום, ולכן הוא לא נטען ולא נדרס. אפשר לתקן את hebet-data.txt או למחוק אותו ואז לרענן.";
+        if (connect) connect.hidden = true;
+        return;
+      }
+      if (noteText) noteText.textContent = "המחשב הזה עוד לא קורא את hebet-data.txt. פתחו את הקיצור «תקן מצבה זרועי» שבתיקייה.";
+      if (connect) connect.hidden = false;
+    }
+
+    function queueProjectSave() {
+      if (!projectFileActive || fileBroken) return;
+      if (bootstrapping) return;
+      savePending = true;
+      pumpSave();
+    }
+
+    function pumpSave() {
+      if (saveRunning || !savePending) return;
+      savePending = false;
+      saveRunning = true;
+      setSaveStatus("saving");
+      var body = JSON.stringify(projectSnapshot());
+      writeBody(body).then(function () {
+        saveRunning = false;
+        if (savePending) pumpSave();
+        else setSaveStatus("saved");
+      }, function () {
+        saveRunning = false;
+        setSaveStatus("error");
+        if (savePending) pumpSave();
+      });
+    }
+
+    function writeBody(body) {
+      function once() {
+        if (fileMode === "server" && dataUrl) {
+          return fetch(dataUrl, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: body
+          }).then(function (res) {
+            if (!res.ok) throw new Error("save");
+          });
+        }
+        if (fileMode === "file" && fileHandle) return writeFileHandle(fileHandle, body);
+        return Promise.reject(new Error("mode"));
+      }
+      return once().catch(function () {
+        return new Promise(function (resolve) { setTimeout(resolve, 250); }).then(once);
+      });
+    }
+
+    function flushProjectSave() {
+      if (!projectFileActive || fileBroken || fileMode !== "server" || !dataUrl) return;
+      try {
+        fetch(dataUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json; charset=utf-8" },
+          body: JSON.stringify(projectSnapshot()),
+          keepalive: true
+        });
+      } catch (err) {}
+    }
+
+    function tryServerUrl(urls, index) {
+      if (index >= urls.length) return Promise.resolve(false);
+      var url = urls[index];
+      var ctrl = typeof AbortController === "function" ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 600);
+      var opts = { cache: "no-store" };
+      if (ctrl) opts.signal = ctrl.signal;
+      return fetch(url, opts).then(function (res) {
+        clearTimeout(timer);
+        if (!res.ok || res.headers.get("X-Hebet-Project") !== "1") throw new Error("no");
+        return res.text();
+      }).then(function (text) {
+        if (text == null) return false;
+        var data;
+        try { data = JSON.parse(text); }
+        catch (err) {
+          sawCorrupt = true;
+          throw err;
+        }
+        dataUrl = url;
+        fileMode = "server";
+        projectFileActive = true;
+        fileRecord = normalizeRecord(data);
+        return true;
+      }).catch(function () {
+        clearTimeout(timer);
+        return tryServerUrl(urls, index + 1);
+      });
+    }
+
+    function tryServer() {
+      var urls = [];
+      if (location.protocol === "http:" || location.protocol === "https:") urls.push("/api/data");
+      return tryServerUrl(urls, 0);
+    }
+
+    function idbOpen() {
+      return new Promise(function (resolve, reject) {
+        if (!window.indexedDB) {
+          reject(new Error("idb"));
+          return;
+        }
+        var req = indexedDB.open("hebet-matrix-files", 1);
+        req.onupgradeneeded = function () {
+          if (!req.result.objectStoreNames.contains("handles")) req.result.createObjectStore("handles");
+        };
+        req.onsuccess = function () { resolve(req.result); };
+        req.onerror = function () { reject(req.error); };
+      });
+    }
+
+    function idbGet(key) {
+      return idbOpen().then(function (db) {
+        return new Promise(function (resolve, reject) {
+          var tx = db.transaction("handles", "readonly");
+          var req = tx.objectStore("handles").get(key);
+          req.onsuccess = function () { resolve(req.result || null); };
+          req.onerror = function () { reject(req.error); };
+        });
+      });
+    }
+
+    function idbSet(key, value) {
+      return idbOpen().then(function (db) {
+        return new Promise(function (resolve, reject) {
+          var tx = db.transaction("handles", "readwrite");
+          tx.objectStore("handles").put(value, key);
+          tx.oncomplete = function () { resolve(); };
+          tx.onerror = function () { reject(tx.error); };
+        });
+      });
+    }
+
+    function readFileHandle(handle) {
+      return handle.getFile().then(function (file) {
+        return file.text();
+      }).then(function (text) {
+        if (!String(text || "").trim()) return { fresh: true };
+        try { return normalizeRecord(JSON.parse(text)); }
+        catch (err) {
+          sawCorrupt = true;
+          throw new Error("corrupt");
+        }
+      });
+    }
+
+    function writeFileHandle(handle, body) {
+      return handle.createWritable().then(function (stream) {
+        return stream.write(body).then(function () {
+          return stream.close();
+        }, function (err) {
+          return stream.close().then(function () { throw err; }, function () { throw err; });
+        });
+      });
+    }
+
+    function tryStoredHandle() {
+      return idbGet("dataFile").then(function (handle) {
+        if (!handle || !handle.queryPermission) return false;
+        savedFileHandle = handle;
+        return handle.queryPermission({ mode: "readwrite" }).then(function (perm) {
+          if (perm !== "granted") return false;
+          return readFileHandle(handle).then(function (data) {
+            fileHandle = handle;
+            fileMode = "file";
+            projectFileActive = true;
+            fileRecord = data;
+            return true;
+          });
+        });
+      }).catch(function () { return false; });
+    }
+
+    function findDataInDirectory(dir) {
+      var expected = DATA_NAME.toLowerCase();
+      function listed() {
+        if (!dir.entries) return Promise.reject(new Error("missing"));
+        var iter = dir.entries();
+        function step() {
+          return iter.next().then(function (item) {
+            if (item.done) return Promise.reject(new Error("missing"));
+            var name = item.value[0];
+            var handle = item.value[1];
+            if (handle && handle.kind === "file" && String(name).toLowerCase() === expected) return handle;
+            return step();
+          });
+        }
+        return step();
+      }
+      if (dir.getFileHandle) {
+        return dir.getFileHandle(DATA_NAME).catch(function () { return listed(); });
+      }
+      return listed();
+    }
+
+    function acceptDataHandle(handle) {
+      if (!handle || handle.kind === "directory") {
+        if (handle && handle.kind === "directory") return findDataInDirectory(handle);
+        return Promise.reject(new Error("missing"));
+      }
+      var name = handle.name ? String(handle.name).toLowerCase() : "";
+      if (!name || name === DATA_NAME.toLowerCase()) return Promise.resolve(handle);
+      return readFileHandle(handle).then(function (data) {
+        if (!data || data.fresh || (!Array.isArray(data.soldiers) && !Array.isArray(data.units))) {
+          throw new Error("wrong-file");
+        }
+        return handle;
+      });
+    }
+
+    function pickDataFile() {
+      if (window.showOpenFilePicker) {
+        return window.showOpenFilePicker({
+          id: "hebet-data-file",
+          multiple: false,
+          excludeAcceptAllOption: false,
+          types: [{ description: "hebet-data.txt", accept: { "text/plain": [".txt"] } }]
+        }).then(function (handles) {
+          return acceptDataHandle(handles && handles[0]);
+        });
+      }
+      if (!window.showDirectoryPicker) {
+        window.alert("פתחו את הקיצור «תקן מצבה זרועי» שבתיקייה, ב-Edge או ב-Chrome.");
+        return Promise.reject(new Error("picker"));
+      }
+      return window.showDirectoryPicker({ id: "hebet-matrix-dir", mode: "readwrite" }).then(findDataInDirectory);
+    }
+
+    function activateHandle(handle) {
+      fileHandle = handle;
+      savedFileHandle = handle;
+      return readFileHandle(handle).then(function (data) {
+        fileMode = "file";
+        projectFileActive = true;
+        fileBroken = false;
+        fileRecord = data || { fresh: true };
+        return idbSet("dataFile", handle).then(function () { return true; });
+      });
+    }
+
+    function explainFileError(err) {
+      if (!err || err.name === "AbortError" || err.message === "picker") return "";
+      if (err.message === "corrupt") return "קובץ hebet-data.txt פגום, ולכן הוא לא נטען ולא נדרס.";
+      if (err.message === "wrong-file") return "זה לא קובץ הנתונים. בחרו את hebet-data.txt שבתיקיית הפרויקט.";
+      if (err.message === "missing" || err.name === "NotFoundError") return "hebet-data.txt לא נמצא בתיקייה שנבחרה. בחרו את הקובץ עצמו, או פתחו את הקיצור «תקן מצבה זרועי».";
+      if (err.name === "NotAllowedError" || err.name === "SecurityError") return "הדפדפן לא קיבל גישה לקובץ. פתחו את הקיצור «תקן מצבה זרועי» שבתיקייה.";
+      return "לא הצלחנו לפתוח את hebet-data.txt. פתחו את הקיצור «תקן מצבה זרועי» שבתיקייה.";
+    }
+
+    function connectProjectFolder() {
+      var next;
+      if (savedFileHandle && savedFileHandle.requestPermission) {
+        next = savedFileHandle.requestPermission({ mode: "readwrite" }).then(function (perm) {
+          if (perm === "granted") return savedFileHandle;
+          savedFileHandle = null;
+          return null;
+        });
+      } else if (window.showOpenFilePicker || window.showDirectoryPicker) {
+        next = pickDataFile();
+      } else {
+        window.alert("פתחו את הקיצור «תקן מצבה זרועי» שבתיקייה, ב-Edge או ב-Chrome.");
+        return Promise.resolve(false);
+      }
+      return Promise.resolve(next).then(function (handle) {
+        if (!handle) return false;
+        return acceptDataHandle(handle).then(activateHandle);
+      }).catch(function (err) {
+        var message = explainFileError(err);
+        if (!message) return false;
+        if (err && err.message === "corrupt") fileBroken = true;
+        window.alert(message);
+        return false;
+      });
+    }
+
+    function openProjectFile() {
+      sawCorrupt = false;
+      fileBroken = false;
+      return tryServer().then(function (found) {
+        if (found) return true;
+        return tryStoredHandle();
+      }).then(function (found) {
+        if (!found && sawCorrupt) fileBroken = true;
+        return !!found;
+      }).catch(function () {
+        if (sawCorrupt) fileBroken = true;
+        return false;
+      });
+    }
+
     function loadStored() {
       var defaults = SOLDIERS.map(blankSoldier);
       var added = false;
       try {
-        var raw = localStorage.getItem(STORAGE_KEY);
+        var raw = storedRaw("soldiers", STORAGE_KEY);
         if (raw) {
           var parsed = JSON.parse(raw);
           if (Array.isArray(parsed)) SOLDIERS = parsed.map(blankSoldier);
@@ -5972,14 +7452,19 @@
     }
 
     function persist() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SOLDIERS));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(SOLDIERS));
+      } catch (err) {
+        if (!projectFileActive) throw err;
+      }
+      queueProjectSave();
     }
 
     function loadUnits() {
       var defaults = UNITS.map(normalizeUnit);
       var added = false;
       try {
-        var raw = localStorage.getItem(UNITS_KEY);
+        var raw = storedRaw("units", UNITS_KEY);
         if (raw) {
           var parsed = JSON.parse(raw);
           if (Array.isArray(parsed)) {
@@ -6005,6 +7490,61 @@
       if (added) saveUnits();
     }
 
+    function quotaPartsFrom(source) {
+      var raw = source && source.quotaBy;
+      var parts = {};
+      QUOTA_PARTS.forEach(function (part) {
+        parts[part.profession] = digits(raw && raw[part.profession]);
+      });
+      return parts;
+    }
+
+    function quotaModeOf(source) {
+      return source && source.quotaMode === "profession" ? "profession" : "general";
+    }
+
+    function assignQuota(target, source) {
+      target.quotaMode = quotaModeOf(source);
+      target.quotaBy = quotaPartsFrom(source);
+      target.quota = digits(source && source.quota);
+    }
+
+    function quotaBits(unit) {
+      if (quotaModeOf(unit) !== "profession") return [];
+      var bits = [];
+      QUOTA_PARTS.forEach(function (part) {
+        var count = digits(unit.quotaBy && unit.quotaBy[part.profession]);
+        if (count === "" || Number(count) === 0) return;
+        bits.push({ name: part.profession, count: String(Number(count)) });
+      });
+      return bits;
+    }
+
+    function quotaDetail(unit) {
+      var bits = quotaBits(unit);
+      if (bits.length) return bits.map(function (bit) { return bit.count + " " + bit.name; }).join(", ");
+      if (quotaModeOf(unit) === "profession") return "";
+      if (!present(unit && unit.quota)) return "";
+      return clean(unit.quota) + " כללי";
+    }
+
+    function quotaSentence(unit) {
+      var detail = quotaDetail(unit);
+      return detail ? "תקן: " + detail : "";
+    }
+
+    function readQuota(form, data) {
+      var selected = form.querySelector('input[name="quotaMode"]:checked');
+      data.quotaMode = selected && selected.value === "profession" ? "profession" : "general";
+      data.quota = clean(data.quota);
+      data.quotaBy = {};
+      QUOTA_PARTS.forEach(function (part) {
+        var input = form.elements[part.field];
+        data.quotaBy[part.profession] = clean(input ? input.value : "");
+      });
+      return data;
+    }
+
     function normalizeUnit(item) {
       var unit = {
         id: clean(item && item.id),
@@ -6013,7 +7553,7 @@
       UNIT_PARAMS.forEach(function (key) {
         unit[key] = clean(item && item[key]);
       });
-      unit.quota = digits(unit.quota);
+      assignQuota(unit, item);
       unit.color = paletteColor(item && item.color);
       return unit;
     }
@@ -6192,7 +7732,7 @@
       var source = state.shalishutDraft || unit || {};
       var data = { name: clean(source.name) };
       UNIT_PARAMS.forEach(function (key) { data[key] = clean(source[key]); });
-      data.quota = digits(data.quota);
+      assignQuota(data, source);
       return data;
     }
 
@@ -6215,7 +7755,174 @@
     }
 
     function shalishutField(name, label, value, extra, wide) {
-      return '<label' + (wide ? ' class="editor-wide"' : "") + '><span class="field-label">' + esc(label) + '</span><input name="' + name + '" value="' + esc(value || "") + '"' + (extra || "") + "></label>";
+      var numeric = extra && extra.indexOf("data-digits") !== -1;
+      var hint = numeric ? '<span class="field-hint">רק ספרות</span>' : "";
+      var invalid = numeric && digitsInvalid(value) ? ' class="is-invalid"' : "";
+      return '<label' + (wide ? ' class="editor-wide"' : "") + '><span class="field-label">' + esc(label) + '</span><input name="' + name + '"' + invalid + ' value="' + esc(value || "") + '"' + (extra || "") + ">" + hint + "</label>";
+    }
+
+    function contactDigitsMessage(data) {
+      if (!data) return "";
+      if (digitsInvalid(data.quota)) return "בתקן חייב להיות מספר. יש תו לא חוקי, אי אפשר לשמור.";
+      var parts = data.quotaBy || {};
+      for (var i = 0; i < QUOTA_PARTS.length; i++) {
+        var part = QUOTA_PARTS[i];
+        if (digitsInvalid(parts[part.profession])) return "ב" + part.profession + " חייב להיות מספר. יש תו לא חוקי, אי אפשר לשמור.";
+      }
+      for (var r = 0; r < SHALISHUT_ROLES.length; r++) {
+        var role = SHALISHUT_ROLES[r];
+        if (digitsInvalid(data[role.phone])) return "בטלפון של " + role.label + " חייב להיות מספר. יש תו לא חוקי, אי אפשר לשמור.";
+      }
+      return "";
+    }
+
+    function quotaFields(data) {
+      var mode = quotaModeOf(data);
+      var parts = quotaPartsFrom(data);
+      var choices = '<div class="quota-mode" role="radiogroup" aria-label="אופן התקן">' +
+        '<label class="quota-choice"><input type="radio" name="quotaMode" value="general"' + (mode === "general" ? " checked" : "") + "> כללי</label>" +
+        '<label class="quota-choice"><input type="radio" name="quotaMode" value="profession"' + (mode === "profession" ? " checked" : "") + "> לפי מקצוע</label>" +
+        "</div>";
+      var general = '<div class="quota-general"><div class="editor-grid">' +
+        shalishutField("quota", "מספר", data.quota, ' inputmode="numeric" autocomplete="off" maxlength="6" data-digits="1" pattern="[0-9]*"') +
+        "</div></div>";
+      var partInputs = QUOTA_PARTS.map(function (part) {
+        var shown = data.quotaBy && data.quotaBy[part.profession] != null ? data.quotaBy[part.profession] : parts[part.profession];
+        return shalishutField(part.field, part.profession, shown, ' inputmode="numeric" autocomplete="off" maxlength="4" data-digits="1" pattern="[0-9]*"');
+      }).join("");
+      var split = '<div class="quota-parts"><p class="quota-note">חובה מספר. תו שאינו ספרה לא מתקבל, ואי אפשר לשמור כל עוד הוא נשאר בשדה. מקצוע ריק או 0 לא מופיע בכרטיס.</p><div class="editor-grid">' +
+        partInputs +
+        "</div></div>";
+      return '<fieldset class="role-fields quota-fields quota-box"><legend>תקן</legend>' + choices + general + split + "</fieldset>";
+    }
+
+    function quotaMetric(unit) {
+      var bits = quotaBits(unit);
+      if (bits.length) {
+        var text = bits.map(function (bit) { return bit.count + " " + bit.name; }).join(", ");
+        return '<div class="shalishut-metric is-wide"><span class="fact-label">תקן</span><span class="fact-value">' + esc(text) + "</span></div>";
+      }
+      if (quotaModeOf(unit) === "profession") return metricCell("תקן", "");
+      return metricCell("תקן", quotaDetail(unit));
+    }
+
+    function unitStaffCounts(id) {
+      var counts = {};
+      var total = 0;
+      unitSoldiers(id).forEach(function (soldier) {
+        if (isReleased(soldier)) return;
+        total += 1;
+        var name = clean(soldier.profession);
+        if (!name) return;
+        counts[name] = (counts[name] || 0) + 1;
+      });
+      return { total: total, counts: counts };
+    }
+
+    function quotaGap(unit) {
+      var bits = quotaBits(unit);
+      if (bits.length) {
+        var staff = unitStaffCounts(unit.id);
+        var missing = [];
+        var extra = [];
+        var target = 0;
+        var filled = 0;
+        bits.forEach(function (bit) {
+          var need = Number(bit.count);
+          var have = staff.counts[bit.name] || 0;
+          target += need;
+          filled += Math.min(have, need);
+          if (have < need) missing.push({ name: bit.name, count: String(need - have) });
+          else if (have > need) extra.push({ name: bit.name, count: String(have - need) });
+        });
+        return { kind: "profession", missing: missing, extra: extra, target: target, filled: filled };
+      }
+      if (quotaModeOf(unit) === "profession" || !present(unit && unit.quota)) return null;
+      var target = Number(digits(unit.quota));
+      if (!isFinite(target)) return null;
+      var have = unitStaffCounts(unit.id).total;
+      return {
+        kind: "general",
+        missing: Math.max(target - have, 0),
+        extra: Math.max(have - target, 0),
+        target: target,
+        filled: Math.min(have, target)
+      };
+    }
+
+    function vacancyText(count) {
+      count = Number(count) || 0;
+      return count === 1 ? "1 מקום פנוי בתקן" : count + " מקומות פנויים בתקן";
+    }
+
+    function quotaGapTitle(gap) {
+      if (!gap) return "";
+      if (gap.kind === "general") {
+        if (gap.missing) return vacancyText(gap.missing);
+        if (gap.extra) return "עודף של " + gap.extra + " מעל התקן הכללי";
+        return "התקן הכללי מלא";
+      }
+      if (gap.missing.length) {
+        var text = "מקום פנוי: " + gap.missing.map(function (bit) { return bit.count + " " + bit.name; }).join(", ");
+        if (gap.extra.length) text += ". עודף " + gap.extra.map(function (bit) { return bit.count + " " + bit.name; }).join(", ");
+        return text;
+      }
+      if (gap.extra.length) return "עודף " + gap.extra.map(function (bit) { return bit.count + " " + bit.name; }).join(", ");
+      return "התקן לפי מקצוע מלא";
+    }
+
+    function quotaGapHtml(unit) {
+      var gap = quotaGap(unit);
+      if (!gap) return { html: "", title: "" };
+      var fill = gap.target > 0 ? Math.max(0, Math.min(100, Math.round(gap.filled / gap.target * 100))) : 100;
+      var stateClass = "is-full";
+      var body = '<span class="unit-gap-text">בתקן</span>';
+      if (gap.kind === "general") {
+        if (gap.missing) {
+          stateClass = "is-short";
+          body = '<span class="unit-gap-text"><b>' + gap.missing + "</b> " + (gap.missing === 1 ? "מקום פנוי בתקן" : "מקומות פנויים בתקן") + "</span>";
+        } else if (gap.extra) {
+          stateClass = "is-over";
+          body = '<span class="unit-gap-text">עודף <b>' + gap.extra + "</b></span>";
+        }
+      } else if (gap.missing.length) {
+        stateClass = "is-short";
+        body = '<span class="unit-gap-kicker">מקום פנוי</span>' + gap.missing.map(function (bit) {
+          return '<span class="unit-gap-bit"><b>' + esc(bit.count) + "</b> " + esc(bit.name) + "</span>";
+        }).join("");
+        if (gap.extra.length) {
+          body += '<span class="unit-gap-extra">עודף ' + esc(gap.extra.map(function (bit) {
+            return bit.count + " " + bit.name;
+          }).join(", ")) + "</span>";
+        }
+      } else if (gap.extra.length) {
+        stateClass = "is-over";
+        body = '<span class="unit-gap-kicker">עודף</span>' + gap.extra.map(function (bit) {
+          return '<span class="unit-gap-bit"><b>' + esc(bit.count) + "</b> " + esc(bit.name) + "</span>";
+        }).join("");
+      }
+      var title = quotaGapTitle(gap);
+      return {
+        title: title,
+        html: '<span class="unit-gap ' + stateClass + '" title="' + esc(title) + '">' +
+          '<span class="unit-gap-meter" style="--fill:' + fill + '%"><span></span></span>' +
+          '<span class="unit-gap-body">' + body + "</span></span>"
+      };
+    }
+
+    function quotaCard(unit) {
+      var bits = quotaBits(unit);
+      if (!bits.length) {
+        return { split: false, html: '<span class="unit-quota">' + esc(quotaSentence(unit) || "ללא תקן") + "</span>" };
+      }
+      var title = quotaSentence(unit);
+      var parts = bits.map(function (bit) {
+        return '<span class="unit-quota-part"><b>' + esc(bit.count) + "</b> " + esc(bit.name) + "</span>";
+      }).join("");
+      return {
+        split: true,
+        html: '<span class="unit-quota is-split" title="' + esc(title) + '"><span class="unit-quota-kicker">תקן</span>' + parts + "</span>"
+      };
     }
 
     function infoRow(label, value) {
@@ -6231,7 +7938,7 @@
       var roles = SHALISHUT_ROLES.map(function (role) {
         return '<fieldset class="role-fields"><legend>' + esc(role.label) + '</legend><div class="editor-grid">' +
           shalishutField(role.name, "שם מלא", data[role.name], ' autocomplete="name"') +
-          shalishutField(role.phone, "טלפון", data[role.phone], ' type="tel" inputmode="tel" autocomplete="tel"') +
+          shalishutField(role.phone, "טלפון", data[role.phone], ' type="tel" inputmode="numeric" autocomplete="tel" data-digits="1" pattern="[0-9]*"') +
           "</div></fieldset>";
       }).join("");
       var back = opts.back
@@ -6239,15 +7946,15 @@
         : "";
       var color = unitColor(unit);
       return back +
-        '<form class="editor shalishut-form' + (color ? " has-color" : "") + '" id="shalishut" autocomplete="off"' + (color ? ' style="--unit:' + color + '"' : "") + ">" +
+        '<form class="editor shalishut-form' + (color ? " has-color" : "") + '" id="shalishut" autocomplete="off" novalidate' + (color ? ' style="--unit:' + color + '"' : "") + ">" +
           "<h2>" + esc(data.name || unit.name) + "</h2>" +
           '<p class="editor-lead">הפרטים נשמרים ליחידה הזו.</p>' +
           '<div class="editor-grid metric-fields">' +
-            shalishutField("name", "יחידה", data.name, ' autocomplete="organization" required maxlength="48"') +
-            shalishutField("quota", "תקן", data.quota, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
+            shalishutField("name", "יחידה", data.name, ' autocomplete="organization" required maxlength="48"', true) +
             shalishutField("shalishutName", "שם יחידה (שלישות)", data.shalishutName, ' autocomplete="organization" maxlength="64"', true) +
             shalishutField("organ", "אורגן (שלישות)", data.organ, ' autocomplete="organization" maxlength="64"', true) +
           "</div>" +
+          quotaFields(data) +
           roles +
           (state.shalishutError ? '<p class="form-error">' + esc(state.shalishutError) + "</p>" : "") +
           '<div class="editor-actions">' +
@@ -6271,7 +7978,7 @@
           '<div class="shalishut-body">' +
             '<div class="metric-grid">' +
               metricCell("יחידה", unit.name) +
-              metricCell("תקן", unit.quota) +
+              quotaMetric(unit) +
             "</div>" +
             '<div class="detail-grid">' +
               infoRow("שם יחידה (שלישות)", unit.shalishutName) +
@@ -6293,7 +8000,7 @@
 
     function renderShalishutPrint(unit) {
       if (!unit) return "";
-      var metrics = "יחידה: " + unit.name + " · שם יחידה (שלישות): " + (present(unit.shalishutName) ? unit.shalishutName : "—") + " · אורגן (שלישות): " + (present(unit.organ) ? unit.organ : "—") + " · תקן: " + (present(unit.quota) ? unit.quota : "—");
+      var metrics = "יחידה: " + unit.name + " · שם יחידה (שלישות): " + (present(unit.shalishutName) ? unit.shalishutName : "—") + " · אורגן (שלישות): " + (present(unit.organ) ? unit.organ : "—") + " · תקן: " + (quotaDetail(unit) || "—");
       var roles = SHALISHUT_ROLES.map(function (role) {
         var name = clean(unit[role.name]);
         var phone = clean(unit[role.phone]);
@@ -6311,8 +8018,7 @@
         var input = form.elements[key];
         data[key] = clean(input ? input.value : "");
       });
-      data.quota = digits(data.quota);
-      return data;
+      return readQuota(form, data);
     }
 
     function captureShalishut() {
@@ -6339,9 +8045,14 @@
         state.shalishutError = "כבר יש יחידה בשם הזה";
         return false;
       }
+      var digitsMessage = contactDigitsMessage(data);
+      if (digitsMessage) {
+        state.shalishutError = digitsMessage;
+        return false;
+      }
       unit.name = name;
       UNIT_PARAMS.forEach(function (key) { unit[key] = clean(data[key]); });
-      unit.quota = digits(unit.quota);
+      assignQuota(unit, data);
       saveUnits();
       closeShalishutEditor();
       return true;
@@ -6349,6 +8060,7 @@
 
     function saveUnits() {
       try { localStorage.setItem(UNITS_KEY, JSON.stringify(UNITS)); } catch (err) {}
+      queueProjectSave();
     }
 
     function nextUnitId() {
@@ -6402,32 +8114,37 @@
 
     function saveUnit() {
       try { localStorage.setItem(UNIT_KEY, state.unit); } catch (err) {}
+      queueProjectSave();
     }
 
     function ensureUnits() {
-      var missing = SOLDIERS.filter(function (soldier) { return !unitId(soldier.unit); });
-      if (!missing.length) {
-        var normalized = false;
-        SOLDIERS.forEach(function (soldier) {
-          var id = unitId(soldier.unit);
-          if (soldier.unit !== id) {
-            soldier.unit = id;
+      var normalized = false;
+      SOLDIERS.forEach(function (soldier) {
+        if (clean(soldier.external)) {
+          if (soldier.unit) {
+            soldier.unit = "";
             normalized = true;
           }
-        });
-        return normalized;
-      }
-      var splitAll = missing.length === SOLDIERS.length;
-      var half = Math.ceil(missing.length / 2);
-      var assigned = 0;
-      SOLDIERS.forEach(function (soldier) {
-        var id = unitId(soldier.unit);
-        if (id) {
-          soldier.unit = id;
           return;
         }
+        var text = clean(soldier.unit);
+        if (!text) return;
+        var id = unitId(text);
+        var next = id || (UNITS[0] && UNITS[0].id) || "";
+        if (soldier.unit !== next) {
+          soldier.unit = next;
+          normalized = true;
+        }
+      });
+      var pending = SOLDIERS.filter(function (soldier) {
+        return !unitId(soldier.unit) && !clean(soldier.external);
+      });
+      if (!pending.length || pending.length !== SOLDIERS.length) return normalized;
+      var half = Math.ceil(pending.length / 2);
+      var assigned = 0;
+      pending.forEach(function (soldier) {
         var second = UNITS.length > 1 ? UNITS[1].id : UNITS[0].id;
-        soldier.unit = splitAll && assigned >= half ? second : UNITS[0].id;
+        soldier.unit = assigned >= half ? second : UNITS[0].id;
         assigned += 1;
       });
       return true;
@@ -6491,7 +8208,17 @@
       var query = homeSearchQuery();
       var filters = homeScopeFilters();
       return SOLDIERS.filter(function (soldier) {
-        if (!isUnassigned(soldier)) return false;
+        if (!isUnassigned(soldier) || freshUnassigned(soldier)) return false;
+        if (homeNarrowed()) return matches(soldier, query, filters);
+        return true;
+      });
+    }
+
+    function freshPeople() {
+      var query = homeSearchQuery();
+      var filters = homeScopeFilters();
+      return SOLDIERS.filter(function (soldier) {
+        if (!freshUnassigned(soldier)) return false;
         if (homeNarrowed()) return matches(soldier, query, filters);
         return true;
       });
@@ -6508,6 +8235,7 @@
     function blankUnitDraft() {
       var data = { name: "" };
       UNIT_PARAMS.forEach(function (key) { data[key] = ""; });
+      assignQuota(data, data);
       return data;
     }
 
@@ -6516,6 +8244,7 @@
       if (!unit) return data;
       data.name = clean(unit.name);
       UNIT_PARAMS.forEach(function (key) { data[key] = clean(unit[key]); });
+      assignQuota(data, unit);
       return data;
     }
 
@@ -6533,8 +8262,7 @@
         var input = form.elements[key];
         data[key] = clean(input ? input.value : "");
       });
-      data.quota = digits(data.quota);
-      return data;
+      return readQuota(form, data);
     }
 
     function unitDetailsForm(id) {
@@ -6543,18 +8271,18 @@
       var roles = SHALISHUT_ROLES.map(function (role) {
         return '<fieldset class="role-fields"><legend>' + esc(role.label) + "</legend><div class=\"editor-grid\">" +
           shalishutField(role.name, "שם מלא", data[role.name], ' autocomplete="name"') +
-          shalishutField(role.phone, "טלפון", data[role.phone], ' type="tel" inputmode="tel" autocomplete="tel"') +
+          shalishutField(role.phone, "טלפון", data[role.phone], ' type="tel" inputmode="numeric" autocomplete="tel" data-digits="1" pattern="[0-9]*"') +
           "</div></fieldset>";
       }).join("");
-      return '<form class="editor unit-edit unit-details-form" data-unit="' + esc(id) + '" autocomplete="off">' +
+      return '<form class="editor unit-edit unit-details-form" data-unit="' + esc(id) + '" autocomplete="off" novalidate>' +
         "<h2>" + (isNew ? "יחידה חדשה" : "עריכת " + esc(data.name || "יחידה")) + "</h2>" +
         '<p class="editor-lead">' + (isNew ? "אפשר למלא כבר עכשיו את כל פרטי היחידה. הם יופיעו בכרטיס." : "השינויים נשמרים בכרטיס של היחידה.") + "</p>" +
         '<div class="editor-grid metric-fields">' +
-          shalishutField("name", "יחידה", data.name, ' autocomplete="organization" required maxlength="48"') +
-          shalishutField("quota", "תקן", data.quota, ' inputmode="numeric" autocomplete="off" maxlength="6"') +
+          shalishutField("name", "יחידה", data.name, ' autocomplete="organization" required maxlength="48"', true) +
           shalishutField("shalishutName", "שם יחידה (שלישות)", data.shalishutName, ' autocomplete="organization" maxlength="64"', true) +
           shalishutField("organ", "אורגן (שלישות)", data.organ, ' autocomplete="organization" maxlength="64"', true) +
         "</div>" +
+        quotaFields(data) +
         roles +
         (state.unitError ? '<p class="form-error">' + esc(state.unitError) + "</p>" : "") +
         '<div class="editor-actions">' +
@@ -6881,8 +8609,9 @@
       "</section>";
     }
 
-    function openUnassigned(key) {
+    function openUnassigned(key, kind) {
       state.outsideOpen = true;
+      state.outsideKind = kind === "fresh" ? "fresh" : "departed";
       state.releasedOpen = false;
       state.unitsHome = false;
       state.logOpen = false;
@@ -6899,6 +8628,300 @@
       state.selectedKey = key || "";
       state.prevKey = "";
       render({ scroll: true });
+    }
+
+    function blankIntake() {
+      var draft = {};
+      FIELDS.forEach(function (field) { draft[field.key] = ""; });
+      draft.photo = "";
+      return draft;
+    }
+
+    function captureIntake() {
+      var form = document.querySelector(".intake-form");
+      if (!form) return;
+      var data = {};
+      FIELDS.forEach(function (field) {
+        data[field.key] = field.cycles ? cycleStored(form) : fieldStored(field, form.elements[field.key]);
+      });
+      var photoInput = form.elements.photo;
+      data.photo = safePhoto(photoInput ? photoInput.value : "");
+      state.intake = data;
+    }
+
+    function renderIntake() {
+      var draft = state.intake || blankIntake();
+      var open = Boolean(state.intakeOpen);
+      var fields = FIELDS.map(function (field) {
+        return fieldControl(field, draft, { optionalUnit: true });
+      }).join("");
+      return '<section class="intake-board' + (open ? " is-open" : "") + '" id="intake-board">' +
+        '<button class="intake-toggle" type="button" data-action="toggle-intake" aria-expanded="' + (open ? "true" : "false") + '" aria-controls="intake-panel">' +
+          '<span class="intake-plus" aria-hidden="true">+</span>' +
+          '<span class="intake-copy"><span class="intake-title">הוספת חיילים</span><span class="intake-sub">מהעמוד הראשי, בלי להיכנס ליחידה</span></span>' +
+          '<span class="intake-chevron' + (open ? " is-open" : "") + '">' + svg("chevronDown", 18) + "</span>" +
+        "</button>" +
+        '<div class="intake-panel" id="intake-panel"' + (open ? "" : " hidden") + ">" +
+          '<form class="editor intake-form" autocomplete="off" novalidate>' +
+            '<div class="editor-grid">' +
+              '<div class="photo-field">' +
+                avatarMarkup(clean(draft.name), draft.photo, { large: true, interactive: true, key: "intake" }) +
+                '<div class="photo-copy"><span class="field-label">תמונה</span><span class="photo-hint">אופציונלי. בלי תמונה נשארות ראשי התיבות, והתמונה נשמרת בכרטיס.</span></div>' +
+                '<input type="hidden" name="photo" value="' + esc(safePhoto(draft.photo)) + '">' +
+              "</div>" +
+              fields +
+            "</div>" +
+            (state.intakeError ? '<p class="form-error">' + esc(state.intakeError) + "</p>" : "") +
+            (state.intakeNote ? '<p class="intake-note" role="status">' + esc(state.intakeNote) + "</p>" : "") +
+            '<div class="intake-actions">' +
+              '<button class="btn btn-primary" type="submit">אישור</button>' +
+              '<button class="btn btn-secondary" type="button" data-action="close-intake">סגירה</button>' +
+              '<p class="intake-hint">אחרי האישור החייל נכנס ליחידה שנבחרה, או לרשימת החיילים ללא יחידה. הטופס נשאר פתוח לחייל הבא.</p>' +
+            "</div>" +
+          "</form>" +
+        "</div>" +
+      "</section>";
+    }
+
+    function renderFreshBoard() {
+      var people = freshPeople().slice().sort(function (a, b) {
+        return compareHe(a.name || "", b.name || "");
+      });
+      var count = people.length;
+      var lead = count
+        ? count + " " + countWord(count, "חייל ממתין לשיבוץ", "חיילים ממתינים לשיבוץ")
+        : "חייל בלי יחידה נשמר כאן, עד שבוחרים לו יחידה.";
+      var queryRaw = clean(document.getElementById("search").value);
+      var rows = people.map(function (soldier) {
+        var name = clean(soldier.name) || "ללא שם";
+        var meta = [clean(soldier.profession), clean(soldier.personalId)].filter(Boolean).join(" · ");
+        return '<button class="fresh-row" type="button" draggable="true" data-action="open-fresh" data-key="' + esc(keyOf(soldier)) + '" title="גרירה אל כרטיס יחידה">' +
+          avatarMarkup(name, soldier.photo) +
+          '<span class="fresh-copy"><span class="fresh-name">' + highlight(name, queryRaw) + "</span>" +
+          (meta ? '<span class="fresh-meta">' + highlight(meta, queryRaw) + "</span>" : "") +
+          "</span></button>";
+      }).join("");
+      var list = rows
+        ? '<p class="fresh-drag-note">אפשר לגרור חייל אל כרטיס היחידה כדי לשבץ אותו.</p><div class="fresh-list">' + rows + "</div>"
+        : (homeNarrowed() ? "" : '<p class="fresh-empty">אין כרגע חיילים שממתינים לשיבוץ.</p>');
+      return '<section class="fresh-board" aria-label="חיילים חדשים ללא יחידה">' +
+        '<div class="home-lead"><h2>חיילים חדשים ללא יחידה</h2><p>' + esc(lead) + "</p></div>" +
+        list +
+      "</section>";
+    }
+
+    function commitIntake(form) {
+      var digitsMessage = digitsFieldMessage(form);
+      if (digitsMessage) {
+        captureIntake();
+        state.intakeError = digitsMessage;
+        state.intakeNote = "";
+        render({ focusIntake: "phone" });
+        return;
+      }
+      var soldier = soldierFromForm(form);
+      var name = clean(soldier.name);
+      var profession = clean(soldier.profession);
+      var unit = unitId(soldier.unit);
+      var personalId = clean(soldier.personalId);
+      if (!name) {
+        captureIntake();
+        state.intakeError = "צריך שם";
+        state.intakeNote = "";
+        render({ focusIntake: "name" });
+        return;
+      }
+      if (!profession) {
+        captureIntake();
+        state.intakeError = "בחרו מקצוע";
+        state.intakeNote = "";
+        render({ focusIntake: "profession" });
+        return;
+      }
+      if (personalId && SOLDIERS.some(function (existing) { return clean(existing.personalId) === personalId; })) {
+        captureIntake();
+        state.intakeError = "כבר יש חייל עם המ״א הזה";
+        state.intakeNote = "";
+        render({ focusIntake: "personalId" });
+        return;
+      }
+      soldier.unit = unit;
+      soldier.external = "";
+      soldier.transfers = [];
+      SOLDIERS.push(soldier);
+      try {
+        persist();
+      } catch (err) {
+        SOLDIERS.pop();
+        captureIntake();
+        state.intakeError = "אין מספיק מקום לשמור";
+        state.intakeNote = "";
+        render({ focusIntake: "name" });
+        return;
+      }
+      var next = blankIntake();
+      next.profession = profession;
+      next.unit = unit;
+      state.intakeOpen = true;
+      state.intakeError = "";
+      state.intake = next;
+      state.intakeNote = unit ? "נוסף ל" + unitName(unit) : "נוסף לחיילים ללא יחידה";
+      state.intakeLand = {
+        kind: unit ? "unit" : "fresh",
+        id: unit,
+        key: keyOf(soldier),
+        name: name
+      };
+      render({ focusIntake: "name" });
+    }
+
+    var freshDragKey = "";
+    var suppressFreshClick = false;
+
+    function clearFreshDrop() {
+      var marked = document.querySelectorAll(".unit-tile.is-drop");
+      for (var i = 0; i < marked.length; i++) marked[i].classList.remove("is-drop");
+    }
+
+    function assignFreshToUnit(key, unitIdValue) {
+      var unit = unitId(unitIdValue);
+      if (!key || !unit) return;
+      var index = -1;
+      for (var i = 0; i < SOLDIERS.length; i++) {
+        if (keyOf(SOLDIERS[i]) !== key || !freshUnassigned(SOLDIERS[i])) continue;
+        index = i;
+        break;
+      }
+      if (index < 0) return;
+      var soldier = SOLDIERS[index];
+      var name = clean(soldier.name) || "ללא שם";
+      var fromRow = document.querySelector('.fresh-row[data-key="' + (window.CSS && CSS.escape ? CSS.escape(key) : String(key).replace(/"/g, "")) + '"]');
+      var from = fromRow ? fromRow.getBoundingClientRect() : null;
+      soldier.unit = unit;
+      try {
+        persist();
+      } catch (err) {
+        soldier.unit = "";
+        window.alert("אין מספיק מקום לשמור.");
+        return;
+      }
+      state.intakeLand = {
+        kind: "unit",
+        id: unit,
+        key: keyOf(soldier),
+        name: name,
+        from: from && from.width ? { left: from.left, top: from.top, width: from.width, height: from.height } : null
+      };
+      render();
+    }
+
+    function bindFreshDrag(profile) {
+      profile.addEventListener("dragstart", function (event) {
+        var row = event.target.closest && event.target.closest(".fresh-row");
+        if (!row || !state.unitsHome) return;
+        freshDragKey = row.getAttribute("data-key") || "";
+        suppressFreshClick = true;
+        if (event.dataTransfer) {
+          event.dataTransfer.setData("text/plain", freshDragKey);
+          event.dataTransfer.effectAllowed = "move";
+        }
+        row.classList.add("is-dragging");
+      });
+      profile.addEventListener("dragend", function (event) {
+        var row = event.target.closest && event.target.closest(".fresh-row");
+        if (row) row.classList.remove("is-dragging");
+        clearFreshDrop();
+        freshDragKey = "";
+        window.setTimeout(function () { suppressFreshClick = false; }, 0);
+      });
+      profile.addEventListener("dragover", function (event) {
+        if (!freshDragKey) return;
+        var tile = event.target.closest && event.target.closest(".unit-tile");
+        var openBtn = tile && tile.querySelector("[data-action='open-unit']");
+        if (!openBtn) return;
+        event.preventDefault();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+        if (!tile.classList.contains("is-drop")) {
+          clearFreshDrop();
+          tile.classList.add("is-drop");
+        }
+      });
+      profile.addEventListener("dragleave", function (event) {
+        var tile = event.target.closest && event.target.closest(".unit-tile");
+        if (!tile || tile.contains(event.relatedTarget)) return;
+        tile.classList.remove("is-drop");
+      });
+      profile.addEventListener("drop", function (event) {
+        var tile = event.target.closest && event.target.closest(".unit-tile");
+        var openBtn = tile && tile.querySelector("[data-action='open-unit']");
+        if (!openBtn || !freshDragKey) return;
+        event.preventDefault();
+        var key = freshDragKey;
+        if (event.dataTransfer) key = event.dataTransfer.getData("text/plain") || key;
+        clearFreshDrop();
+        freshDragKey = "";
+        window.setTimeout(function () { suppressFreshClick = false; }, 0);
+        assignFreshToUnit(key, openBtn.getAttribute("data-unit"));
+      });
+    }
+
+    function playIntakeLand() {
+      var land = state.intakeLand;
+      if (!land) return;
+      state.intakeLand = null;
+      if (land.kind === "fresh") {
+        var safeKey = window.CSS && CSS.escape ? CSS.escape(land.key) : String(land.key).replace(/"/g, "\\$&");
+        var row = document.querySelector('.fresh-row[data-key="' + safeKey + '"]');
+        if (row && motionOk()) {
+          window.requestAnimationFrame(function () {
+            if (row.isConnected) row.classList.add("is-just-added");
+          });
+        }
+        return;
+      }
+      var openBtn = document.querySelector(unitTileSelector(land.id));
+      var tile = openBtn && openBtn.closest(".unit-tile");
+      if (!tile) return;
+      var count = tile.querySelector(".unit-tile-count");
+      if (count) count.classList.add("is-bump");
+      tile.classList.add("is-received");
+      if (!motionOk()) return;
+      var from = land.from;
+      if (!from) {
+        var fromEl = document.querySelector(".intake-form .btn-primary");
+        if (!fromEl) return;
+        from = fromEl.getBoundingClientRect();
+      }
+      var target = count || tile;
+      var to = target.getBoundingClientRect();
+      var scroller = document.getElementById("profile");
+      var view = scroller ? scroller.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+      var seen = to.width > 0 && to.top < view.bottom - 12 && to.bottom > view.top + 12;
+      var chip = document.createElement("div");
+      chip.className = "intake-flight";
+      chip.setAttribute("aria-hidden", "true");
+      chip.innerHTML = '<span class="intake-flight-mark" style="' + avatarStyle(land.name) + '">' + esc(initials(land.name)) + "</span><span>" + esc(land.name) + "</span>";
+      document.body.appendChild(chip);
+      var startLeft = from.left + Math.max(0, (from.width - 140) / 2);
+      var startTop = from.top + from.height / 2 - 18;
+      chip.style.left = startLeft + "px";
+      chip.style.top = startTop + "px";
+      var endLeft = seen ? to.left + Math.min(24, Math.max(0, to.width / 2 - 50)) : startLeft;
+      var endTop = seen ? to.top + Math.max(0, to.height / 2 - 18) : Math.min(view.bottom - 36, startTop + 72);
+      var dx = endLeft - startLeft;
+      var dy = endTop - startTop;
+      var anim = chip.animate([
+        { transform: "translate(0px, 0px) scale(0.92)", opacity: 0 },
+        { transform: "translate(" + (dx * 0.42) + "px," + (dy * 0.28 - 12) + "px) scale(1)", opacity: 1, offset: 0.38 },
+        { transform: "translate(" + dx + "px," + dy + "px) scale(" + (seen ? "0.84" : "0.92") + ")", opacity: seen ? 0.15 : 0 }
+      ], {
+        duration: 640,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        fill: "forwards"
+      });
+      function removeChip() { if (chip.isConnected) chip.remove(); }
+      anim.onfinish = removeChip;
+      anim.oncancel = removeChip;
     }
 
     function renderUnitsHome(opts) {
@@ -6929,11 +8952,18 @@
           if (n || releasedHits) hitNames.push(unit.name);
         });
         var outsideHits = SOLDIERS.filter(function (soldier) {
-          return isUnassigned(soldier) && matches(soldier, queryRaw.toLowerCase(), filters);
+          return isUnassigned(soldier) && !freshUnassigned(soldier) && matches(soldier, queryRaw.toLowerCase(), filters);
         }).length;
         if (outsideHits) {
           matched += outsideHits;
           hitNames.push("ללא יחידה");
+        }
+        var freshHits = SOLDIERS.filter(function (soldier) {
+          return freshUnassigned(soldier) && matches(soldier, queryRaw.toLowerCase(), filters);
+        }).length;
+        if (freshHits) {
+          matched += freshHits;
+          hitNames.push("חדשים ללא יחידה");
         }
       }
       var summary = narrowed
@@ -6952,6 +8982,8 @@
       profile.setAttribute("aria-label", "יחידות");
       profile.innerHTML =
         '<div class="units-board" id="units-board">' +
+          renderIntake() +
+          renderFreshBoard() +
           '<div class="units-board-head"><h2>היחידות</h2><p>' + esc(summary) + "</p></div>" +
           '<div class="unit-grid">' + UNITS.map(renderUnitCard).join("") + addTile + "</div>" +
           renderArchiveBoard() +
@@ -6966,6 +8998,18 @@
         document.getElementById("live").textContent = announce;
       }
       if (!opts.focusPalette && !opts.focusUnit && !opts.openEditor) profile.scrollTop = scrollTop;
+      if (opts.openIntake && motionOk()) {
+        var intakePanel = profile.querySelector(".intake-panel");
+        if (intakePanel) intakePanel.classList.add("is-opening");
+      }
+      if (opts.focusIntake) {
+        var intakeName = opts.focusIntake === true ? "name" : opts.focusIntake;
+        var intakeField = profile.querySelector('.intake-form [name="' + intakeName + '"]');
+        if (intakeField) {
+          intakeField.focus();
+          if (intakeField.select && intakeName !== "profession" && intakeName !== "unit") intakeField.select();
+        }
+      }
       mountColorPalette(opts);
       if (opts.openEditor) {
         var opening = profile.querySelector(".unit-tile.is-editing");
@@ -6997,6 +9041,7 @@
         }
       }
       syncHitPop();
+      playIntakeLand();
     }
 
     var motionToken = 0;
@@ -7491,13 +9536,14 @@
       });
       var chipNames = Object.keys(professions).sort(compareHe);
       var chips = chipNames.map(function (name) {
-        return '<span class="unit-chip"><span class="unit-chip-count">' + professions[name] + '</span><span class="unit-chip-name">' + esc(name) + "</span></span>";
+        return '<span class="unit-chip"><span class="unit-chip-count">' + professions[name] + '</span> <span class="unit-chip-name">' + esc(name) + "</span></span>";
       }).join("");
       var chipTitle = chipNames.map(function (name) {
         return name + " " + professions[name];
       }).join(" · ");
       if (!chips) chips = '<span class="unit-chip is-empty">לא הוגדר</span>';
-      var quotaLabel = present(unit.quota) ? "תקן " + clean(unit.quota) : "ללא תקן";
+      var quota = quotaCard(unit);
+      var gap = quotaGapHtml(unit);
       var rosterCount = unitCount(unit.id);
       var ofTotal = narrowed
         ? '<span class="unit-tile-of">מתוך <b>' + rosterCount + "</b></span>"
@@ -7505,6 +9551,7 @@
       var openLabel = narrowed
         ? ("הצגת החיילים ב" + unit.name + ", " + count + " מתוך " + rosterCount)
         : ("הצגת החיילים ב" + unit.name);
+      if (gap.title) openLabel += ". " + gap.title;
       var body = editing
         ? unitDetailsForm(unit.id)
         : (interactive
@@ -7513,8 +9560,9 @@
             '<span class="unit-tile-head">' +
               '<span class="unit-tile-name-line">' +
                 '<span class="unit-tile-name">' + esc(unit.name) + "</span>" +
-                '<span class="unit-quota">' + esc(quotaLabel) + "</span>" +
+                (quota.split ? "" : quota.html) +
               "</span>" +
+              (quota.split ? quota.html : "") +
               '<span class="unit-tile-sub' + (sub ? "" : " is-missing") + '"' + (sub ? ' title="' + esc(sub) + '"' : "") + ">" + esc(sub || "לא הוגדר") + "</span>" +
             "</span>" +
             '<span class="unit-tile-stat">' +
@@ -7525,6 +9573,7 @@
               "</span>" +
               '<span class="unit-tile-chips"' + (chipTitle ? ' title="' + esc(chipTitle) + '"' : "") + ">" + chips + "</span>" +
             "</span>" +
+            gap.html +
             '<span class="unit-commanders">' + unitCommandersHtml(unit, !interactive) + "</span>" +
             '<span class="unit-tile-enter">הצגת חיילים</span>' +
           (interactive ? "</button>" : "</div>");
@@ -7542,10 +9591,15 @@
     function renderUnitSide() {
       var picker = document.getElementById("unit-picker");
       if (state.outsideOpen || state.releasedOpen) {
+        var freshView = state.outsideOpen && state.outsideKind === "fresh";
         var sideUnit = state.releasedOpen ? currentUnit() : null;
-        var sideCount = state.releasedOpen ? (sideUnit ? unitReleasedCount(sideUnit.id) : 0) : SOLDIERS.filter(isUnassigned).length;
-        var sideName = state.releasedOpen ? (sideUnit ? sideUnit.name : "") : "ללא יחידה";
-        var sideSub = state.releasedOpen ? "משוחררים" : "חיילים שיצאו משיבוץ, מכל סיבה";
+        var sideCount = state.releasedOpen
+          ? (sideUnit ? unitReleasedCount(sideUnit.id) : 0)
+          : SOLDIERS.filter(freshView ? freshUnassigned : function (soldier) {
+            return isUnassigned(soldier) && !freshUnassigned(soldier);
+          }).length;
+        var sideName = state.releasedOpen ? (sideUnit ? sideUnit.name : "") : (freshView ? "חיילים חדשים" : "ללא יחידה");
+        var sideSub = state.releasedOpen ? "משוחררים" : (freshView ? "ממתינים לשיבוץ ליחידה" : "חיילים שיצאו משיבוץ, מכל סיבה");
         var sideOne = state.releasedOpen ? "משוחרר" : "חייל";
         var sideMany = state.releasedOpen ? "משוחררים" : "חיילים";
         picker.innerHTML =
@@ -7616,10 +9670,17 @@
         state.unitError = "כבר יש יחידה בשם הזה";
         return false;
       }
+      var digitsMessage = contactDigitsMessage(data);
+      if (digitsMessage) {
+        state.unitError = digitsMessage;
+        return false;
+      }
       var unit = normalizeUnit({
         id: nextUnitId(),
         name: name,
         quota: data.quota,
+        quotaMode: data.quotaMode,
+        quotaBy: data.quotaBy,
         shalishutName: data.shalishutName,
         organ: data.organ,
         gepahName: data.gepahName,
@@ -7648,9 +9709,14 @@
         state.unitError = "כבר יש יחידה בשם הזה";
         return false;
       }
+      var digitsMessage = contactDigitsMessage(data);
+      if (digitsMessage) {
+        state.unitError = digitsMessage;
+        return false;
+      }
       unit.name = name;
       UNIT_PARAMS.forEach(function (key) { unit[key] = clean(data[key]); });
-      unit.quota = digits(unit.quota);
+      assignQuota(unit, data);
       saveUnits();
       closeUnitEditor();
       return true;
@@ -7707,6 +9773,13 @@
     }
 
     function commitUnitForm(form) {
+      var digitsMessage = digitsFieldMessage(form);
+      if (digitsMessage) {
+        state.unitDraft = readUnitForm(form);
+        state.unitError = digitsMessage;
+        render({ focusUnit: true });
+        return;
+      }
       var data = readUnitForm(form);
       state.unitDraft = data;
       if (form.getAttribute("data-unit") === "new") {
@@ -7818,12 +9891,16 @@
       var week = ["א", "ב", "ג", "ד", "ה", "ו", "ש"].map(function (label) {
         return "<span>" + label + "</span>";
       }).join("");
+      pop.dataset.mode = "days";
       pop.dataset.year = String(year);
       pop.dataset.month = String(month);
       pop.innerHTML =
         '<div class="date-nav">' +
           '<button class="date-nav-btn" type="button" data-action="date-prev" aria-label="חודש קודם">' + svg("chevron", 16) + "</button>" +
-          "<strong>" + esc(MONTHS[month] + " " + year) + "</strong>" +
+          '<div class="date-title">' +
+            '<span class="date-month">' + esc(MONTHS[month]) + "</span>" +
+            '<button class="date-year-btn" type="button" data-action="date-years" aria-label="בחירת שנה">' + year + svg("chevron", 14) + "</button>" +
+          "</div>" +
           '<button class="date-nav-btn" type="button" data-action="date-next" aria-label="חודש הבא">' + svg("chevron", 16) + "</button>" +
         "</div>" +
         '<div class="date-week" aria-hidden="true">' + week + "</div>" +
@@ -7832,6 +9909,99 @@
           '<button class="text-btn" type="button" data-action="date-today">היום</button>' +
           '<button class="text-btn" type="button" data-action="clear-date">ניקוי</button>' +
         "</div>";
+    }
+
+    var dateYearTyped = "";
+    var dateYearTypeTimer = 0;
+
+    function dateYearBounds(years) {
+      var nowYear = new Date().getFullYear();
+      var min = nowYear - 60;
+      var max = nowYear + 60;
+      years.forEach(function (value) {
+        if (value < min) min = value;
+        if (value > max) max = value;
+      });
+      return { min: min, max: max };
+    }
+
+    function focusDateControl(el) {
+      if (!el) return;
+      try { el.focus({ preventScroll: true }); }
+      catch (err) { el.focus(); }
+    }
+
+    function scrollDateYearIntoView(button) {
+      var scroller = button.parentNode;
+      if (!scroller) return;
+      var top = button.offsetTop - scroller.offsetTop - (scroller.clientHeight - button.offsetHeight) / 2;
+      scroller.scrollTop = Math.max(0, top);
+    }
+
+    function focusDateYear(pop, year) {
+      var next = pop.querySelector('.date-year[data-year="' + year + '"]');
+      if (!next) return false;
+      var years = pop.querySelectorAll(".date-year");
+      for (var i = 0; i < years.length; i++) years[i].setAttribute("tabindex", "-1");
+      next.setAttribute("tabindex", "0");
+      scrollDateYearIntoView(next);
+      focusDateControl(next);
+      return true;
+    }
+
+    function renderYearPop(pop, viewDate, selectedDate) {
+      var year = viewDate.getFullYear();
+      var month = viewDate.getMonth();
+      var selectedYear = selectedDate ? selectedDate.getFullYear() : null;
+      var todayYear = new Date().getFullYear();
+      var bounds = dateYearBounds(selectedYear == null ? [year] : [year, selectedYear]);
+      var cells = "";
+      var y;
+      for (y = bounds.min; y <= bounds.max; y++) {
+        var classes = "date-year";
+        if (y === selectedYear) classes += " is-selected";
+        if (y === todayYear) classes += " is-today";
+        cells += '<button class="' + classes + '" type="button" data-action="pick-year" data-year="' + y + '" tabindex="' + (y === year ? "0" : "-1") + '">' + y + "</button>";
+      }
+      pop.dataset.mode = "years";
+      pop.dataset.year = String(year);
+      pop.dataset.month = String(month);
+      pop.innerHTML =
+        '<div class="date-nav">' +
+          '<button class="text-btn" type="button" data-action="date-days">חזרה</button>' +
+          "<strong>בחירת שנה</strong>" +
+          '<span class="date-nav-gap" aria-hidden="true"></span>' +
+        "</div>" +
+        '<div class="date-years">' + cells + "</div>";
+    }
+
+    function openYearView(field) {
+      var pop = field.querySelector(".date-pop");
+      var input = field.querySelector("input");
+      var selected = stampToDate(input ? input.value : "");
+      renderYearPop(pop, new Date(Number(pop.dataset.year), Number(pop.dataset.month), 1), selected);
+      placeDatePop(field);
+      var active = pop.querySelector(".date-year[tabindex='0']");
+      if (active) {
+        scrollDateYearIntoView(active);
+        focusDateControl(active);
+      }
+    }
+
+    function showDateDays(field) {
+      var pop = field.querySelector(".date-pop");
+      var selected = stampToDate(field.querySelector("input").value);
+      renderDatePop(pop, new Date(Number(pop.dataset.year), Number(pop.dataset.month), 1), selected, "");
+      placeDatePop(field);
+      focusDateControl(pop.querySelector(".date-day[tabindex='0']"));
+    }
+
+    function pickDateYear(field, year) {
+      var pop = field.querySelector(".date-pop");
+      var selected = stampToDate(field.querySelector("input").value);
+      renderDatePop(pop, new Date(year, Number(pop.dataset.month), 1), selected, "");
+      placeDatePop(field);
+      focusDateControl(pop.querySelector(".date-day[tabindex='0']"));
     }
 
     function placeDatePop(field) {
@@ -7899,6 +10069,7 @@
       if (!opts.silent && field.getAttribute("data-date-key") === "trainStart") {
         syncStudyDateFromTrain(field.closest("form"));
       }
+      if (field.closest(".intake-form")) captureIntake();
     }
 
     function moveDateFocus(dayBtn, delta) {
@@ -7924,7 +10095,8 @@
       }
     }
 
-    function fieldControl(field, draft) {
+    function fieldControl(field, draft, opts) {
+      opts = opts || {};
       if (field.date) return dateFieldControl(field, draft);
       if (field.check) {
         var on = isUntrained(draft);
@@ -7940,7 +10112,8 @@
       var control;
       if (field.unit) {
         control =
-          '<select name="unit" required>' +
+          '<select name="unit"' + (opts.optionalUnit ? "" : " required") + ">" +
+            (opts.optionalUnit ? '<option value="">ללא יחידה</option>' : "") +
             UNITS.map(function (unit) {
               return '<option value="' + esc(unit.id) + '"' + (unit.id === raw ? " selected" : "") + ">" + esc(unit.name) + "</option>";
             }).join("") +
@@ -7972,7 +10145,12 @@
       } else if (field.wide) {
         control = '<textarea name="' + field.key + '" rows="2">' + value + "</textarea>";
       } else {
-        control = '<input name="' + field.key + '" type="' + (field.type || "text") + '" value="' + value + '"' + (field.placeholder ? ' placeholder="' + esc(field.placeholder) + '"' : "") + required + ">";
+        var digitsOnly = field.type === "tel";
+        var hint = digitsOnly ? '<span class="field-hint">רק ספרות. תו אחר לא מתקבל.</span>' : "";
+        var invalid = digitsOnly && digitsInvalid(raw) ? ' class="is-invalid"' : "";
+        control = '<input name="' + field.key + '"' + invalid + ' type="' + (field.type || "text") + '" value="' + value + '"' +
+          (digitsOnly ? ' inputmode="numeric" autocomplete="tel" data-digits="1" pattern="[0-9]*"' : "") +
+          (field.placeholder ? ' placeholder="' + esc(field.placeholder) + '"' : "") + required + ">" + hint;
       }
       return '<label class="' + wide.trim() + '"><span class="field-label">' + esc(field.label) + "</span>" + control + "</label>";
     }
@@ -7985,7 +10163,10 @@
     }
 
     function postingLock(soldier) {
-      return '<div class="posting-lock editor-wide"><span class="field-label">שיבוץ נוכחי</span><strong>' + esc(currentPlacementName(soldier)) + '</strong><p>העברה ליחידה אחרת נרשמת כסבב ב׳, עם סיבה ותאריך. השיבוץ הזה נשאר במסלול.</p><button class="btn btn-secondary" type="button" data-action="open-transfer">סבב ב׳</button></div>';
+      var undo = soldier && soldier.transfers && soldier.transfers.length
+        ? '<button class="btn btn-danger" type="button" data-action="undo-transfer" data-key="' + esc(keyOf(soldier)) + '">מחיקת השינוי</button>'
+        : "";
+      return '<div class="posting-lock editor-wide"><span class="field-label">שיבוץ נוכחי</span><strong>' + esc(currentPlacementName(soldier)) + '</strong><p>העברה ליחידה אחרת נרשמת כסבב ב׳, עם סיבה ותאריך. השיבוץ הזה נשאר במסלול.</p><div class="posting-lock-actions"><button class="btn btn-secondary" type="button" data-action="open-transfer">סבב ב׳</button>' + undo + "</div></div>";
     }
 
     function renderEditor(draft) {
@@ -7996,7 +10177,7 @@
         return fieldControl(field, draft);
       }).join("");
       return (
-        '<form class="editor editor-form" autocomplete="off">' +
+        '<form class="editor editor-form" autocomplete="off" novalidate>' +
           "<h2>" + (editing ? "עריכת חייל" : "חייל חדש") + "</h2>" +
           '<p class="editor-lead">' + esc(editorLead(draft)) + "</p>" +
           '<div class="editor-grid">' +
@@ -8128,6 +10309,85 @@
       render();
     }
 
+    function placementBeforeMove(move) {
+      var fromId = unitId(move && move.fromId);
+      var fromName = clean(move && move.fromName);
+      if (fromId) return { unit: fromId, external: "" };
+      if (fromName && fromName !== "ללא שיבוץ") return { unit: "", external: fromName };
+      return { unit: "", external: "" };
+    }
+
+    function showRestoredSoldier(soldier) {
+      state.transferring = false;
+      state.transferError = "";
+      state.transferDraft = null;
+      state.creating = false;
+      state.editingIndex = -1;
+      state.draft = blankDraft();
+      state.logOpen = false;
+      state.unitsHome = false;
+      state.shalishutOpen = false;
+      closeShalishutEditor();
+      state.selectedKey = keyOf(soldier);
+      state.profileOpen = true;
+      state.prevKey = "";
+      var placed = unitId(soldier.unit);
+      if (!placed) {
+        state.outsideOpen = true;
+        state.releasedOpen = false;
+        render({ scroll: true });
+        return;
+      }
+      state.outsideOpen = false;
+      state.releasedOpen = isReleased(soldier);
+      if (state.unit !== placed) {
+        state.unit = placed;
+        saveUnit();
+      }
+      document.getElementById("search").value = "";
+      document.getElementById("filter-profession").value = "";
+      document.getElementById("filter-cycle").value = "";
+      document.getElementById("filter-grade").value = "";
+      document.getElementById("filter-date").value = "";
+      document.getElementById("filter-tatash").value = "";
+      render({ scroll: true });
+    }
+
+    function undoLastTransfer(key, stayOnLog) {
+      var index = findSoldierIndex(key);
+      if (index < 0) return;
+      var soldier = SOLDIERS[index];
+      var transfers = soldier.transfers || [];
+      if (!transfers.length) return;
+      var move = transfers[transfers.length - 1];
+      var back = placementBeforeMove(move);
+      var name = clean(soldier.name) || "החייל";
+      var where = back.external || (back.unit ? unitName(back.unit) : "");
+      var backText = where ? "החייל יחזור אל " + where + "." : "החייל יחזור למצב ללא שיבוץ.";
+      if (!window.confirm("למחוק את שינוי השיבוץ האחרון של " + name + "? " + backText)) return;
+      var previousUnit = soldier.unit;
+      var previousExternal = soldier.external;
+      transfers.pop();
+      soldier.transfers = transfers;
+      soldier.unit = back.unit;
+      soldier.external = back.external;
+      try {
+        persist();
+      } catch (err) {
+        transfers.push(move);
+        soldier.transfers = transfers;
+        soldier.unit = previousUnit;
+        soldier.external = previousExternal;
+        window.alert("לא הצלחנו לשמור את המחיקה.");
+        return;
+      }
+      if (stayOnLog && state.logOpen) {
+        render();
+        return;
+      }
+      showRestoredSoldier(soldier);
+    }
+
     function commitTransfer(form) {
       var index = findSoldierIndex(state.selectedKey);
       if (index < 0) return;
@@ -8211,6 +10471,7 @@
         state.logOpen = false;
         state.unitsHome = false;
         state.outsideOpen = true;
+        state.outsideKind = "departed";
         state.prevKey = "";
         render({ scroll: true });
         return;
@@ -8253,7 +10514,9 @@
     }
 
     function studyDueSoldiers() {
-      return SOLDIERS.filter(needsStudyDay).sort(function (a, b) {
+      return SOLDIERS.filter(function (soldier) {
+        return needsStudyDay(soldier) && !noticeDismissed(studyAlertId(soldier));
+      }).sort(function (a, b) {
         var byCycle = compareHe(clean(a.cycle) || "ללא מחזור", clean(b.cycle) || "ללא מחזור");
         if (byCycle) return byCycle;
         var da = stampToDate(a.trainStart);
@@ -8306,6 +10569,7 @@
           return '<div class="log-person">' +
             '<div class="log-person-who">' + logWho(soldier) + "</div>" +
             '<div class="log-person-place">' + esc(logPlace(soldier)) + "</div>" +
+            '<div class="log-person-done">' + studyDoneBox(soldier) + dismissNoticeButton(studyAlertId(soldier), soldier.name) + "</div>" +
             (shared ? "" : '<div class="log-person-date">' + esc(trainingDate(soldier)) + "</div>") +
           "</div>";
         }).join("");
@@ -8315,14 +10579,31 @@
             '<span class="pill-count">' + group.items.length + "</span>" +
             (dateNote ? '<span class="log-cycle-date">' + esc(dateNote) + "</span>" : "") +
             '<span class="flag flag-study-due">צריך יום עיון</span>' +
+            '<span class="log-cycle-actions">' +
+              '<button class="text-btn text-btn-danger" type="button" data-action="dismiss-study-cycle" data-cycle="' + esc(group.key) + '" aria-label="' + esc("מחיקת ההתראה של " + cycleLabel(group.key)) + '">מחיקת ההתראה</button>' +
+              '<label class="study-done"><input type="checkbox" data-action="study-done-cycle" aria-label="' + esc("יום העיון של " + cycleLabel(group.key) + " בוצע") + '"><span>המחזור ביצע</span></label>' +
+            "</span>" +
           "</header>" +
           '<div class="log-people">' + people + "</div>" +
         "</section>";
       }).join("") + "</div>";
     }
 
+    function releaseSoonSoldiers() {
+      return SOLDIERS.filter(function (soldier) {
+        return releaseSoon(soldier) && !noticeDismissed(soonAlertId(soldier));
+      }).sort(function (a, b) {
+        var da = releaseDayCount(a);
+        var db = releaseDayCount(b);
+        if (da !== db) return da - db;
+        return compareHe(a.name || "", b.name || "");
+      });
+    }
+
     function releasedLogSoldiers() {
-      return SOLDIERS.filter(isReleased).sort(function (a, b) {
+      return SOLDIERS.filter(function (soldier) {
+        return isReleased(soldier) && !noticeDismissed(releaseAlertId(soldier));
+      }).sort(function (a, b) {
         var aKey = releaseKey(a.tatash);
         var bKey = releaseKey(b.tatash);
         if (aKey !== bKey) return aKey < bKey ? 1 : -1;
@@ -8425,6 +10706,7 @@
       var tabs = [
         { id: "transfers", label: "מעברים" },
         { id: "study", label: "ימי עיון" },
+        { id: "soon", label: "לפני שחרור" },
         { id: "releases", label: "שחרורים" }
       ];
       var tab = state.logTab;
@@ -8432,13 +10714,17 @@
       state.logTab = tab;
       var unseenStudy = tab === "study" ? 0 : unseenStudyNotices().length;
       if (tab === "study") acknowledgeStudyNotices();
+      var unseenSoon = tab === "soon" ? 0 : unseenReleaseSoon().length;
+      if (tab === "soon") acknowledgeReleaseSoon();
       var query = clean(state.logQuery).toLowerCase();
       var moves = transferRows();
       var studyAll = studyDueSoldiers();
+      var soonAll = releaseSoonSoldiers();
       var releasedAll = releasedLogSoldiers();
       var counts = {
         transfers: moves.length,
         study: studyCycleGroups(studyAll).length,
+        soon: soonAll.length,
         releases: releasedAll.length
       };
       var summary = "";
@@ -8453,11 +10739,29 @@
         summary = studyGroups.length
           ? (query ? "מוצגים " + studyGroups.length + " מחזורים מתוך " + counts.study : studyGroups.length + " " + countWord(studyGroups.length, "מחזור צריך יום עיון", "מחזורים צריכים יום עיון") + " · " + studyRows.length + " " + countWord(studyRows.length, "חייל", "חיילים"))
           : "אין מחזורים שצריכים יום עיון";
-        note = "יום עיון משותף למחזור, 10 חודשים אחרי תחילת ההכשרה.";
+        note = "יום עיון משותף למחזור, 10 חודשים אחרי תחילת ההכשרה. «בוצע» מסמן שהיום נעשה. מחיקה מסירה רק את ההתראה מהיומן, ואפשר גם להשאיר אותה.";
         placeholder = "מחזור, חייל או יחידה";
         table = studyGroups.length
           ? renderStudyCycleLog(studyRows)
           : '<div class="log-empty">' + (counts.study ? "אין מחזורים תואמים" : "כשמגיע תאריך יום העיון, 10 חודשים אחרי תחילת ההכשרה, המחזור מופיע כאן.") + "</div>";
+      } else if (tab === "soon") {
+        var soonRows = soonAll.filter(function (soldier) {
+          var days = releaseDayCount(soldier);
+          return logQueryHit([soldier.name, soldier.personalId, soldier.profession, logPlace(soldier), soldier.tatash, days == null ? "" : relativeDay(days)], query);
+        });
+        summary = counts.soon
+          ? (query ? "מוצגים " + soonRows.length + " מתוך " + counts.soon : counts.soon + " " + countWord(counts.soon, "חייל לפני שחרור", "חיילים לפני שחרור"))
+          : "אין חיילים לפני שחרור";
+        note = "חייל שתאריך התת״ש שלו בתוך חודש מופיע כאן, כדי לתכנן שיבוץ לפני שהמקום בתקן מתפנה. אפשר למחוק התראה אחרי שקוראים, או להשאיר אותה עד יום השחרור.";
+        placeholder = "חייל, יחידה או תת״ש";
+        table = soonRows.length
+          ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>יחידה</th><th>תת״ש</th><th>נשאר</th><th></th></tr></thead><tbody>' +
+            soonRows.map(function (soldier) {
+              var days = releaseDayCount(soldier);
+              return "<tr><td>" + logWho(soldier) + "</td><td>" + esc(logPlace(soldier)) + "</td><td>" + esc(clean(soldier.tatash)) + '</td><td><span class="flag flag-release-soon">' + esc(days == null ? "" : relativeDay(days)) + "</span></td><td>" + dismissNoticeButton(soonAlertId(soldier), soldier.name) + "</td></tr>";
+            }).join("") +
+            "</tbody></table></div>"
+          : '<div class="log-empty">' + (counts.soon ? "אין חיילים תואמים" : "אין חיילים שמשתחררים בחודש הקרוב.") + "</div>";
       } else if (tab === "releases") {
         var releaseRows = releasedAll.filter(function (soldier) {
           return logQueryHit([soldier.name, soldier.personalId, soldier.profession, logPlace(soldier), soldier.tatash], query);
@@ -8465,15 +10769,15 @@
         summary = counts.releases
           ? (query ? "מוצגים " + releaseRows.length + " מתוך " + counts.releases : counts.releases + " " + countWord(counts.releases, "משוחרר", "משוחררים"))
           : "אין משוחררים";
-        note = "חייל שתאריך התת״ש שלו עבר מסומן כאן.";
+        note = "חייל שתאריך התת״ש שלו הגיע מסומן כאן, והמקום שלו בתקן מתפנה. אפשר למחוק את השורה מהיומן, או להשאיר אותה. החייל נשאר משוחרר.";
         placeholder = "חייל, יחידה או תת״ש";
         table = releaseRows.length
-          ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>יחידה</th><th>תת״ש</th><th>סטטוס</th></tr></thead><tbody>' +
+          ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>יחידה</th><th>תת״ש</th><th>סטטוס</th><th></th></tr></thead><tbody>' +
             releaseRows.map(function (soldier) {
-              return "<tr><td>" + logWho(soldier) + "</td><td>" + esc(logPlace(soldier)) + "</td><td>" + esc(clean(soldier.tatash)) + '</td><td><span class="flag flag-released">משוחרר</span></td></tr>';
+              return "<tr><td>" + logWho(soldier) + "</td><td>" + esc(logPlace(soldier)) + "</td><td>" + esc(clean(soldier.tatash)) + '</td><td><span class="flag flag-released">משוחרר</span></td><td>' + dismissNoticeButton(releaseAlertId(soldier), soldier.name) + "</td></tr>";
             }).join("") +
             "</tbody></table></div>"
-          : '<div class="log-empty">' + (counts.releases ? "אין משוחררים תואמים" : "חייל שתאריך התת״ש שלו עבר מופיע כאן.") + "</div>";
+          : '<div class="log-empty">' + (counts.releases ? "אין משוחררים תואמים" : "חייל שתאריך התת״ש שלו הגיע מופיע כאן.") + "</div>";
       } else {
         var rows = moves.filter(function (row) {
           return logQueryHit([
@@ -8484,7 +10788,7 @@
         summary = counts.transfers
           ? (query ? "מוצגים " + rows.length + " מתוך " + counts.transfers : counts.transfers + " " + countWord(counts.transfers, "מעבר", "מעברים"))
           : "עדיין אין מעברים";
-        note = "כל מעבר נשמר כסבב ב׳, והשיבוץ הקודם נשאר.";
+        note = "מחיקת השינוי האחרון מחזירה את החייל לשיבוץ שממנו יצא.";
         placeholder = "חייל, יחידה או סיבה";
         var body = rows.map(function (row) {
           var soldier = row.soldier;
@@ -8492,17 +10796,21 @@
           var again = outside
             ? '<button class="text-btn" type="button" data-action="open-transfer" data-key="' + esc(keyOf(soldier)) + '">סבב ב׳</button>'
             : "";
-          return "<tr><td>" + logWho(soldier) + again + "</td><td>" + esc(row.move.fromName) + "</td><td>" + esc(row.move.toName) + "</td><td class=\"log-reason\">" + esc(row.move.reason) + "</td><td>" + esc(row.move.date) + "</td></tr>";
+          var history = soldier.transfers || [];
+          var latest = history.length && history[history.length - 1] === row.move;
+          var undo = latest
+            ? '<button class="text-btn text-btn-danger" type="button" data-action="undo-transfer" data-stay="log" data-key="' + esc(keyOf(soldier)) + '">מחיקה</button>'
+            : "";
+          return "<tr><td>" + logWho(soldier) + again + "</td><td>" + esc(row.move.fromName) + "</td><td>" + esc(row.move.toName) + "</td><td class=\"log-reason\">" + esc(row.move.reason) + "</td><td>" + esc(row.move.date) + "</td><td>" + undo + "</td></tr>";
         }).join("");
         table = rows.length
-          ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>שיבוץ קודם</th><th>סבב ב׳</th><th>סיבה</th><th>תאריך</th></tr></thead><tbody>' + body + "</tbody></table></div>"
+          ? '<div class="transfer-log-wrap"><table class="transfer-log"><thead><tr><th>חייל</th><th>שיבוץ קודם</th><th>סבב ב׳</th><th>סיבה</th><th>תאריך</th><th></th></tr></thead><tbody>' + body + "</tbody></table></div>"
           : '<div class="log-empty">' + (counts.transfers ? "אין מעברים תואמים" : "סבב ב׳ נרשם מכרטיס החייל. השיבוץ הקודם נשאר במסלול, עם סיבת המעבר.") + "</div>";
       }
       var tabButtons = tabs.map(function (item) {
         var on = item.id === tab;
-        var dot = item.id === "study" && unseenStudy
-          ? '<span class="notice-dot" aria-hidden="true"></span>'
-          : "";
+        var alerted = (item.id === "study" && unseenStudy) || (item.id === "soon" && unseenSoon);
+        var dot = alerted ? '<span class="notice-dot" aria-hidden="true"></span>' : "";
         return '<button class="log-tab' + (on ? " is-on" : "") + '" type="button" role="tab" id="log-tab-' + item.id + '" data-action="log-tab" data-tab="' + item.id + '" aria-selected="' + (on ? "true" : "false") + '" aria-controls="log-panel">' +
           dot + esc(item.label) + '<span class="log-tab-count">' + counts[item.id] + "</span></button>";
       }).join("");
@@ -8523,6 +10831,7 @@
         var pos = search.value.length;
         if (search.setSelectionRange) search.setSelectionRange(pos, pos);
       }
+      if (opts.focusStudy) focusStudyBox(opts.focusStudy);
       var announce = "יומן. " + summary;
       if (state.announced !== announce) {
         state.announced = announce;
@@ -8648,7 +10957,7 @@
         el.classList.toggle("is-active", el.value !== "");
       });
 
-      var placeLabel = state.outsideOpen ? "ללא יחידה" : (state.releasedOpen ? unitName(state.unit) + " · משוחררים" : unitName(state.unit));
+      var placeLabel = state.outsideOpen ? (state.outsideKind === "fresh" ? "חיילים חדשים ללא יחידה" : "ללא יחידה") : (state.releasedOpen ? unitName(state.unit) + " · משוחררים" : unitName(state.unit));
       var inUnit = view.length;
       var visibleTotal = view.length;
       var professions = new Set(valuesOf(view, "profession")).size;
@@ -8726,6 +11035,7 @@
         var routesFocus = profile.querySelector(".dir-columns [data-action='toggle-routes']") || profile.querySelector("[data-action='toggle-routes']");
         if (routesFocus) routesFocus.focus({ preventScroll: true });
       }
+      if (opts.focusStudy) focusStudyBox(opts.focusStudy);
       if ((state.creating || editing) && opts.focusEditor) {
         var focusField = profile.querySelector('[name="' + (editing ? "name" : "profession") + '"]');
         if (focusField) focusField.focus();
@@ -8758,7 +11068,7 @@
       if (state.transferring) document.title = "שינוי שיבוץ · " + CONFIG.title;
       else if (state.creating) document.title = "חייל חדש · " + CONFIG.title;
       else if (editing) document.title = "עריכת " + (clean(state.draft && state.draft.name) || "חייל") + " · " + CONFIG.title;
-      else document.title = soldier ? clean(soldier.name) + " · " + CONFIG.title : (state.outsideOpen ? "ללא יחידה · " + CONFIG.title : state.releasedOpen ? "משוחררים · " + unitName(state.unit) + " · " + CONFIG.title : CONFIG.title);
+      else document.title = soldier ? clean(soldier.name) + " · " + CONFIG.title : (state.outsideOpen ? placeLabel + " · " + CONFIG.title : state.releasedOpen ? "משוחררים · " + unitName(state.unit) + " · " + CONFIG.title : CONFIG.title);
       if (!state.creating && !editing && !state.transferring) syncHash(soldier ? state.selectedKey : "");
       syncShell();
 
@@ -8871,12 +11181,19 @@
       render({ scroll: true, focusList: true });
     }
 
-    function init() {
+    function startApp() {
+      adoptLocalIfFileHasNoSoldiers();
+      seedStudySeenFromFile();
       loadUnits();
       UNITS = UNITS.map(normalizeUnit);
       loadStored();
       if (ensureUnits()) persist();
-      try { state.unit = unitId(localStorage.getItem(UNIT_KEY)) || UNITS[0].id; } catch (err) { state.unit = UNITS[0].id; }
+      var storedUnit = "";
+      if (projectFileActive && fileRecord && !fileRecord.fresh && present(fileRecord.unit)) storedUnit = clean(fileRecord.unit);
+      else {
+        try { storedUnit = localStorage.getItem(UNIT_KEY) || ""; } catch (err) {}
+      }
+      state.unit = unitId(storedUnit) || (UNITS[0] && UNITS[0].id) || "";
       document.getElementById("doc-title").textContent = CONFIG.title;
       try {
         var hash = decodeURIComponent(location.hash.replace(/^#/, ""));
@@ -8900,7 +11217,16 @@
         state.unitsHome = true;
         state.selectedKey = "";
       }
+      bootstrapping = false;
       saveUnit();
+      renderSaveChrome();
+      var connectBtn = document.getElementById("save-connect");
+      if (connectBtn) connectBtn.addEventListener("click", function () {
+        connectProjectFolder().then(function (ok) {
+          if (ok) location.reload();
+        });
+      });
+      window.addEventListener("pagehide", flushProjectSave);
       var unitPicker = document.getElementById("unit-picker");
       unitPicker.addEventListener("click", function (event) {
         var sideCopy = event.target.closest("[data-action='copy']");
@@ -8947,6 +11273,8 @@
           render();
         }
       });
+      document.addEventListener("beforeinput", guardDigits, true);
+      document.addEventListener("input", guardDigits, true);
       unitPicker.addEventListener("input", function (event) {
         var form = event.target.form;
         if (!form || !form.classList || !form.classList.contains("unit-edit")) return;
@@ -8974,8 +11302,14 @@
       });
 
       ["search", "filter-profession", "filter-cycle", "filter-grade", "filter-date", "filter-tatash"].forEach(function (id) {
-        document.getElementById(id).addEventListener("input", function () { render(); });
-        document.getElementById(id).addEventListener("change", function () { render(); });
+        document.getElementById(id).addEventListener("input", function () {
+          if (state.unitsHome) captureIntake();
+          render();
+        });
+        document.getElementById(id).addEventListener("change", function () {
+          if (state.unitsHome) captureIntake();
+          render();
+        });
       });
       document.getElementById("clear-btn").addEventListener("click", clearFilters);
       document.getElementById("add-btn").addEventListener("click", openCreator);
@@ -9045,6 +11379,43 @@
       });
       document.getElementById("profile").addEventListener("change", function (event) {
         var target = event.target;
+        if (target && target.getAttribute && target.getAttribute("data-action") === "study-done") {
+          setStudyDone([target.getAttribute("data-key") || ""], target.checked);
+          return;
+        }
+        if (target && target.getAttribute && target.getAttribute("data-action") === "study-done-cycle") {
+          var cycle = target.closest(".log-cycle");
+          var inputs = cycle ? cycle.querySelectorAll("[data-action='study-done']") : [];
+          var cycleKeys = [];
+          for (var cycleIndex = 0; cycleIndex < inputs.length; cycleIndex++) {
+            cycleKeys.push(inputs[cycleIndex].getAttribute("data-key") || "");
+          }
+          setStudyDone(cycleKeys, true);
+          return;
+        }
+        if (target && target.form && target.form.classList.contains("intake-form")) {
+          if (target.getAttribute && target.getAttribute("data-action") === "pick-photo") {
+            // נמשיך לטיפול בתמונה למטה
+          } else {
+            if (target.name === "untrained") syncTrainingDateField(target.form);
+            if (target.name === "cycle") {
+              var intakeCycle = target.form.elements.cycleCustom;
+              if (intakeCycle) {
+                var addingIntakeCycle = target.value === "__new__";
+                intakeCycle.hidden = !addingIntakeCycle;
+                if (addingIntakeCycle) intakeCycle.focus();
+              }
+            }
+            state.intakeError = "";
+            state.intakeNote = "";
+            var intakeStatus = target.form.querySelector(".intake-note");
+            if (intakeStatus) intakeStatus.remove();
+            var intakeError = target.form.querySelector(".form-error");
+            if (intakeError) intakeError.remove();
+            captureIntake();
+            return;
+          }
+        }
         if (target && target.name === "to" && target.form && target.form.classList.contains("transfer-form")) {
           if (!target.value) return;
           var pickedLeaves = target.form.querySelectorAll("[data-action='leave-exit']");
@@ -9086,6 +11457,16 @@
         if (lead) lead.textContent = editorLead(state.draft);
       });
       document.getElementById("profile").addEventListener("input", function (event) {
+        if (event.target && event.target.form && event.target.form.classList.contains("intake-form")) {
+          state.intakeError = "";
+          state.intakeNote = "";
+          var intakeNote = event.target.form.querySelector(".intake-note");
+          if (intakeNote) intakeNote.remove();
+          var intakeError = event.target.form.querySelector(".form-error");
+          if (intakeError) intakeError.remove();
+          captureIntake();
+          return;
+        }
         if (event.target && event.target.id === "log-search") {
           state.logQuery = event.target.value;
           render({ focusLogSearch: true });
@@ -9100,6 +11481,11 @@
       });
       document.getElementById("profile").addEventListener("submit", function (event) {
         var form = event.target;
+        if (form.classList && form.classList.contains("intake-form")) {
+          event.preventDefault();
+          commitIntake(form);
+          return;
+        }
         if (form.classList && form.classList.contains("unit-edit")) {
           event.preventDefault();
           commitUnitForm(form);
@@ -9107,6 +11493,13 @@
         }
         if (form.classList && form.classList.contains("shalishut-form")) {
           event.preventDefault();
+          var digitsMessage = digitsFieldMessage(form);
+          if (digitsMessage) {
+            state.shalishutDraft = shalishutFromForm(form);
+            state.shalishutError = digitsMessage;
+            render({ focusShalishut: true });
+            return;
+          }
           var data = shalishutFromForm(form);
           state.shalishutDraft = data;
           if (!saveShalishut(data)) render({ focusShalishut: true });
@@ -9120,6 +11513,11 @@
         }
         if (!form.classList || !form.classList.contains("editor-form")) return;
         event.preventDefault();
+        var soldierDigits = digitsFieldMessage(form);
+        if (soldierDigits) {
+          showDigitsError(form, soldierDigits);
+          return;
+        }
         var soldier = soldierFromForm(form);
         if (!soldier.profession || !soldier.name) return;
         if (state.editingIndex >= 0 && state.editingIndex < SOLDIERS.length) {
@@ -9127,6 +11525,8 @@
           soldier.transfers = previousSoldier.transfers || [];
           soldier.external = clean(previousSoldier.external);
           soldier.unit = soldier.external ? "" : (unitId(previousSoldier.unit) || state.unit);
+          soldier.studyDone = clean(previousSoldier.studyDone);
+          if (soldier.studyDone !== effectiveStudyStamp(soldier)) soldier.studyDone = "";
           SOLDIERS[state.editingIndex] = soldier;
         } else {
           soldier.transfers = [];
@@ -9147,6 +11547,7 @@
         clearFilters();
         render({ scroll: true });
       });
+      bindFreshDrag(document.getElementById("profile"));
       document.getElementById("profile").addEventListener("click", function (event) {
         var copyBtn = event.target.closest("[data-action='copy']");
         if (copyBtn) {
@@ -9162,7 +11563,7 @@
           render({ keepProfileScroll: true, focusSort: sortKey });
           return;
         }
-        var dateAction = event.target.closest("[data-action='toggle-date'], [data-action='date-prev'], [data-action='date-next'], [data-action='pick-date'], [data-action='date-today'], [data-action='clear-date']");
+        var dateAction = event.target.closest("[data-action='toggle-date'], [data-action='date-prev'], [data-action='date-next'], [data-action='pick-date'], [data-action='date-today'], [data-action='clear-date'], [data-action='date-years'], [data-action='date-days'], [data-action='pick-year']");
         if (dateAction) {
           event.stopPropagation();
           var dateField = dateAction.closest(".date-field");
@@ -9175,6 +11576,12 @@
             shiftDateView(dateField, -1);
           } else if (dateActionName === "date-next") {
             shiftDateView(dateField, 1);
+          } else if (dateActionName === "date-years") {
+            openYearView(dateField);
+          } else if (dateActionName === "date-days") {
+            showDateDays(dateField);
+          } else if (dateActionName === "pick-year") {
+            pickDateYear(dateField, Number(dateAction.getAttribute("data-year")));
           } else if (dateActionName === "pick-date") {
             setDateFieldValue(dateField, dateAction.getAttribute("data-date") || "");
           } else if (dateActionName === "date-today") {
@@ -9217,6 +11624,23 @@
         }
         if (event.target.closest("[data-action='close-log']")) {
           closeLog();
+          return;
+        }
+        var dismissBtn = event.target.closest("[data-action='dismiss-notice']");
+        if (dismissBtn) {
+          dismissNotices([dismissBtn.getAttribute("data-notice") || ""]);
+          return;
+        }
+        var dismissCycle = event.target.closest("[data-action='dismiss-study-cycle']");
+        if (dismissCycle) {
+          var cycleName = dismissCycle.getAttribute("data-cycle") || "";
+          var cycleIds = [];
+          SOLDIERS.forEach(function (soldier) {
+            if ((clean(soldier.cycle) || "ללא מחזור") !== cycleName) return;
+            if (!needsStudyDay(soldier) || noticeDismissed(studyAlertId(soldier))) return;
+            cycleIds.push(studyAlertId(soldier));
+          });
+          dismissNotices(cycleIds);
           return;
         }
         var logTabBtn = event.target.closest("[data-action='log-tab']");
@@ -9264,6 +11688,11 @@
           }
           return;
         }
+        var undoTransferBtn = event.target.closest("[data-action='undo-transfer']");
+        if (undoTransferBtn) {
+          undoLastTransfer(undoTransferBtn.getAttribute("data-key") || state.selectedKey, undoTransferBtn.getAttribute("data-stay") === "log");
+          return;
+        }
         var transferBtn = event.target.closest("[data-action='open-transfer']");
         if (transferBtn) {
           var transferKey = transferBtn.getAttribute("data-key");
@@ -9282,6 +11711,35 @@
           return;
         }
         if (state.unitsHome) {
+          var homeClearPhoto = event.target.closest("[data-action='clear-photo']");
+          if (homeClearPhoto) {
+            setSoldierPhoto(homeClearPhoto.getAttribute("data-key") || "", "");
+            return;
+          }
+          if (event.target.closest("[data-action='toggle-intake']")) {
+            captureIntake();
+            state.intakeOpen = !state.intakeOpen;
+            render(state.intakeOpen ? { focusIntake: "name", openIntake: true } : {});
+            return;
+          }
+          if (event.target.closest("[data-action='close-intake']")) {
+            captureIntake();
+            state.intakeOpen = false;
+            state.intakeError = "";
+            render();
+            var intakeToggle = document.querySelector("[data-action='toggle-intake']");
+            if (intakeToggle) intakeToggle.focus();
+            return;
+          }
+          var freshBtn = event.target.closest("[data-action='open-fresh']");
+          if (freshBtn) {
+            if (suppressFreshClick) {
+              suppressFreshClick = false;
+              return;
+            }
+            openUnassigned(freshBtn.getAttribute("data-key") || "", "fresh");
+            return;
+          }
           if (event.target.closest("[data-action='cancel-unit']")) {
             closeUnitEditor();
             render();
@@ -9441,6 +11899,24 @@
         if (document.getElementById("color-palette")) placeColorPalette();
       });
       document.addEventListener("keydown", function (event) {
+        var datePopKey = event.target.closest && event.target.closest(".date-pop");
+        if (datePopKey && datePopKey.dataset.mode === "years" && event.key >= "0" && event.key <= "9") {
+          event.preventDefault();
+          dateYearTyped = (dateYearTyped + event.key).slice(-4);
+          var typedYear = datePopKey.querySelector('.date-year[data-year^="' + dateYearTyped + '"]');
+          if (typedYear) focusDateYear(datePopKey, typedYear.getAttribute("data-year"));
+          window.clearTimeout(dateYearTypeTimer);
+          dateYearTypeTimer = window.setTimeout(function () { dateYearTyped = ""; }, 800);
+          return;
+        }
+        var yearBtn = event.target.closest && event.target.closest(".date-year");
+        if (yearBtn && (event.key === "ArrowRight" || event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "ArrowDown")) {
+          event.preventDefault();
+          var yearDelta = event.key === "ArrowRight" ? -1 : event.key === "ArrowLeft" ? 1 : event.key === "ArrowUp" ? -4 : 4;
+          var yearPop = yearBtn.closest(".date-pop");
+          if (yearPop) focusDateYear(yearPop, Number(yearBtn.getAttribute("data-year")) + yearDelta);
+          return;
+        }
         var dateDay = event.target.closest && event.target.closest(".date-day");
         if (dateDay && (event.key === "ArrowRight" || event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "ArrowDown")) {
           event.preventDefault();
@@ -9456,10 +11932,27 @@
         }
         if (event.key === "Escape" && document.querySelector(".date-field.is-open")) {
           var openDateField = document.querySelector(".date-field.is-open");
+          var openDatePop = openDateField && openDateField.querySelector(".date-pop");
+          if (openDatePop && openDatePop.dataset.mode === "years") {
+            showDateDays(openDateField);
+            return;
+          }
           closeDateField(openDateField);
           var dateTrigger = openDateField && openDateField.querySelector(".date-trigger");
           if (dateTrigger) dateTrigger.focus();
           return;
+        }
+        if (event.key === "Escape" && state.unitsHome && state.intakeOpen) {
+          var intakeBoard = document.getElementById("intake-board");
+          if (intakeBoard && intakeBoard.contains(document.activeElement)) {
+            captureIntake();
+            state.intakeOpen = false;
+            state.intakeError = "";
+            render();
+            var intakeToggleBtn = document.querySelector("[data-action='toggle-intake']");
+            if (intakeToggleBtn) intakeToggleBtn.focus();
+            return;
+          }
         }
         if (event.key === "Escape" && state.colorUnit) {
           state.colorUnit = "";
@@ -9504,6 +11997,122 @@
       var mq = window.matchMedia("(max-width: 860px)");
       if (mq.addEventListener) mq.addEventListener("change", syncShell);
       render(state.unitsHome ? { intro: true } : {});
+      var releaseDay = todayKey();
+      function refreshIfReleaseDayChanged() {
+        var nextDay = todayKey();
+        if (nextDay === releaseDay) return;
+        releaseDay = nextDay;
+        render();
+      }
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") refreshIfReleaseDayChanged();
+      });
+      setInterval(refreshIfReleaseDayChanged, 60000);
+    }
+
+    function waitImage(src) {
+      return new Promise(function (resolve) {
+        var img = new Image();
+        img.onload = function () { resolve(); };
+        img.onerror = function () { resolve(); };
+        img.src = src;
+      });
+    }
+
+    function hideBootScreen() {
+      var screen = document.getElementById("boot-screen");
+      if (!screen || screen.classList.contains("is-done")) return;
+      screen.classList.add("is-done");
+      window.setTimeout(function () { screen.hidden = true; }, 360);
+    }
+
+    function settle(promise, ms) {
+      return new Promise(function (resolve) {
+        var done = false;
+        function finish() {
+          if (done) return;
+          done = true;
+          resolve();
+        }
+        promise.then(finish, finish);
+        if (ms) window.setTimeout(finish, ms);
+      });
+    }
+
+    var appStarted = false;
+
+    function beginApp() {
+      if (!appStarted) {
+        appStarted = true;
+        try { startApp(); } catch (err) {}
+      }
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(hideBootScreen);
+      });
+    }
+
+    function bindBootDrop() {
+      var screen = document.getElementById("boot-screen");
+      if (!screen || screen.getAttribute("data-drop") === "1") return;
+      screen.setAttribute("data-drop", "1");
+      screen.addEventListener("dragover", function (event) { event.preventDefault(); });
+      screen.addEventListener("drop", function (event) {
+        event.preventDefault();
+        var items = event.dataTransfer && event.dataTransfer.items;
+        var item = items && items.length ? items[0] : null;
+        if (!item || !item.getAsFileSystemHandle) return;
+        var status = document.getElementById("boot-status");
+        if (status) status.textContent = "טוען את hebet-data.txt";
+        item.getAsFileSystemHandle().then(function (handle) {
+          return acceptDataHandle(handle).then(activateHandle);
+        }).then(function (ok) {
+          if (ok) beginApp();
+        }).catch(function (err) {
+          var message = explainFileError(err);
+          if (message) window.alert(message);
+          if (status) status.textContent = "גררו לכאן את hebet-data.txt, או פתחו את הקיצור «תקן מצבה זרועי».";
+        });
+      });
+    }
+
+    function showFolderPrompt(message) {
+      var status = document.getElementById("boot-status");
+      var bar = document.getElementById("boot-bar");
+      var btn = document.getElementById("boot-connect");
+      var hint = document.getElementById("boot-hint");
+      if (status) status.textContent = message || "כדי לטעון את הנתונים, פתחו את הקיצור «תקן מצבה זרועי»";
+      if (bar) bar.hidden = true;
+      if (hint) hint.hidden = false;
+      bindBootDrop();
+      if (!btn) return;
+      btn.hidden = false;
+      btn.disabled = false;
+      btn.onclick = function () {
+        btn.disabled = true;
+        if (status) status.textContent = "טוען את hebet-data.txt";
+        connectProjectFolder().then(function (ok) {
+          if (!ok) {
+            btn.disabled = false;
+            if (status) status.textContent = "בחרו את הקובץ hebet-data.txt, או פתחו את הקיצור «תקן מצבה זרועי».";
+            return;
+          }
+          beginApp();
+        });
+      };
+    }
+
+    function init() {
+      Promise.all([
+        waitImage("Heber_Loader.gif"),
+        waitImage("hebet-logo-full.png"),
+        waitImage("idf-goc.svg"),
+        openProjectFile()
+      ]).then(function (results) {
+        if (results[3]) beginApp();
+        else showFolderPrompt(fileBroken ? "קובץ hebet-data.txt פגום ולא נטען." : "כדי לטעון את הנתונים, פתחו את הקיצור «תקן מצבה זרועי»");
+      }, function () {
+        showFolderPrompt("כדי לטעון את הנתונים, פתחו את הקיצור «תקן מצבה זרועי»");
+      });
     }
 
     init();
